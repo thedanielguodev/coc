@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>California CoC: Homelessness &amp; Wildfire Dashboard</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --page: #0d0d0d;
+    --bg: #0d0d0d;
+    --panel: #1a1a19;
+    --panel-2: #202020;
+    --border: rgba(255,255,255,0.10);
+    --hairline: #2c2c2a;
+    --text: #ffffff;
+    --text-dim: #c3c2b7;
+    --text-muted: #898781;
+    --accent: #e0692c;
+    --accent-soft: #e0692c33;
+    --accent-2: #3987e5;
+    --accent-2-soft: #3987e533;
+    --seq-100: #cde2fb;
+    --seq-400: #3987e5;
+    --seq-700: #0d366b;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: var(--font);
+    background: var(--page);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  header {
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: var(--panel);
+    z-index: 20;
+  }
+  header h1 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.1px;
+  }
+  header .sub {
+    color: var(--text-muted);
+    font-size: 12.5px;
+  }
+  .layout {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+  #map {
+    flex: 1;
+    min-width: 0;
+    background: #0a0a0a;
+  }
+  .ca-mask path { fill-rule: evenodd; }
+  aside {
+    width: 392px;
+    flex-shrink: 0;
+    background: var(--bg);
+    border-left: 1px solid var(--hairline);
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 20px -12px rgba(0,0,0,0.6);
+  }
+  .card h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+    font-weight: 700;
+  }
+  .card h2 .count {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .control-row:last-child { margin-bottom: 0; }
+  .control-row label {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    min-width: 52px;
+  }
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--panel-2) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="%23898781" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 10px center;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 6px 28px 6px 10px;
+    font-size: 13px;
+    font-family: var(--font);
+    flex: 1;
+  }
+  select:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 1px;
+  }
+  input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent-2) 0%, var(--accent-2) var(--fill, 50%), var(--panel-2) var(--fill, 50%), var(--panel-2) 100%);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    border: 2px solid #0d0d0d;
+    box-shadow: 0 0 0 1px rgba(57,135,229,0.4);
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    border: 2px solid #0d0d0d;
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-track { background: var(--panel-2); height: 4px; border-radius: 2px; }
+  #yearLabel {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--accent-2);
+    min-width: 40px;
+    text-align: right;
+  }
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+    margin-bottom: 9px;
+  }
+  .toggle-row:last-child { margin-bottom: 0; }
+  .toggle-row input {
+    accent-color: var(--accent-2);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+  .toggle-row .fire-accent { accent-color: var(--accent); }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .stat {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 11px 12px;
+  }
+  .stat .n {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    line-height: 1.15;
+  }
+  .stat .l {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+  .stat.fire .n { color: var(--accent); }
+  .stat.homeless .n { color: var(--accent-2); }
+  canvas { max-width: 100%; }
+  .trend-stack { display: flex; flex-direction: column; gap: 10px; }
+  .trend-item .trend-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+  .trend-item .key {
+    display: inline-block;
+    width: 10px;
+    height: 2px;
+    border-radius: 1px;
+  }
+  .trend-item .key.blue { background: var(--accent-2); }
+  .trend-item .key.orange { background: var(--accent); }
+  #selectedCoc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  #selectedCoc strong { color: var(--text); }
+  .legend {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .legend-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .legend-row:last-child { margin-bottom: 0; }
+  .legend-grad {
+    width: 90px;
+    height: 9px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--seq-100), var(--accent-2), var(--seq-700));
+    flex-shrink: 0;
+  }
+  .legend-grad-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    width: 90px;
+  }
+  .legend .swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .leaflet-popup-content-wrapper {
+    background: var(--panel-2);
+    color: var(--text);
+    border-radius: 10px;
+    box-shadow: 0 12px 28px -8px rgba(0,0,0,0.55);
+  }
+  .leaflet-popup-tip { background: var(--panel-2); }
+  .coc-label {
+    background: rgba(10, 10, 10, 0.78);
+    border: none;
+    box-shadow: none;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 5px;
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .coc-label::before { display: none; }
+  .popup h3 { margin: 0 0 6px 0; font-size: 14px; font-weight: 700; }
+  .popup .row { font-size: 12.5px; color: var(--text-dim); margin-top: 3px; }
+  .popup .row b { color: var(--text); font-weight: 600; }
+  .empty-hint {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  footer {
+    padding: 8px 22px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--hairline);
+    background: var(--panel);
+  }
+  a { color: var(--accent-2); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>California CoC Dashboard</h1>
+  <span class="sub">Homelessness (HUD PIT/HIC, 2007&ndash;2024) &amp; major wildfires (CAL FIRE FRAP, &ge;1,000 acres, 2000&ndash;present)</span>
+</header>
+
+<div class="layout">
+  <div id="map"></div>
+
+  <aside>
+    <div class="card">
+      <h2>Controls</h2>
+      <div class="control-row">
+        <label for="yearSlider">Year</label>
+        <input type="range" id="yearSlider" min="2007" max="2024" step="1" value="2024">
+        <span id="yearLabel">2024</span>
+      </div>
+      <div class="control-row">
+        <label for="metricSelect">Metric</label>
+        <select id="metricSelect"></select>
+      </div>
+      <div class="control-row" style="margin-top:2px; flex-direction:column; align-items:stretch; gap:0;">
+        <label class="toggle-row" style="min-width:0;">
+          <input type="checkbox" id="fireToggle" class="fire-accent" checked>
+          <span id="fireToggleLabel">Show wildfire perimeters</span>
+        </label>
+        <label class="toggle-row" style="min-width:0;">
+          <input type="checkbox" id="labelToggle" checked>
+          Show homeless counts on map
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Statewide, selected year</h2>
+      <div class="stat-grid">
+        <div class="stat homeless">
+          <div class="n" id="statHomeless">&mdash;</div>
+          <div class="l">Homeless (selected metric)</div>
+        </div>
+        <div class="stat fire">
+          <div class="n" id="statAcres">&mdash;</div>
+          <div class="l">Acres burned (major fires)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Statewide trend, 2007&ndash;2024</h2>
+      <div class="trend-stack">
+        <div class="trend-item">
+          <div class="trend-label"><span class="key blue"></span>Homeless count</div>
+          <canvas id="trendChartHomeless" height="78"></canvas>
+        </div>
+        <div class="trend-item">
+          <div class="trend-label"><span class="key orange"></span>Acres burned (major fires)</div>
+          <canvas id="trendChartFire" height="90"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Fire &rarr; homelessness correlation</h2>
+      <div class="control-row">
+        <label for="corrLag" style="min-width:110px;">Timing</label>
+        <select id="corrLag">
+          <option value="0">Same year</option>
+          <option value="1">Fire year &rarr; next year's count</option>
+        </select>
+      </div>
+      <label class="toggle-row" style="min-width:0; margin-top:2px;">
+        <input type="checkbox" id="corrExcludeZero">
+        Only CoC-years with a major fire on record
+      </label>
+      <div id="corrStat" style="font-size:12.5px; color:var(--text-dim); margin:10px 0;">&mdash;</div>
+      <canvas id="corrChart" height="190"></canvas>
+      <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC in one year: acres burned within that CoC's boundary (x) vs. its homeless count (y). Points at x&nbsp;=&nbsp;0 are CoC-years with no major (&ge;1,000-acre) fire on record. Line is the least-squares fit. Large urban CoCs dominate homeless totals but rarely burn heavily, while large rural CoCs burn heavily but have small populations &mdash; this population/geography mismatch pulls the raw correlation toward zero independent of any real relationship, so treat r as a starting point, not a verdict.</div>
+    </div>
+
+    <div class="card">
+      <h2>Selected CoC</h2>
+      <div id="selectedCoc"><span class="empty-hint">Click a region on the map for its detail.</span></div>
+      <canvas id="cocChart" height="150" style="margin-top:10px; display:none;"></canvas>
+    </div>
+
+    <div class="legend">
+      <div class="legend-row">
+        <div>
+          <div class="legend-grad"></div>
+          <div class="legend-grad-labels"><span>Low</span><span>High</span></div>
+        </div>
+        <span style="line-height:1.3;">Homeless count<br>by CoC region</span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--accent); opacity:0.6"></span>
+        <span>Wildfire perimeter, selected year</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  Sources: HUD PIT/HIC CoC data &amp; CoC boundaries (HUD-eGIS, huduser.gov) &middot; CAL FIRE FRAP historical fire perimeters (fire.ca.gov). Boundaries and fire geometry simplified for display.
+</footer>
+
+<script>
+const METRICS = [
+  "Overall Homeless",
+  "Sheltered Total Homeless",
+  "Unsheltered Homeless",
+  "Overall Homeless Individuals",
+  "Overall Homeless People in Families",
+  "Overall Chronically Homeless Individuals",
+  "Overall Homeless Veterans",
+  "Overall Homeless Unaccompanied Youth (Under 25)",
+];
+
+const state = {
+  year: 2024,
+  metric: "Overall Homeless",
+  pitByCoc: new Map(),   // "CA-500" -> [{year, ...metrics}]
+  vetByCoc: new Map(),
+  hicByCoc: new Map(),
+  firesByYear: [],
+  firesByCoc: new Map(), // "CA-500" -> [{year, fire_count, acres_burned}]
+  corrLag: 0,
+  corrChart: null,
+  cocLayer: null,
+  fireLayer: null,
+  geoFeaturesById: new Map(),
+  trendChartHomeless: null,
+  trendChartFire: null,
+  cocChart: null,
+  selectedCocNum: null,
+  fireGeoRaw: null,
+};
+
+const metricSelect = document.getElementById("metricSelect");
+METRICS.forEach(m => {
+  const opt = document.createElement("option");
+  opt.value = m;
+  opt.textContent = m;
+  metricSelect.appendChild(opt);
+});
+metricSelect.value = state.metric;
+
+const map = L.map("map", { zoomControl: true }).setView([37.2, -119.5], 6);
+// NOTE: CARTO retired the old "dark_matter" raster path (now 404s); "dark_nolabels"
+// is the current equivalent and avoids place-label clutter over the choropleth.
+L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png", {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
+  subdomains: "abcd",
+  maxZoom: 19,
+}).addTo(map);
+
+// Sequential blue ramp (magnitude of homelessness), light -> dark. Fire stays
+// exclusively orange/red so the two encodings never compete for the same hue.
+const SEQ_STOPS = [
+  [205, 226, 251], // #cde2fb
+  [134, 182, 239], // #86b6ef
+  [87, 135, 229],  // ~#5787e5
+  [28, 92, 171],   // #1c5cab
+  [13, 54, 107],   // #0d366b
+];
+
+function colorScale(value, max) {
+  if (value == null || max <= 0) return "#3a3a38";
+  const t = Math.sqrt(Math.max(0, Math.min(1, value / max)));
+  const scaled = t * (SEQ_STOPS.length - 1);
+  const i = Math.min(SEQ_STOPS.length - 2, Math.floor(scaled));
+  const f = scaled - i;
+  const a = SEQ_STOPS[i], b = SEQ_STOPS[i + 1];
+  const rgb = [0, 1, 2].map(k => Math.round(a[k] + (b[k] - a[k]) * f));
+  return `rgb(${rgb.join(",")})`;
+}
+
+function fmt(n) {
+  if (n == null || isNaN(n)) return "—";
+  return Math.round(n).toLocaleString();
+}
+
+async function loadJSON(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
+  return res.json();
+}
+
+function indexByCoc(records) {
+  const map = new Map();
+  for (const rec of records) {
+    const key = rec.coc_number;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(rec);
+  }
+  return map;
+}
+
+function getMetricValue(cocNum, year, metric) {
+  const rows = state.pitByCoc.get(cocNum);
+  if (!rows) return null;
+  const row = rows.find(r => r.year === year);
+  return row ? row[metric] : null;
+}
+
+function currentMax() {
+  let max = 0;
+  for (const rows of state.pitByCoc.values()) {
+    const row = rows.find(r => r.year === state.year);
+    if (row && row[state.metric] != null) max = Math.max(max, row[state.metric]);
+  }
+  return max || 1;
+}
+
+function styleCocFeature(feature) {
+  const cocNum = feature.properties.COCNUM;
+  const val = getMetricValue(cocNum, state.year, state.metric);
+  const max = currentMax();
+  const selected = cocNum === state.selectedCocNum;
+  return {
+    fillColor: colorScale(val, max),
+    fillOpacity: val == null ? 0.15 : 0.82,
+    color: selected ? "#3987e5" : "#0d0d0d",
+    weight: selected ? 2.5 : 1,
+  };
+}
+
+function popupHtml(feature) {
+  const p = feature.properties;
+  const val = getMetricValue(p.COCNUM, state.year, state.metric);
+  return `<div class="popup">
+    <h3>${p.COCNAME || p.COCNUM}</h3>
+    <div class="row">${p.COCNUM}</div>
+    <div class="row">${state.metric} (${state.year}): <b>${fmt(val)}</b></div>
+  </div>`;
+}
+
+// Two single-axis small multiples sharing the same year domain, rather than one
+// dual-axis chart: two independently-scaled series on one plot invite the reader
+// to see a visual "alignment" between the lines that the arbitrary axis scaling
+// manufactures, not the data. See buildCorrelationPoints() for the real (spatial,
+// same-units) comparison between fire and homelessness.
+function renderTrendCharts() {
+  const years = [];
+  for (let y = 2007; y <= 2024; y++) years.push(y);
+
+  const homelessTotals = years.map(y => {
+    let sum = 0, any = false;
+    for (const rows of state.pitByCoc.values()) {
+      const row = rows.find(r => r.year === y);
+      if (row && row[state.metric] != null) { sum += row[state.metric]; any = true; }
+    }
+    return any ? sum : null;
+  });
+
+  const acresByYear = new Map(state.firesByYear.map(r => [r.year, r.total_acres]));
+  const fireAcres = years.map(y => acresByYear.get(y) ?? null);
+
+  const sharedScaleOpts = {
+    x: {
+      ticks: { color: "#898781", font: { size: 9 } },
+      grid: { color: "#2c2c2a", drawTicks: false },
+      border: { display: false },
+    },
+  };
+
+  if (state.trendChartHomeless) state.trendChartHomeless.destroy();
+  state.trendChartHomeless = new Chart(document.getElementById("trendChartHomeless").getContext("2d"), {
+    type: "line",
+    data: {
+      labels: years,
+      datasets: [{
+        data: homelessTotals,
+        borderColor: "#3987e5",
+        backgroundColor: "#3987e51a",
+        borderWidth: 2,
+        tension: 0.25,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        pointHitRadius: 12,
+        pointBackgroundColor: "#3987e5",
+        fill: true,
+      }],
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          titleColor: "#fff", bodyColor: "#fff", backgroundColor: "#202020",
+          callbacks: { label: ctx => ` ${fmt(ctx.parsed.y)} ${state.metric.toLowerCase()}` },
+        },
+      },
+      scales: {
+        ...sharedScaleOpts,
+        x: { ...sharedScaleOpts.x, ticks: { ...sharedScaleOpts.x.ticks, display: false } },
+        y: {
+          ticks: { color: "#898781", font: { size: 9 }, maxTicksLimit: 4 },
+          grid: { color: "#2c2c2a" },
+          border: { display: false },
+        },
+      },
+    },
+  });
+
+  if (state.trendChartFire) state.trendChartFire.destroy();
+  state.trendChartFire = new Chart(document.getElementById("trendChartFire").getContext("2d"), {
+    type: "line",
+    data: {
+      labels: years,
+      datasets: [{
+        data: fireAcres,
+        borderColor: "#e0692c",
+        backgroundColor: "#e0692c1a",
+        borderWidth: 2,
+        tension: 0.25,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        pointHitRadius: 12,
+        pointBackgroundColor: "#e0692c",
+        fill: true,
+      }],
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          titleColor: "#fff", bodyColor: "#fff", backgroundColor: "#202020",
+          callbacks: { label: ctx => ` ${fmt(ctx.parsed.y)} acres burned` },
+        },
+      },
+      scales: {
+        ...sharedScaleOpts,
+        y: {
+          ticks: { color: "#898781", font: { size: 9 }, maxTicksLimit: 4 },
+          grid: { color: "#2c2c2a" },
+          border: { display: false },
+        },
+      },
+    },
+  });
+}
+
+function getFireAcres(cocNum, year) {
+  const rows = state.firesByCoc.get(cocNum);
+  if (!rows) return 0;
+  const row = rows.find(r => r.year === year);
+  return row ? row.acres_burned : 0;
+}
+
+function pearson(points) {
+  const n = points.length;
+  if (n < 2) return null;
+  const mx = points.reduce((s, p) => s + p.x, 0) / n;
+  const my = points.reduce((s, p) => s + p.y, 0) / n;
+  let num = 0, dx2 = 0, dy2 = 0;
+  for (const p of points) {
+    const dx = p.x - mx, dy = p.y - my;
+    num += dx * dy;
+    dx2 += dx * dx;
+    dy2 += dy * dy;
+  }
+  const denom = Math.sqrt(dx2 * dy2);
+  return denom === 0 ? null : num / denom;
+}
+
+// Abramowitz & Stegun 7.1.26 approximation, |error| < 1.5e-7.
+function erf(x) {
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x);
+  const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+  const t = 1 / (1 + p * x);
+  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+  return sign * y;
+}
+function normalCDF(z) { return 0.5 * (1 + erf(z / Math.SQRT2)); }
+
+// Two-tailed significance test for r, via the normal approximation to the t
+// distribution (t = r*sqrt((n-2)/(1-r^2))). Accurate for the sample sizes this
+// chart typically has (n well over 30); reported as approximate for smaller,
+// filtered subsets.
+function pearsonPValue(r, n) {
+  if (r == null || n < 3 || Math.abs(r) >= 1) return null;
+  const t = r * Math.sqrt((n - 2) / (1 - r * r));
+  return 2 * (1 - normalCDF(Math.abs(t)));
+}
+
+// Average-rank transform (ties share the mean rank), for Spearman's rho.
+function rankOf(values) {
+  const order = values.map((v, i) => i).sort((a, b) => values[a] - values[b]);
+  const ranks = new Array(values.length);
+  let i = 0;
+  while (i < order.length) {
+    let j = i;
+    while (j + 1 < order.length && values[order[j + 1]] === values[order[i]]) j++;
+    const avgRank = (i + j) / 2 + 1;
+    for (let k = i; k <= j; k++) ranks[order[k]] = avgRank;
+    i = j + 1;
+  }
+  return ranks;
+}
+
+// Spearman's rho: Pearson correlation on ranks instead of raw values. More
+// robust than Pearson r here because acres-burned is extremely right-skewed
+// (a handful of huge fires dominate) and only cares about monotonic
+// relationships, not strictly linear ones.
+function spearman(points) {
+  if (points.length < 2) return null;
+  const rx = rankOf(points.map(p => p.x));
+  const ry = rankOf(points.map(p => p.y));
+  return pearson(rx.map((v, i) => ({ x: v, y: ry[i] })));
+}
+
+function linearFit(points) {
+  const n = points.length;
+  const mx = points.reduce((s, p) => s + p.x, 0) / n;
+  const my = points.reduce((s, p) => s + p.y, 0) / n;
+  let num = 0, den = 0;
+  for (const p of points) {
+    num += (p.x - mx) * (p.y - my);
+    den += (p.x - mx) * (p.x - mx);
+  }
+  const slope = den === 0 ? 0 : num / den;
+  const intercept = my - slope * mx;
+  return { slope, intercept };
+}
+
+function correlationStrength(r) {
+  const a = Math.abs(r);
+  if (a >= 0.5) return "strong";
+  if (a >= 0.3) return "moderate";
+  if (a >= 0.1) return "weak";
+  return "negligible";
+}
+
+function buildCorrelationPoints(lag, excludeZero) {
+  const points = [];
+  for (const [cocNum, rows] of state.pitByCoc.entries()) {
+    for (const row of rows) {
+      const year = row.year;
+      const metricVal = row[state.metric];
+      if (metricVal == null) continue;
+      const fireYear = year - lag;
+      if (fireYear < 2000) continue;
+      const acres = getFireAcres(cocNum, fireYear);
+      if (excludeZero && acres <= 0) continue;
+      points.push({ x: acres, y: metricVal, coc: cocNum, year });
+    }
+  }
+  return points;
+}
+
+function renderCorrelationChart() {
+  const excludeZero = document.getElementById("corrExcludeZero").checked;
+  const points = buildCorrelationPoints(state.corrLag, excludeZero);
+  const r = pearson(points);
+  const rho = spearman(points);
+  const p = pearsonPValue(r, points.length);
+  const statBox = document.getElementById("corrStat");
+  if (r == null) {
+    statBox.innerHTML = "Not enough data.";
+  } else {
+    const sig = p == null ? "" : (p < 0.05
+      ? `, <strong style="color:#0ca30c">statistically significant</strong> (p = ${p < 0.001 ? "&lt;0.001" : p.toFixed(3)})`
+      : `, <strong style="color:#898781">not statistically significant</strong> (p = ${p.toFixed(3)})`);
+    statBox.innerHTML = `Pearson r = <strong style="color:${r >= 0 ? '#3987e5' : '#e0692c'}">${r.toFixed(3)}</strong> (${correlationStrength(r)}${r >= 0 ? ", positive" : ", negative"}) across ${points.length} CoC-year pairs${sig}<br>
+    Spearman &rho; (rank-based, less sensitive to fire-acreage outliers) = <strong>${rho == null ? "n/a" : rho.toFixed(3)}</strong>`;
+  }
+
+  const fit = points.length >= 2 ? linearFit(points) : null;
+  const maxX = Math.max(1, ...points.map(p => p.x));
+  const fitLine = fit ? [
+    { x: 0, y: fit.intercept },
+    { x: maxX, y: fit.intercept + fit.slope * maxX },
+  ] : [];
+
+  const ctx = document.getElementById("corrChart").getContext("2d");
+  if (state.corrChart) state.corrChart.destroy();
+  state.corrChart = new Chart(ctx, {
+    type: "scatter",
+    data: {
+      datasets: [
+        {
+          label: "CoC-year",
+          data: points,
+          backgroundColor: "#3987e5cc",
+          borderColor: "#0d0d0d",
+          borderWidth: 1,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointHitRadius: 12,
+        },
+        {
+          type: "line",
+          label: "Least-squares fit",
+          data: fitLine,
+          borderColor: "#e0692c",
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+          tension: 0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          titleColor: "#fff",
+          bodyColor: "#fff",
+          backgroundColor: "#202020",
+          callbacks: {
+            label: ctx => {
+              const p = ctx.raw;
+              if (p.coc == null) return "";
+              return `${p.coc}, ${p.year}: ${fmt(p.x)} acres, ${fmt(p.y)} homeless`;
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: { display: true, text: "Acres burned in CoC", color: "#898781", font: { size: 10 } },
+          ticks: { color: "#898781", font: { size: 9 } },
+          grid: { color: "#2c2c2a" },
+          border: { display: false },
+        },
+        y: {
+          title: { display: true, text: state.metric, color: "#898781", font: { size: 10 } },
+          ticks: { color: "#898781", font: { size: 9 } },
+          grid: { color: "#2c2c2a" },
+          border: { display: false },
+        },
+      },
+    },
+  });
+}
+
+function renderCocDetail(feature) {
+  const p = feature.properties;
+  state.selectedCocNum = p.COCNUM;
+  const rows = (state.pitByCoc.get(p.COCNUM) || []).slice().sort((a, b) => a.year - b.year);
+  const hicRows = state.hicByCoc.get(p.COCNUM) || [];
+  const latestHic = hicRows.find(r => r.year === state.year) ||
+    hicRows.reduce((latest, r) => (!latest || r.year > latest.year) ? r : latest, null);
+
+  const box = document.getElementById("selectedCoc");
+  box.innerHTML = `
+    <strong>${p.COCNAME || p.COCNUM}</strong> (${p.COCNUM})<br>
+    ${state.metric} in ${state.year}: <strong>${fmt(getMetricValue(p.COCNUM, state.year, state.metric))}</strong><br>
+    ${latestHic ? `Year-round beds (${latestHic.year}): <strong>${fmt(latestHic["Total Year-Round Beds (ES, TH, SH)"])}</strong>` : ""}
+  `;
+
+  const canvas = document.getElementById("cocChart");
+  canvas.style.display = rows.length ? "block" : "none";
+  if (!rows.length) return;
+
+  const ctx = canvas.getContext("2d");
+  if (state.cocChart) state.cocChart.destroy();
+  state.cocChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: rows.map(r => r.year),
+      datasets: [{
+        label: state.metric,
+        data: rows.map(r => r[state.metric]),
+        borderColor: "#3987e5",
+        backgroundColor: "#3987e51a",
+        borderWidth: 2,
+        tension: 0.25,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        pointHitRadius: 12,
+        pointBackgroundColor: "#3987e5",
+        fill: true,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { titleColor: "#fff", bodyColor: "#fff", backgroundColor: "#202020" },
+      },
+      scales: {
+        x: { ticks: { color: "#898781", font: { size: 9 } }, grid: { color: "#2c2c2a" }, border: { display: false } },
+        y: { ticks: { color: "#898781", font: { size: 9 } }, grid: { color: "#2c2c2a" }, border: { display: false } },
+      },
+    },
+  });
+}
+
+function refreshMapStyle() {
+  if (state.cocLayer) {
+    state.cocLayer.eachLayer(layer => {
+      layer.setStyle(styleCocFeature(layer.feature));
+    });
+  }
+}
+
+const LABEL_MIN_PX = 46; // hide a CoC's label until its polygon is at least this wide/tall on screen
+
+function refreshLabels() {
+  if (!state.cocLayer) return;
+  state.cocLayer.eachLayer(layer => {
+    const val = getMetricValue(layer.feature.properties.COCNUM, state.year, state.metric);
+    const text = val == null ? "—" : fmt(val);
+    if (layer.getTooltip()) {
+      layer.setTooltipContent(text);
+    } else {
+      layer.bindTooltip(text, {
+        permanent: true,
+        direction: "center",
+        className: "coc-label",
+      });
+    }
+  });
+  updateLabelVisibility();
+}
+
+function updateLabelVisibility() {
+  if (!state.cocLayer) return;
+  const masterShow = document.getElementById("labelToggle").checked;
+  state.cocLayer.eachLayer(layer => {
+    if (!masterShow) {
+      layer.closeTooltip();
+      return;
+    }
+    const bounds = layer.getBounds();
+    const nePt = map.latLngToLayerPoint(bounds.getNorthEast());
+    const swPt = map.latLngToLayerPoint(bounds.getSouthWest());
+    const widthPx = Math.abs(nePt.x - swPt.x);
+    const heightPx = Math.abs(swPt.y - nePt.y);
+    if (widthPx >= LABEL_MIN_PX && heightPx >= LABEL_MIN_PX) {
+      layer.openTooltip();
+    } else {
+      layer.closeTooltip();
+    }
+  });
+}
+
+function refreshStats() {
+  let homelessSum = 0;
+  for (const rows of state.pitByCoc.values()) {
+    const row = rows.find(r => r.year === state.year);
+    if (row && row[state.metric] != null) homelessSum += row[state.metric];
+  }
+  document.getElementById("statHomeless").textContent = fmt(homelessSum);
+
+  const fireRow = state.firesByYear.find(r => r.year === state.year);
+  document.getElementById("statAcres").textContent = fireRow ? fmt(fireRow.total_acres) : "0";
+}
+
+function fireLayerStyle() {
+  return {
+    color: "#e0692c",
+    weight: 1,
+    fillColor: "#e0692c",
+    fillOpacity: 0.4,
+    opacity: 0.85,
+  };
+}
+
+function fireOnEachFeature(feature, layer) {
+  const p = feature.properties;
+  const alarm = p.ALARM_DATE ? new Date(p.ALARM_DATE).toLocaleDateString() : "unknown";
+  layer.bindPopup(`<div class="popup">
+    <h3>${p.FIRE_NAME || "Unnamed fire"} (${p.YEAR_})</h3>
+    <div class="row">Agency: <b>${p.AGENCY || "—"}</b></div>
+    <div class="row">Acres: <b>${fmt(p.GIS_ACRES)}</b></div>
+    <div class="row">Cause: <b>${p.CAUSE_NAME || "Unknown"}</b></div>
+    <div class="row">Alarm date: <b>${alarm}</b></div>
+  </div>`);
+}
+
+// Fires are rebuilt per selected year (rather than showing all 2000-2024 fires
+// at once) so the map layer actually reflects the year control, matching the
+// choropleth and stat tiles instead of showing 24 years of fires unconditionally.
+function rebuildFireLayer() {
+  if (state.fireLayer) map.removeLayer(state.fireLayer);
+  const yearFeatures = state.fireGeoRaw.features.filter(f => f.properties.YEAR_ === state.year);
+  state.fireLayer = L.geoJSON({ type: "FeatureCollection", features: yearFeatures }, {
+    style: fireLayerStyle,
+    onEachFeature: fireOnEachFeature,
+  });
+  const label = document.getElementById("fireToggleLabel");
+  label.textContent = `Show ${state.year} wildfire perimeters (${yearFeatures.length})`;
+  if (document.getElementById("fireToggle").checked) {
+    state.fireLayer.addTo(map);
+  }
+}
+
+function update() {
+  refreshMapStyle();
+  refreshLabels();
+  refreshStats();
+  rebuildFireLayer();
+  renderTrendCharts();
+  renderCorrelationChart();
+  if (state.selectedCocNum) {
+    const feature = state.geoFeaturesById.get(state.selectedCocNum);
+    if (feature) renderCocDetail(feature);
+  }
+}
+
+async function init() {
+  const [pitRows, hicRows, vetRows, fireYearRows, fireCocRows, cocGeo, fireGeo, caOutline] = await Promise.all([
+    loadJSON("data/ca_coc_pit_by_year.json"),
+    loadJSON("data/ca_coc_hic_by_year.json"),
+    loadJSON("data/ca_coc_pit_veterans_by_year.json"),
+    loadJSON("data/ca_fires_by_year.json"),
+    loadJSON("data/ca_fires_by_coc_year.json"),
+    loadJSON("data/ca_coc_boundaries.min.geojson"),
+    loadJSON("data/ca_fire_perimeters.geojson"),
+    loadJSON("data/ca_state_outline.geojson"),
+  ]);
+
+  state.pitByCoc = indexByCoc(pitRows);
+  state.hicByCoc = indexByCoc(hicRows);
+  state.vetByCoc = indexByCoc(vetRows);
+  state.firesByYear = fireYearRows;
+  state.firesByCoc = indexByCoc(fireCocRows);
+
+  // "Spotlight" mask: dim everything outside California (rather than leaving the
+  // basemap's bare ocean/out-of-state rendering, which reads as broken/empty) by
+  // filling a world-sized ring with a California-shaped hole punched out of it.
+  // fill-rule:evenodd (set in CSS below) makes the hole render correctly
+  // regardless of the source ring winding direction.
+  const worldRing = [[-170, -60], [170, -60], [170, 75], [-170, 75], [-170, -60]];
+  const caHoleRings = caOutline.features.flatMap(f => {
+    const g = f.geometry;
+    const polys = g.type === "MultiPolygon" ? g.coordinates : [g.coordinates];
+    return polys.map(poly => poly[0]); // outer ring of each CA polygon/island
+  });
+  const maskLayer = L.geoJSON(
+    { type: "Feature", geometry: { type: "Polygon", coordinates: [worldRing, ...caHoleRings] } },
+    { className: "ca-mask", interactive: false, style: { stroke: false, fillColor: "#0d0d0d", fillOpacity: 0.72 } }
+  ).addTo(map);
+
+  state.cocLayer = L.geoJSON(cocGeo, {
+    style: styleCocFeature,
+    onEachFeature: (feature, layer) => {
+      state.geoFeaturesById.set(feature.properties.COCNUM, feature);
+      layer.bindPopup(() => popupHtml(feature));
+      layer.on("mouseover", () => layer.setStyle({ weight: 2.5 }));
+      layer.on("mouseout", () => layer.setStyle(styleCocFeature(feature)));
+      layer.on("click", () => {
+        renderCocDetail(feature);
+        refreshMapStyle();
+      });
+    },
+  }).addTo(map);
+
+  state.fireGeoRaw = fireGeo;
+
+  const yearSlider = document.getElementById("yearSlider");
+  const setSliderFill = () => {
+    const pct = ((yearSlider.value - yearSlider.min) / (yearSlider.max - yearSlider.min)) * 100;
+    yearSlider.style.setProperty("--fill", `${pct}%`);
+  };
+  setSliderFill();
+
+  yearSlider.addEventListener("input", e => {
+    state.year = parseInt(e.target.value, 10);
+    document.getElementById("yearLabel").textContent = state.year;
+    setSliderFill();
+    update();
+  });
+  metricSelect.addEventListener("change", e => {
+    state.metric = e.target.value;
+    update();
+  });
+  document.getElementById("fireToggle").addEventListener("change", rebuildFireLayer);
+  document.getElementById("labelToggle").addEventListener("change", updateLabelVisibility);
+  map.on("zoomend moveend", updateLabelVisibility);
+  document.getElementById("corrLag").addEventListener("change", e => {
+    state.corrLag = parseInt(e.target.value, 10);
+    renderCorrelationChart();
+  });
+  document.getElementById("corrExcludeZero").addEventListener("change", renderCorrelationChart);
+
+  update();
+}
+
+init().catch(err => {
+  console.error(err);
+  document.getElementById("map").innerHTML =
+    `<div style="padding:20px;color:#e0692c;">Failed to load data: ${err.message}. Are you serving this over HTTP (not file://)?</div>`;
+});
+</script>
+</body>
+</html>

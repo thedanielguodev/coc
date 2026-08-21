@@ -1,0 +1,597 @@
+coc_number,year,CoC Name,Homeless Veterans,Sheltered ES Homeless Veterans,Sheltered TH Homeless Veterans,Sheltered SH Homeless Veterans,Sheltered Total Homeless Veterans,Unsheltered Homeless Veterans
+CA-500,2024,San Jose/Santa Clara City & County CoC,450,83,12,4,99,351
+CA-501,2024,San Francisco CoC,587,106,13,0,119,468
+CA-502,2024,"Oakland, Berkeley/Alameda County CoC",524,71,59,10,140,384
+CA-503,2024,Sacramento City & County CoC,318,72,145,0,217,101
+CA-504,2024,"Santa Rosa, Petaluma/Sonoma County CoC",162,24,0,0,24,138
+CA-505,2024,Richmond/Contra Costa County CoC,146,21,9,0,30,116
+CA-506,2024,"Salinas/Monterey, San Benito Counties CoC",167,21,45,0,66,101
+CA-507,2024,Marin County CoC,44,2,11,0,13,31
+CA-508,2024,Watsonville/Santa Cruz City & County CoC,72,16,0,0,16,56
+CA-509,2024,Mendocino County CoC,19,7,5,0,12,7
+CA-510,2024,"Turlock, Modesto/Stanislaus County CoC",79,35,4,0,39,40
+CA-511,2024,Stockton/San Joaquin County CoC,249,36,16,0,52,197
+CA-512,2024,Daly/San Mateo County CoC,42,32,0,0,32,10
+CA-513,2024,"Visalia/Kings, Tulare Counties CoC",82,4,4,0,8,74
+CA-514,2024,Fresno City & County/Madera County CoC,212,40,2,0,42,170
+CA-515,2024,Rocklin/Roseville/Placer County CoC,45,13,2,0,15,30
+CA-516,2024,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",144,20,26,0,46,98
+CA-517,2024,Napa City & County CoC,16,8,0,0,8,8
+CA-518,2024,Vallejo/Solano County CoC,86,7,15,0,22,64
+CA-519,2024,"Chico, Paradise/Butte County CoC",79,32,12,0,44,35
+CA-520,2024,Merced City & County CoC,23,5,1,0,6,17
+CA-521,2024,"Davis, Woodland/Yolo County CoC",23,5,1,0,6,17
+CA-522,2024,Humboldt County CoC,87,17,10,0,27,60
+CA-523,2024,"Colusa, Glenn, Trinity Counties CoC",13,3,1,0,4,9
+CA-524,2024,Yuba City & County/Sutter County CoC,51,8,0,0,8,43
+CA-525,2024,El Dorado County CoC,12,6,0,0,6,6
+CA-526,2024,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",27,1,8,0,9,18
+CA-527,2024,Tehama County CoC,22,0,1,0,1,21
+CA-529,2024,Lake County CoC,20,5,1,0,6,14
+CA-530,2024,"Alpine, Inyo, Mono Counties CoC",3,0,0,0,0,3
+CA-531,2024,Nevada County CoC,14,4,1,0,5,9
+CA-600,2024,Los Angeles City & County CoC,2991,468,333,156,957,2034
+CA-601,2024,San Diego City and County CoC,865,93,208,20,321,544
+CA-602,2024,"Santa Ana, Anaheim/Orange County CoC",328,61,19,0,80,248
+CA-603,2024,Santa Maria/Santa Barbara County CoC,90,11,18,0,29,61
+CA-604,2024,Bakersfield/Kern County CoC,93,8,36,0,44,49
+CA-606,2024,Long Beach CoC,382,114,57,30,201,181
+CA-607,2024,Pasadena CoC,33,1,0,0,1,32
+CA-608,2024,Riverside City & County CoC,266,31,37,0,68,198
+CA-609,2024,San Bernardino City & County CoC,246,25,10,0,35,211
+CA-611,2024,"Oxnard, San Buenaventura/Ventura County CoC",107,22,16,0,38,69
+CA-612,2024,Glendale CoC,5,1,0,0,1,4
+CA-613,2024,Imperial County CoC,37,0,0,0,0,37
+CA-614,2024,San Luis Obispo County CoC,49,2,1,0,3,46
+CA-500,2023,San Jose/Santa Clara City & County CoC,479,71,46,11,128,351
+CA-501,2023,San Francisco CoC,548,108,36,0,144,404
+CA-502,2023,"Oakland, Berkeley/Alameda County CoC",552,40,64,18,122,430
+CA-503,2023,Sacramento City & County CoC,624,77,132,0,209,415
+CA-504,2023,"Santa Rosa, Petaluma/Sonoma County CoC",110,25,11,0,36,74
+CA-505,2023,Richmond/Contra Costa County CoC,110,19,18,0,37,73
+CA-506,2023,"Salinas/Monterey, San Benito Counties CoC",143,13,48,0,61,82
+CA-507,2023,Marin County CoC,66,3,12,0,15,51
+CA-508,2023,Watsonville/Santa Cruz City & County CoC,159,20,0,0,20,139
+CA-509,2023,Mendocino County CoC,14,6,0,0,6,8
+CA-510,2023,"Turlock, Modesto/Stanislaus County CoC",101,42,13,0,55,46
+CA-511,2023,Stockton/San Joaquin County CoC,149,48,11,0,59,90
+CA-512,2023,Daly/San Mateo County CoC,93,38,0,0,38,55
+CA-513,2023,"Visalia/Kings, Tulare Counties CoC",92,21,3,0,24,68
+CA-514,2023,Fresno City & County/Madera County CoC,235,33,32,0,65,170
+CA-515,2023,Rocklin/Roseville/Placer County CoC,47,14,1,0,15,32
+CA-516,2023,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",174,25,51,0,76,98
+CA-517,2023,Napa City & County CoC,17,7,0,0,7,10
+CA-518,2023,Vallejo/Solano County CoC,38,9,17,0,26,12
+CA-519,2023,"Chico, Paradise/Butte County CoC",72,20,17,0,37,35
+CA-520,2023,Merced City & County CoC,29,9,1,0,10,19
+CA-521,2023,"Davis, Woodland/Yolo County CoC",20,6,0,0,6,14
+CA-522,2023,Humboldt County CoC,183,21,30,0,51,132
+CA-523,2023,"Colusa, Glenn, Trinity Counties CoC",25,2,1,0,3,22
+CA-524,2023,Yuba City & County/Sutter County CoC,57,14,0,0,14,43
+CA-525,2023,El Dorado County CoC,4,1,0,0,1,3
+CA-526,2023,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",46,3,5,0,8,38
+CA-527,2023,Tehama County CoC,21,0,0,0,0,21
+CA-529,2023,Lake County CoC,15,1,0,0,1,14
+CA-530,2023,"Alpine, Inyo, Mono Counties CoC",5,0,0,0,0,5
+CA-531,2023,Nevada County CoC,27,9,8,0,17,10
+CA-600,2023,Los Angeles City & County CoC,3874,274,394,402,1070,2804
+CA-601,2023,San Diego City and County CoC,814,126,199,16,341,473
+CA-602,2023,"Santa Ana, Anaheim/Orange County CoC",238,74,19,0,93,145
+CA-603,2023,Santa Maria/Santa Barbara County CoC,82,14,15,0,29,53
+CA-604,2023,Bakersfield/Kern County CoC,92,24,35,0,59,33
+CA-606,2023,Long Beach CoC,362,15,115,1,131,231
+CA-607,2023,Pasadena CoC,40,3,0,0,3,37
+CA-608,2023,Riverside City & County CoC,252,23,31,0,54,198
+CA-609,2023,San Bernardino City & County CoC,231,16,12,0,28,203
+CA-611,2023,"Oxnard, San Buenaventura/Ventura County CoC",180,27,19,0,46,134
+CA-612,2023,Glendale CoC,6,0,0,0,0,6
+CA-613,2023,Imperial County CoC,142,0,1,0,1,141
+CA-614,2023,San Luis Obispo County CoC,21,7,0,0,7,14
+CA-500,2022,San Jose/Santa Clara City & County CoC,660,87,43,10,140,520
+CA-501,2022,San Francisco CoC,605,152,49,0,201,404
+CA-502,2022,"Oakland, Berkeley/Alameda County CoC",550,58,38,24,120,430
+CA-503,2022,Sacramento City & County CoC,625,59,151,0,210,415
+CA-504,2022,"Santa Rosa, Petaluma/Sonoma County CoC",191,35,10,0,45,146
+CA-505,2022,Richmond/Contra Costa County CoC,130,20,15,0,35,95
+CA-506,2022,"Salinas/Monterey, San Benito Counties CoC",160,39,39,0,78,82
+CA-507,2022,Marin County CoC,65,2,12,0,14,51
+CA-508,2022,Watsonville/Santa Cruz City & County CoC,332,22,0,0,22,310
+CA-509,2022,Mendocino County CoC,19,11,2,0,13,6
+CA-510,2022,"Turlock, Modesto/Stanislaus County CoC",108,48,19,0,67,41
+CA-511,2022,Stockton/San Joaquin County CoC,127,34,3,0,37,90
+CA-512,2022,Daly/San Mateo County CoC,85,29,1,0,30,55
+CA-513,2022,"Visalia/Kings, Tulare Counties CoC",67,27,2,0,29,38
+CA-514,2022,Fresno City & County/Madera County CoC,205,76,30,0,106,99
+CA-515,2022,Rocklin/Roseville/Placer County CoC,42,14,3,0,17,25
+CA-516,2022,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",130,12,55,0,67,63
+CA-517,2022,Napa City & County CoC,20,9,0,0,9,11
+CA-518,2022,Vallejo/Solano County CoC,34,8,14,0,22,12
+CA-519,2022,"Chico, Paradise/Butte County CoC",53,9,5,0,14,39
+CA-520,2022,Merced City & County CoC,29,11,6,0,17,12
+CA-521,2022,"Davis, Woodland/Yolo County CoC",22,6,2,0,8,14
+CA-522,2022,Humboldt County CoC,202,38,32,0,70,132
+CA-523,2022,"Colusa, Glenn, Trinity Counties CoC",17,1,2,0,3,14
+CA-524,2022,Yuba City & County/Sutter County CoC,49,11,0,0,11,38
+CA-525,2022,El Dorado County CoC,6,3,0,0,3,3
+CA-526,2022,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",48,4,6,0,10,38
+CA-527,2022,Tehama County CoC,10,0,0,0,0,10
+CA-529,2022,Lake County CoC,16,2,0,0,2,14
+CA-530,2022,"Alpine, Inyo, Mono Counties CoC",9,0,0,0,0,9
+CA-531,2022,Nevada County CoC,32,13,3,0,16,16
+CA-600,2022,Los Angeles City & County CoC,3456,214,333,188,735,2721
+CA-601,2022,San Diego City and County CoC,686,100,195,13,308,378
+CA-602,2022,"Santa Ana, Anaheim/Orange County CoC",280,108,27,0,135,145
+CA-603,2022,Santa Maria/Santa Barbara County CoC,117,17,12,0,29,88
+CA-604,2022,Bakersfield/Kern County CoC,94,16,39,0,55,39
+CA-606,2022,Long Beach CoC,451,12,174,1,187,264
+CA-607,2022,Pasadena CoC,28,3,0,0,3,25
+CA-608,2022,Riverside City & County CoC,195,28,21,0,49,146
+CA-609,2022,San Bernardino City & County CoC,196,19,11,0,30,166
+CA-611,2022,"Oxnard, San Buenaventura/Ventura County CoC",120,30,19,0,49,71
+CA-612,2022,Glendale CoC,7,4,0,0,4,3
+CA-613,2022,Imperial County CoC,101,1,0,0,1,100
+CA-614,2022,San Luis Obispo County CoC,16,2,0,0,2,14
+CA-500,2021,San Jose/Santa Clara City & County CoC,167,94,56,17,167,0
+CA-501,2021,San Francisco CoC,333,289,44,0,333,0
+CA-502,2021,"Oakland, Berkeley/Alameda County CoC",125,69,43,13,125,0
+CA-503,2021,Sacramento City & County CoC,127,41,86,0,127,0
+CA-504,2021,"Santa Rosa, Petaluma/Sonoma County CoC",32,23,9,0,32,0
+CA-505,2021,Richmond/Contra Costa County CoC,34,23,11,0,34,0
+CA-506,2021,"Salinas/Monterey, San Benito Counties CoC",71,18,53,0,71,0
+CA-507,2021,Marin County CoC,8,0,8,0,8,0
+CA-508,2021,Watsonville/Santa Cruz City & County CoC,35,35,0,0,35,0
+CA-509,2021,Mendocino County CoC,13,9,4,0,13,0
+CA-510,2021,"Turlock, Modesto/Stanislaus County CoC",73,28,15,0,43,30
+CA-511,2021,Stockton/San Joaquin County CoC,57,56,1,0,57,0
+CA-512,2021,Daly/San Mateo County CoC,49,47,2,0,49,0
+CA-513,2021,"Visalia/Kings, Tulare Counties CoC",30,29,1,0,30,0
+CA-514,2021,Fresno City & County/Madera County CoC,93,64,29,0,93,0
+CA-515,2021,Rocklin/Roseville/Placer County CoC,40,17,1,0,18,22
+CA-516,2021,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",75,46,29,0,75,0
+CA-517,2021,Napa City & County CoC,10,10,0,0,10,0
+CA-518,2021,Vallejo/Solano County CoC,21,9,12,0,21,0
+CA-519,2021,"Chico, Paradise/Butte County CoC",23,19,4,0,23,0
+CA-520,2021,Merced City & County CoC,13,4,9,0,13,.
+CA-521,2021,"Davis, Woodland/Yolo County CoC",20,20,0,0,20,0
+CA-522,2021,Humboldt County CoC,44,17,27,0,44,0
+CA-523,2021,"Colusa, Glenn, Trinity Counties CoC",1,0,1,0,1,0
+CA-524,2021,Yuba City & County/Sutter County CoC,50,12,0,0,12,38
+CA-525,2021,El Dorado County CoC,9,8,1,0,9,0
+CA-526,2021,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",12,5,7,0,12,0
+CA-527,2021,Tehama County CoC,10,0,0,0,0,10
+CA-529,2021,Lake County CoC,19,1,2,0,3,16
+CA-530,2021,"Alpine, Inyo, Mono Counties CoC",1,1,0,0,1,0
+CA-531,2021,Nevada County CoC,28,13,2,0,15,13
+CA-600,2021,Los Angeles City & County CoC,665,177,380,108,665,0
+CA-601,2021,San Diego City and County CoC,393,160,228,5,393,0
+CA-602,2021,"Santa Ana, Anaheim/Orange County CoC",162,150,12,0,162,0
+CA-603,2021,Santa Maria/Santa Barbara County CoC,30,23,7,0,30,0
+CA-604,2021,Bakersfield/Kern County CoC,40,2,28,0,30,10
+CA-606,2021,Long Beach CoC,196,37,159,0,196,0
+CA-607,2021,Pasadena CoC,3,3,0,0,3,0
+CA-608,2021,Riverside City & County CoC,65,47,18,0,65,0
+CA-609,2021,San Bernardino City & County CoC,54,18,16,20,54,0
+CA-611,2021,"Oxnard, San Buenaventura/Ventura County CoC",90,71,19,0,90,0
+CA-612,2021,Glendale CoC,0,0,0,0,0,0
+CA-613,2021,Imperial County CoC,2,2,0,0,2,0
+CA-614,2021,San Luis Obispo County CoC,28,27,1,0,28,0
+CA-500,2020,San Jose/Santa Clara City & County CoC,613,70,79,19,168,445
+CA-501,2020,San Francisco CoC,699,156,52,0,208,491
+CA-502,2020,"Oakland, Berkeley/Alameda County CoC",722,77,73,27,177,545
+CA-503,2020,Sacramento City & County CoC,646,67,91,0,158,488
+CA-504,2020,"Santa Rosa, Petaluma/Sonoma County CoC",139,36,11,0,47,92
+CA-505,2020,Richmond/Contra Costa County CoC,117,32,17,0,49,68
+CA-506,2020,"Salinas/Monterey, San Benito Counties CoC",199,18,64,0,82,117
+CA-507,2020,Marin County CoC,101,7,14,0,21,80
+CA-508,2020,Watsonville/Santa Cruz City & County CoC,159,31,0,0,31,128
+CA-509,2020,Mendocino County CoC,12,4,5,0,9,3
+CA-510,2020,"Turlock, Modesto/Stanislaus County CoC",110,40,14,0,54,56
+CA-511,2020,Stockton/San Joaquin County CoC,148,35,42,0,77,71
+CA-512,2020,Daly/San Mateo County CoC,66,30,2,0,32,34
+CA-513,2020,"Visalia/Kings, Tulare Counties CoC",75,6,7,0,13,62
+CA-514,2020,Fresno City & County/Madera County CoC,377,66,29,0,95,282
+CA-515,2020,Rocklin/Roseville/Placer County CoC,73,22,3,0,25,48
+CA-516,2020,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",129,25,24,0,49,80
+CA-517,2020,Napa City & County CoC,60,11,2,0,13,47
+CA-518,2020,Vallejo/Solano County CoC,135,8,9,0,17,118
+CA-519,2020,"Chico, Paradise/Butte County CoC",86,14,7,0,21,65
+CA-520,2020,Merced City & County CoC,10,0,0,0,0,10
+CA-521,2020,"Davis, Woodland/Yolo County CoC",40,9,1,0,10,30
+CA-522,2020,Humboldt County CoC,58,17,22,0,39,19
+CA-523,2020,"Colusa, Glenn, Trinity Counties CoC",18,1,0,0,1,17
+CA-524,2020,Yuba City & County/Sutter County CoC,37,4,0,0,4,33
+CA-525,2020,El Dorado County CoC,46,5,2,0,7,39
+CA-526,2020,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",63,2,12,0,14,49
+CA-527,2020,Tehama County CoC,16,6,1,0,7,9
+CA-529,2020,Lake County CoC,55,0,0,0,0,55
+CA-530,2020,"Alpine, Inyo, Mono Counties CoC",16,1,0,0,1,15
+CA-531,2020,Nevada County CoC,33,12,0,0,12,21
+CA-600,2020,Los Angeles City & County CoC,3681,263,551,63,877,2804
+CA-601,2020,San Diego City and County CoC,940,311,292,20,623,317
+CA-602,2020,"Santa Ana, Anaheim/Orange County CoC",342,110,20,0,130,212
+CA-603,2020,Santa Maria/Santa Barbara County CoC,210,35,5,0,40,170
+CA-604,2020,Bakersfield/Kern County CoC,108,8,47,0,55,53
+CA-606,2020,Long Beach CoC,175,9,90,0,99,76
+CA-607,2020,Pasadena CoC,38,8,0,0,8,30
+CA-608,2020,Riverside City & County CoC,233,30,20,0,50,183
+CA-609,2020,San Bernardino City & County CoC,234,16,11,24,51,183
+CA-611,2020,"Oxnard, San Buenaventura/Ventura County CoC",117,10,13,0,23,94
+CA-612,2020,Glendale CoC,8,0,0,0,0,8
+CA-613,2020,Imperial County CoC,112,1,1,0,2,110
+CA-614,2020,San Luis Obispo County CoC,145,6,0,0,6,139
+CA-500,2019,San Jose/Santa Clara City & County CoC,653,79,112,17,208,445
+CA-501,2019,San Francisco CoC,608,65,34,18,117,491
+CA-502,2019,"Oakland, Berkeley/Alameda County CoC",692,39,81,27,147,545
+CA-503,2019,Sacramento City & County CoC,667,101,78,0,179,488
+CA-504,2019,"Santa Rosa, Petaluma/Sonoma County CoC",210,32,36,0,68,142
+CA-505,2019,Richmond/Contra Costa County CoC,114,25,14,0,39,75
+CA-506,2019,"Salinas/Monterey, San Benito Counties CoC",187,15,55,0,70,117
+CA-507,2019,Marin County CoC,99,5,14,0,19,80
+CA-508,2019,Watsonville/Santa Cruz City & County CoC,151,23,0,0,23,128
+CA-509,2019,Mendocino County CoC,16,6,1,0,7,9
+CA-510,2019,"Turlock, Modesto/Stanislaus County CoC",133,37,17,0,54,79
+CA-511,2019,Stockton/San Joaquin County CoC,153,36,46,0,82,71
+CA-512,2019,Daly/San Mateo County CoC,69,31,4,0,35,34
+CA-513,2019,"Visalia/Kings, Tulare Counties CoC",70,7,3,0,10,60
+CA-514,2019,Fresno City & County/Madera County CoC,235,40,29,0,69,166
+CA-515,2019,Rocklin/Roseville/Placer County CoC,46,14,2,0,16,30
+CA-516,2019,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",90,21,11,0,32,58
+CA-517,2019,Napa City & County CoC,14,8,0,0,8,6
+CA-518,2019,Vallejo/Solano County CoC,147,17,12,0,29,118
+CA-519,2019,"Chico, Paradise/Butte County CoC",88,11,12,0,23,65
+CA-520,2019,Merced City & County CoC,18,2,0,0,2,16
+CA-521,2019,"Davis, Woodland/Yolo County CoC",35,4,1,0,5,30
+CA-522,2019,Humboldt County CoC,66,18,29,0,47,19
+CA-523,2019,"Colusa, Glenn, Trinity Counties CoC",17,0,0,0,0,17
+CA-524,2019,Yuba City & County/Sutter County CoC,37,4,0,0,4,33
+CA-525,2019,El Dorado County CoC,46,4,3,0,7,39
+CA-526,2019,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",65,6,10,0,16,49
+CA-527,2019,Tehama County CoC,15,5,1,0,6,9
+CA-529,2019,Lake County CoC,18,3,0,0,3,15
+CA-530,2019,"Alpine, Inyo, Mono Counties CoC",12,0,0,0,0,12
+CA-531,2019,Nevada County CoC,35,13,1,0,14,21
+CA-600,2019,Los Angeles City & County CoC,3538,284,386,93,763,2775
+CA-601,2019,San Diego City and County CoC,1068,296,304,44,644,424
+CA-602,2019,"Santa Ana, Anaheim/Orange County CoC",311,78,21,0,99,212
+CA-603,2019,Santa Maria/Santa Barbara County CoC,114,17,7,0,24,90
+CA-604,2019,Bakersfield/Kern County CoC,121,7,46,0,53,68
+CA-606,2019,Long Beach CoC,304,16,197,0,213,91
+CA-607,2019,Pasadena CoC,32,6,0,0,6,26
+CA-608,2019,Riverside City & County CoC,163,35,21,0,56,107
+CA-609,2019,San Bernardino City & County CoC,207,14,1,17,32,175
+CA-611,2019,"Oxnard, San Buenaventura/Ventura County CoC",106,7,19,0,26,80
+CA-612,2019,Glendale CoC,5,0,0,0,0,5
+CA-613,2019,Imperial County CoC,61,0,1,0,1,60
+CA-614,2019,San Luis Obispo County CoC,144,5,0,0,5,139
+CA-500,2018,San Jose/Santa Clara City & County CoC,658,70,116,20,206,452
+CA-501,2018,San Francisco CoC,656,147,134,19,300,356
+CA-502,2018,"Oakland, Berkeley/Alameda County CoC",526,44,94,10,148,378
+CA-503,2018,Sacramento City & County CoC,492,90,75,0,165,327
+CA-504,2018,"Santa Rosa, Petaluma/Sonoma County CoC",207,43,20,0,63,144
+CA-505,2018,Richmond/Contra Costa County CoC,102,45,11,0,56,46
+CA-506,2018,"Salinas/Monterey, San Benito Counties CoC",167,39,72,0,111,56
+CA-507,2018,Marin County CoC,89,8,14,0,22,67
+CA-508,2018,Watsonville/Santa Cruz City & County CoC,245,27,1,0,28,217
+CA-509,2018,Mendocino County CoC,12,5,1,0,6,6
+CA-510,2018,"Turlock, Modesto/Stanislaus County CoC",87,30,15,0,45,42
+CA-511,2018,Stockton/San Joaquin County CoC,96,31,33,0,64,32
+CA-512,2018,Daly/San Mateo County CoC,100,28,15,0,43,57
+CA-513,2018,"Visalia/Kings, Tulare Counties CoC",46,4,2,0,6,40
+CA-514,2018,Fresno City & County/Madera County CoC,211,53,33,0,86,125
+CA-515,2018,Rocklin/Roseville/Placer County CoC,55,30,1,0,31,24
+CA-516,2018,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",124,18,38,0,56,68
+CA-517,2018,Napa City & County CoC,23,13,0,0,13,10
+CA-518,2018,Vallejo/Solano County CoC,124,7,12,0,19,105
+CA-519,2018,"Chico, Paradise/Butte County CoC",109,15,14,0,29,80
+CA-520,2018,Merced City & County CoC,13,2,1,0,3,10
+CA-521,2018,"Davis, Woodland/Yolo County CoC",22,3,1,0,4,18
+CA-522,2018,Humboldt County CoC,106,34,32,0,66,40
+CA-523,2018,"Colusa, Glenn, Trinity Counties CoC",18,1,1,0,2,16
+CA-524,2018,Yuba City & County/Sutter County CoC,28,1,0,0,1,27
+CA-525,2018,El Dorado County CoC,82,0,0,0,0,82
+CA-526,2018,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",19,2,7,0,9,10
+CA-527,2018,Tehama County CoC,9,8,0,0,8,1
+CA-529,2018,Lake County CoC,12,0,1,0,1,11
+CA-530,2018,"Alpine, Inyo, Mono Counties CoC",6,0,0,0,0,6
+CA-600,2018,Los Angeles City & County CoC,3538,223,628,20,871,2667
+CA-601,2018,San Diego City and County CoC,1312,290,320,43,653,659
+CA-602,2018,"Santa Ana, Anaheim/Orange County CoC",419,41,21,0,62,357
+CA-603,2018,Santa Maria/Santa Barbara County CoC,104,35,20,0,55,49
+CA-604,2018,Bakersfield/Kern County CoC,80,11,51,0,62,18
+CA-606,2018,Long Beach CoC,305,18,177,0,195,110
+CA-607,2018,Pasadena CoC,31,7,1,0,8,23
+CA-608,2018,Riverside City & County CoC,136,21,16,0,37,99
+CA-609,2018,San Bernardino City & County CoC,170,7,14,24,45,125
+CA-611,2018,"Oxnard, San Buenaventura/Ventura County CoC",62,15,8,0,23,39
+CA-612,2018,Glendale CoC,12,0,0,0,0,12
+CA-613,2018,Imperial County CoC,130,3,0,0,3,127
+CA-614,2018,San Luis Obispo County CoC,93,17,0,0,17,76
+CA-500,2017,San Jose/Santa Clara City & County CoC,660,72,136,0,208,452
+CA-501,2017,San Francisco CoC,684,162,151,15,328,356
+CA-502,2017,"Oakland, Berkeley/Alameda County CoC",531,48,105,0,153,378
+CA-503,2017,Sacramento City & County CoC,469,64,78,0,142,327
+CA-504,2017,"Santa Rosa, Petaluma/Sonoma County CoC",211,35,31,0,66,145
+CA-505,2017,Richmond/Contra Costa County CoC,99,35,15,0,50,49
+CA-506,2017,"Salinas/Monterey, San Benito Counties CoC",123,9,58,0,67,56
+CA-507,2017,Marin County CoC,94,11,16,0,27,67
+CA-508,2017,Watsonville/Santa Cruz City & County CoC,236,17,2,0,19,217
+CA-509,2017,Mendocino County CoC,24,10,1,0,11,13
+CA-510,2017,"Turlock, Modesto/Stanislaus County CoC",100,25,17,0,42,58
+CA-511,2017,Stockton/San Joaquin County CoC,109,44,33,0,77,32
+CA-512,2017,Daly/San Mateo County CoC,105,34,14,0,48,57
+CA-513,2017,"Visalia/Kings, Tulare Counties CoC",45,11,4,0,15,30
+CA-514,2017,Fresno City & County/Madera County CoC,211,55,33,0,88,123
+CA-515,2017,Rocklin/Roseville/Placer County CoC,44,20,0,0,20,24
+CA-516,2017,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",103,20,23,0,43,60
+CA-517,2017,Napa City & County CoC,17,8,0,0,8,9
+CA-518,2017,Vallejo/Solano County CoC,156,9,42,0,51,105
+CA-519,2017,"Chico, Paradise/Butte County CoC",110,22,8,0,30,80
+CA-520,2017,Merced City & County CoC,17,0,0,0,0,17
+CA-521,2017,"Davis, Woodland/Yolo County CoC",28,7,3,0,10,18
+CA-522,2017,Humboldt County CoC,91,28,23,0,51,40
+CA-523,2017,"Colusa, Glenn, Trinity Counties CoC",12,0,0,0,0,12
+CA-524,2017,Yuba City & County/Sutter County CoC,47,20,0,0,20,27
+CA-525,2017,El Dorado County CoC,97,3,12,0,15,82
+CA-526,2017,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",20,2,8,0,10,10
+CA-527,2017,Tehama County CoC,9,7,1,0,8,1
+CA-529,2017,Lake County CoC,23,0,0,0,0,23
+CA-530,2017,"Alpine, Inyo, Mono Counties CoC",13,0,0,0,0,13
+CA-600,2017,Los Angeles City & County CoC,4440,379,691,0,1070,3370
+CA-601,2017,San Diego City and County CoC,1067,217,391,5,613,454
+CA-602,2017,"Santa Ana, Anaheim/Orange County CoC",405,34,14,0,48,357
+CA-603,2017,Santa Maria/Santa Barbara County CoC,100,40,11,0,51,49
+CA-604,2017,Bakersfield/Kern County CoC,90,13,49,0,62,28
+CA-606,2017,Long Beach CoC,318,24,184,0,208,110
+CA-607,2017,Pasadena CoC,30,11,0,0,11,19
+CA-608,2017,Riverside City & County CoC,148,33,24,0,57,91
+CA-609,2017,San Bernardino City & County CoC,161,12,21,17,50,111
+CA-611,2017,"Oxnard, San Buenaventura/Ventura County CoC",80,19,11,0,30,50
+CA-612,2017,Glendale CoC,4,0,0,0,0,4
+CA-613,2017,Imperial County CoC,21,0,0,0,0,21
+CA-614,2017,San Luis Obispo County CoC,84,8,0,0,8,76
+CA-500,2016,San Jose/Santa Clara City & County CoC,701,95,160,0,255,446
+CA-501,2016,San Francisco CoC,580,101,111,16,228,352
+CA-502,2016,"Oakland, Berkeley/Alameda County CoC",401,69,101,0,170,231
+CA-503,2016,Sacramento City & County CoC,308,79,87,0,166,142
+CA-504,2016,"Santa Rosa, Petaluma/Sonoma County CoC",274,18,36,0,54,220
+CA-505,2016,Richmond/Contra Costa County CoC,136,39,12,0,51,85
+CA-506,2016,"Salinas/Monterey, San Benito Counties CoC",204,17,66,0,83,121
+CA-507,2016,Marin County CoC,78,18,19,0,37,41
+CA-508,2016,Watsonville/Santa Cruz City & County CoC,146,32,1,0,33,113
+CA-509,2016,Mendocino County CoC,19,5,0,0,5,14
+CA-510,2016,"Turlock, Modesto/Stanislaus County CoC",74,30,9,0,39,35
+CA-511,2016,Stockton/San Joaquin County CoC,138,36,41,0,77,61
+CA-512,2016,Daly/San Mateo County CoC,136,4,42,0,46,90
+CA-513,2016,"Visalia/Kings, Tulare Counties CoC",37,0,4,0,4,33
+CA-514,2016,Fresno City & County/Madera County CoC,228,49,35,0,84,144
+CA-515,2016,Rocklin/Roseville/Placer County CoC,67,21,3,0,24,43
+CA-516,2016,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",98,14,18,0,32,66
+CA-517,2016,Napa City & County CoC,22,8,0,0,8,14
+CA-518,2016,Vallejo/Solano County CoC,119,12,42,0,54,65
+CA-519,2016,"Chico, Paradise/Butte County CoC",49,7,15,0,22,27
+CA-520,2016,Merced City & County CoC,25,4,1,0,5,20
+CA-521,2016,"Davis, Woodland/Yolo County CoC",29,11,2,0,13,16
+CA-522,2016,Humboldt County CoC,131,0,39,0,39,92
+CA-523,2016,"Colusa, Glenn, Trinity Counties CoC",7,0,0,0,0,7
+CA-524,2016,Yuba City & County/Sutter County CoC,21,1,0,0,1,20
+CA-525,2016,El Dorado County CoC,17,3,3,0,6,11
+CA-526,2016,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",35,5,9,0,14,21
+CA-527,2016,Tehama County CoC,16,7,1,0,8,8
+CA-529,2016,Lake County CoC,21,0,0,0,0,21
+CA-530,2016,"Alpine, Inyo, Mono Counties CoC",8,0,0,0,0,8
+CA-600,2016,Los Angeles City & County CoC,2728,235,1008,0,1243,1485
+CA-601,2016,San Diego City and County CoC,1156,111,459,14,584,572
+CA-602,2016,"Santa Ana, Anaheim/Orange County CoC",455,45,54,0,99,356
+CA-603,2016,Santa Maria/Santa Barbara County CoC,122,22,21,0,43,79
+CA-604,2016,Bakersfield/Kern County CoC,99,16,49,0,65,34
+CA-606,2016,Long Beach CoC,289,17,178,0,195,94
+CA-607,2016,Pasadena CoC,44,9,4,0,13,31
+CA-608,2016,Riverside City & County CoC,211,35,76,0,111,100
+CA-609,2016,San Bernardino City & County CoC,122,11,18,0,29,93
+CA-611,2016,"Oxnard, San Buenaventura/Ventura County CoC",78,13,8,0,21,57
+CA-612,2016,Glendale CoC,10,2,0,0,2,8
+CA-613,2016,Imperial County CoC,12,1,0,0,1,11
+CA-614,2016,San Luis Obispo County CoC,161,40,8,0,48,113
+CA-500,2015,San Jose/Santa Clara City & County CoC,703,80,177,0,257,446
+CA-501,2015,San Francisco CoC,557,33,156,16,205,352
+CA-502,2015,"Oakland, Berkeley/Alameda County CoC",388,42,115,0,157,231
+CA-503,2015,Sacramento City & County CoC,313,96,75,0,171,142
+CA-504,2015,"Santa Rosa, Petaluma/Sonoma County CoC",215,45,34,0,79,136
+CA-505,2015,Richmond/Contra Costa County CoC,122,29,15,0,44,78
+CA-506,2015,"Salinas/Monterey, San Benito Counties CoC",176,11,44,0,55,121
+CA-507,2015,Marin County CoC,66,6,19,0,25,41
+CA-508,2015,Watsonville/Santa Cruz City & County CoC,151,36,2,0,38,113
+CA-509,2015,Mendocino County CoC,39,10,0,0,10,29
+CA-510,2015,"Turlock, Modesto/Stanislaus County CoC",102,44,3,0,47,55
+CA-511,2015,Stockton/San Joaquin County CoC,144,42,41,0,83,61
+CA-512,2015,Daly/San Mateo County CoC,183,83,10,0,93,90
+CA-513,2015,"Visalia/Kings, Tulare Counties CoC",51,5,6,0,11,40
+CA-514,2015,Fresno City & County/Madera County CoC,227,46,41,0,87,140
+CA-515,2015,Rocklin/Roseville/Placer County CoC,64,19,2,0,21,43
+CA-516,2015,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",87,29,10,0,39,48
+CA-517,2015,Napa City & County CoC,19,11,0,0,11,8
+CA-518,2015,Vallejo/Solano County CoC,89,13,11,0,24,65
+CA-519,2015,"Chico, Paradise/Butte County CoC",50,9,14,0,23,27
+CA-520,2015,Merced City & County CoC,88,14,0,0,14,74
+CA-521,2015,"Davis, Woodland/Yolo County CoC",44,25,3,0,28,16
+CA-522,2015,Humboldt County CoC,145,13,40,0,53,92
+CA-523,2015,"Colusa, Glenn, Trinity Counties CoC",10,0,3,0,3,7
+CA-524,2015,Yuba City & County/Sutter County CoC,113,93,0,0,93,20
+CA-525,2015,El Dorado County CoC,20,3,6,0,9,11
+CA-526,2015,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",47,4,9,0,13,34
+CA-527,2015,Tehama County CoC,15,2,5,0,7,8
+CA-529,2015,Lake County CoC,21,0,0,0,0,21
+CA-530,2015,"Alpine, Inyo, Mono Counties CoC",8,0,0,0,0,8
+CA-600,2015,Los Angeles City & County CoC,4016,680,569,4,1253,2763
+CA-601,2015,San Diego City and County CoC,1381,225,515,10,750,631
+CA-602,2015,"Santa Ana, Anaheim/Orange County CoC",447,37,54,0,91,356
+CA-603,2015,Santa Maria/Santa Barbara County CoC,128,35,14,0,49,79
+CA-604,2015,Bakersfield/Kern County CoC,92,12,49,0,61,31
+CA-606,2015,Long Beach CoC,308,28,185,1,214,94
+CA-607,2015,Pasadena CoC,36,2,2,0,4,32
+CA-608,2015,Riverside City & County CoC,223,44,77,0,121,102
+CA-609,2015,San Bernardino City & County CoC,176,7,24,0,31,145
+CA-611,2015,"Oxnard, San Buenaventura/Ventura County CoC",103,11,4,1,16,87
+CA-612,2015,Glendale CoC,6,1,0,0,1,5
+CA-613,2015,Imperial County CoC,8,1,0,0,1,7
+CA-614,2015,San Luis Obispo County CoC,130,14,3,0,17,113
+CA-500,2014,San Jose/Santa Clara City & County CoC,813,91,143,0,234,579
+CA-501,2014,San Francisco CoC,720,108,190,0,298,422
+CA-502,2014,"Oakland, Berkeley/Alameda County CoC",538,40,145,0,185,353
+CA-503,2014,Sacramento City & County CoC,277,55,86,0,141,136
+CA-504,2014,"Santa Rosa, Petaluma/Sonoma County CoC",421,48,30,0,78,343
+CA-505,2014,Richmond/Contra Costa County CoC,176,27,14,0,41,135
+CA-506,2014,"Salinas/Monterey, San Benito Counties CoC",238,23,54,0,77,161
+CA-507,2014,Marin County CoC,52,28,6,0,34,18
+CA-508,2014,Watsonville/Santa Cruz City & County CoC,393,45,5,0,50,343
+CA-509,2014,Mendocino County CoC,46,5,1,0,6,40
+CA-510,2014,"Turlock, Modesto/Stanislaus County CoC",69,35,6,0,41,28
+CA-511,2014,Stockton/San Joaquin County CoC,87,33,32,0,65,22
+CA-512,2014,Daly/San Mateo County CoC,225,86,8,0,94,131
+CA-513,2014,"Visalia/Kings, Tulare Counties CoC",36,2,7,0,9,27
+CA-514,2014,Fresno City & County/Madera County CoC,272,50,35,0,85,187
+CA-515,2014,Rocklin/Roseville/Placer County CoC,73,12,1,0,13,60
+CA-516,2014,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",62,25,35,0,60,2
+CA-517,2014,Napa City & County CoC,23,9,0,0,9,14
+CA-518,2014,Vallejo/Solano County CoC,80,9,38,0,47,33
+CA-519,2014,"Chico, Paradise/Butte County CoC",95,27,13,0,40,55
+CA-520,2014,Merced City & County CoC,84,10,1,0,11,73
+CA-521,2014,"Davis, Woodland/Yolo County CoC",31,8,3,0,11,20
+CA-522,2014,Humboldt County CoC,123,13,30,0,43,80
+CA-523,2014,"Colusa, Glenn, Trinity Counties CoC",49,5,2,0,7,42
+CA-524,2014,Yuba City & County/Sutter County CoC,75,67,0,0,67,8
+CA-525,2014,El Dorado County CoC,3,2,0,0,2,1
+CA-526,2014,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",46,2,16,0,18,28
+CA-600,2014,Los Angeles City & County CoC,3739,315,867,0,1182,2557
+CA-601,2014,San Diego City and County CoC,1307,213,572,5,790,517
+CA-602,2014,"Santa Ana, Anaheim/Orange County CoC",398,43,86,0,129,269
+CA-603,2014,Santa Maria/Santa Barbara County CoC,134,40,18,0,58,76
+CA-604,2014,Bakersfield/Kern County CoC,87,15,51,0,66,21
+CA-606,2014,Long Beach CoC,439,36,239,0,275,164
+CA-607,2014,Pasadena CoC,41,3,0,0,3,38
+CA-608,2014,Riverside City & County CoC,296,34,81,0,115,181
+CA-609,2014,San Bernardino City & County CoC,167,14,21,0,35,132
+CA-611,2014,"Oxnard, San Buenaventura/Ventura County CoC",102,6,7,1,14,88
+CA-612,2014,Glendale CoC,19,6,1,0,7,12
+CA-613,2014,Imperial County CoC,7,0,0,0,0,7
+CA-614,2014,San Luis Obispo County CoC,253,9,8,0,17,236
+CA-500,2013,San Jose/Santa Clara City & County CoC,718,,,,139,579
+CA-501,2013,San Francisco CoC,716,,,,294,422
+CA-502,2013,"Oakland, Berkeley/Alameda County CoC",492,,,,139,353
+CA-503,2013,Sacramento City & County CoC,302,,,,166,136
+CA-504,2013,"Santa Rosa, Petaluma/Sonoma County CoC",400,,,,57,343
+CA-505,2013,Richmond/Contra Costa County CoC,188,,,,53,135
+CA-506,2013,"Salinas/Monterey, San Benito Counties CoC",250,,,,89,161
+CA-507,2013,Marin County CoC,54,,,,28,26
+CA-508,2013,Watsonville/Santa Cruz City & County CoC,395,,,,52,343
+CA-509,2013,Mendocino County CoC,55,,,,15,40
+CA-510,2013,"Turlock, Modesto/Stanislaus County CoC",87,,,,44,43
+CA-511,2013,Stockton/San Joaquin County CoC,83,,,,61,22
+CA-512,2013,Daly/San Mateo County CoC,245,,,,114,131
+CA-513,2013,"Visalia/Kings, Tulare Counties CoC",43,,,,14,29
+CA-514,2013,Fresno City & County/Madera County CoC,338,,,,81,257
+CA-515,2013,Rocklin/Roseville/Placer County CoC,92,,,,32,60
+CA-516,2013,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",203,,,,117,86
+CA-517,2013,Napa City & County CoC,19,,,,9,10
+CA-518,2013,Vallejo/Solano County CoC,88,,,,55,33
+CA-519,2013,"Chico, Paradise/Butte County CoC",101,,,,46,55
+CA-520,2013,Merced City & County CoC,26,,,,6,20
+CA-521,2013,"Davis, Woodland/Yolo County CoC",44,,,,24,20
+CA-522,2013,Humboldt County CoC,129,,,,49,80
+CA-523,2013,"Colusa, Glenn, Trinity Counties CoC",67,,,,25,42
+CA-524,2013,Yuba City & County/Sutter County CoC,32,,,,24,8
+CA-525,2013,El Dorado County CoC,6,,,,5,1
+CA-526,2013,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",37,,,,9,28
+CA-600,2013,Los Angeles City & County CoC,4007,,,,1450,2557
+CA-601,2013,San Diego City and County CoC,1486,,,,798,688
+CA-602,2013,"Santa Ana, Anaheim/Orange County CoC",446,,,,177,269
+CA-603,2013,Santa Maria/Santa Barbara County CoC,124,,,,48,76
+CA-604,2013,Bakersfield/Kern County CoC,135,,,,70,65
+CA-606,2013,Long Beach CoC,527,,,,363,164
+CA-607,2013,Pasadena CoC,61,,,,16,45
+CA-608,2013,Riverside City & County CoC,285,,,,104,181
+CA-609,2013,San Bernardino City & County CoC,184,,,,52,132
+CA-611,2013,"Oxnard, San Buenaventura/Ventura County CoC",140,,,,22,118
+CA-612,2013,Glendale CoC,23,,,,11,12
+CA-613,2013,Imperial County CoC,7,,,,4,3
+CA-614,2013,San Luis Obispo County CoC,260,,,,24,236
+CA-500,2012,San Jose/Santa Clara City & County CoC,667,,,,152,515
+CA-501,2012,San Francisco CoC,774,,,,344,430
+CA-502,2012,"Oakland, Berkeley/Alameda County CoC",440,,,,95,345
+CA-503,2012,Sacramento City & County CoC,329,,,,148,181
+CA-504,2012,"Santa Rosa, Petaluma/Sonoma County CoC",384,,,,57,327
+CA-505,2012,Richmond/Contra Costa County CoC,82,,,,74,8
+CA-506,2012,"Salinas/Monterey, San Benito Counties CoC",290,,,,46,244
+CA-507,2012,Marin County CoC,51,,,,26,25
+CA-508,2012,Watsonville/Santa Cruz City & County CoC,271,,,,26,245
+CA-509,2012,Mendocino County CoC,84,,,,10,74
+CA-510,2012,"Turlock, Modesto/Stanislaus County CoC",49,,,,19,30
+CA-511,2012,Stockton/San Joaquin County CoC,80,,,,60,20
+CA-512,2012,Daly/San Mateo County CoC,173,,,,26,147
+CA-513,2012,"Visalia/Kings, Tulare Counties CoC",40,,,,8,32
+CA-514,2012,Fresno City & County/Madera County CoC,606,,,,64,542
+CA-515,2012,Rocklin/Roseville/Placer County CoC,59,,,,22,37
+CA-516,2012,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",67,,,,38,29
+CA-517,2012,Napa City & County CoC,14,,,,5,9
+CA-518,2012,Vallejo/Solano County CoC,28,,,,14,14
+CA-519,2012,"Chico, Paradise/Butte County CoC",102,,,,32,70
+CA-520,2012,Merced City & County CoC,52,,,,8,44
+CA-521,2012,"Davis, Woodland/Yolo County CoC",45,,,,9,36
+CA-522,2012,Humboldt County CoC,141,,,,62,79
+CA-523,2012,"Colusa, Glenn, Trinity Counties CoC",32,,,,21,11
+CA-524,2012,Yuba City & County/Sutter County CoC,23,,,,20,3
+CA-525,2012,El Dorado County CoC,10,,,,9,1
+CA-526,2012,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",24,,,,6,18
+CA-600,2012,Los Angeles City & County CoC,4521,,,,1483,3038
+CA-601,2012,San Diego City and County CoC,1753,,,,831,922
+CA-602,2012,"Santa Ana, Anaheim/Orange County CoC",869,,,,109,760
+CA-603,2012,Santa Maria/Santa Barbara County CoC,173,,,,85,88
+CA-604,2012,Bakersfield/Kern County CoC,172,,,,78,94
+CA-606,2012,Long Beach CoC,629,,,,320,309
+CA-607,2012,Pasadena CoC,52,,,,5,47
+CA-608,2012,Riverside City & County CoC,912,,,,98,814
+CA-609,2012,San Bernardino City & County CoC,224,,,,58,166
+CA-611,2012,"Oxnard, San Buenaventura/Ventura County CoC",134,,,,26,108
+CA-612,2012,Glendale CoC,14,,,,4,10
+CA-613,2012,Imperial County CoC,6,,,,0,6
+CA-614,2012,San Luis Obispo County CoC,225,,,,14,211
+CA-500,2011,San Jose/Santa Clara City & County CoC,667,,,,152,515
+CA-501,2011,San Francisco CoC,919,,,,489,430
+CA-502,2011,"Oakland, Berkeley/Alameda County CoC",488,,,,143,345
+CA-503,2011,Sacramento City & County CoC,297,,,,116,181
+CA-504,2011,"Santa Rosa, Petaluma/Sonoma County CoC",404,,,,77,327
+CA-505,2011,Richmond/Contra Costa County CoC,77,,,,69,8
+CA-506,2011,"Salinas/Monterey, San Benito Counties CoC",296,,,,52,244
+CA-507,2011,Marin County CoC,68,,,,32,36
+CA-508,2011,Watsonville/Santa Cruz City & County CoC,276,,,,31,245
+CA-509,2011,Mendocino County CoC,92,,,,18,74
+CA-510,2011,"Turlock, Modesto/Stanislaus County CoC",73,,,,43,30
+CA-511,2011,Stockton/San Joaquin County CoC,112,,,,92,20
+CA-512,2011,Daly/San Mateo County CoC,324,,,,177,147
+CA-513,2011,"Visalia/Kings, Tulare Counties CoC",36,,,,3,33
+CA-514,2011,Fresno City & County/Madera County CoC,619,,,,77,542
+CA-515,2011,Rocklin/Roseville/Placer County CoC,74,,,,37,37
+CA-516,2011,"Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",46,,,,38,8
+CA-517,2011,Napa City & County CoC,18,,,,9,9
+CA-518,2011,Vallejo/Solano County CoC,41,,,,27,14
+CA-519,2011,"Chico, Paradise/Butte County CoC",117,,,,47,70
+CA-520,2011,Merced City & County CoC,43,,,,9,34
+CA-521,2011,"Davis, Woodland/Yolo County CoC",50,,,,14,36
+CA-522,2011,Humboldt County CoC,99,,,,20,79
+CA-523,2011,"Colusa, Glenn, Trinity Counties CoC",28,,,,17,11
+CA-524,2011,Yuba City & County/Sutter County CoC,26,,,,13,13
+CA-525,2011,El Dorado County CoC,2,,,,1,1
+CA-526,2011,"Amador, Calaveras, Mariposa, Tuolumne Counties CoC",25,,,,7,18
+CA-600,2011,Los Angeles City & County CoC,6281,,,,3243,3038
+CA-601,2011,San Diego City and County CoC,1649,,,,756,893
+CA-602,2011,"Santa Ana, Anaheim/Orange County CoC",856,,,,96,760
+CA-603,2011,Santa Maria/Santa Barbara County CoC,158,,,,70,88
+CA-604,2011,Bakersfield/Kern County CoC,173,,,,79,94
+CA-606,2011,Long Beach CoC,658,,,,349,309
+CA-607,2011,Pasadena CoC,89,,,,13,76
+CA-608,2011,Riverside City & County CoC,890,,,,76,814
+CA-609,2011,San Bernardino City & County CoC,246,,,,80,166
+CA-611,2011,"Oxnard, San Buenaventura/Ventura County CoC",140,,,,31,109
+CA-612,2011,Glendale CoC,39,,,,20,19
+CA-613,2011,Imperial County CoC,6,,,,6,0
+CA-614,2011,San Luis Obispo County CoC,271,,,,60,211
