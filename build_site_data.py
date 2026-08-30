@@ -25,6 +25,16 @@ GEOJSON_COPY = [
     "ca_state_outline.geojson",
 ]
 
+# Already JSON; copied as-is if present. ai_fire_influence_estimates.json and
+# ai_vs_ground_truth.json are optional (only exist once ai_estimate_influence.py
+# and compare_ai_vs_ground_truth.py have been run, which need ANTHROPIC_API_KEY),
+# so missing ones are skipped rather than failing the build.
+OPTIONAL_JSON_COPY = [
+    "ground_truth_fire_influence.json",
+    "ai_fire_influence_estimates.json",
+    "ai_vs_ground_truth.json",
+]
+
 
 def csv_to_records(path):
     with open(path, newline="") as f:
@@ -62,6 +72,15 @@ def main():
         dest = SITE_DATA_DIR / name
         dest.write_text(src.read_text())
         print(f"{name} -> site/data/{name} ({dest.stat().st_size / 1e6:.2f} MB)")
+
+    for name in OPTIONAL_JSON_COPY:
+        src = DATA_DIR / name
+        if not src.exists():
+            print(f"{name} -> skipped (not generated yet)")
+            continue
+        dest = SITE_DATA_DIR / name
+        dest.write_text(src.read_text())
+        print(f"{name} -> site/data/{name} ({dest.stat().st_size / 1e3:.0f} KB)")
 
 
 if __name__ == "__main__":

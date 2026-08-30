@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>California CoC: Homelessness &amp; Wildfire Dashboard</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 <style>
   :root {
     --page: #0d0d0d;
@@ -67,7 +67,6 @@
     min-width: 0;
     background: #0a0a0a;
   }
-  .ca-mask path { fill-rule: evenodd; }
   aside {
     width: 392px;
     flex-shrink: 0;
@@ -203,7 +202,13 @@
   }
   .stat.fire .n { color: var(--accent); }
   .stat.homeless .n { color: var(--accent-2); }
-  canvas { max-width: 100%; }
+  .chart { width: 100%; }
+  .chart svg { display: block; overflow: visible; }
+  .chart .tick text { fill: var(--text-muted); font-size: 9px; }
+  .chart .tick line { stroke: var(--hairline); }
+  .chart .domain { display: none; }
+  .chart .grid line { stroke: var(--hairline); }
+  .chart .axis-label { fill: var(--text-muted); font-size: 10px; }
   .trend-stack { display: flex; flex-direction: column; gap: 10px; }
   .trend-item .trend-label {
     display: flex;
@@ -258,27 +263,15 @@
     border-radius: 3px;
     flex-shrink: 0;
   }
-  .leaflet-popup-content-wrapper {
+  .maplibregl-popup-content {
     background: var(--panel-2);
     color: var(--text);
     border-radius: 10px;
     box-shadow: 0 12px 28px -8px rgba(0,0,0,0.55);
+    padding: 12px 14px;
   }
-  .leaflet-popup-tip { background: var(--panel-2); }
-  .coc-label {
-    background: rgba(10, 10, 10, 0.78);
-    border: none;
-    box-shadow: none;
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 1px 6px;
-    border-radius: 5px;
-    text-align: center;
-    white-space: nowrap;
-    pointer-events: none;
-  }
-  .coc-label::before { display: none; }
+  .maplibregl-popup-tip { border-top-color: var(--panel-2) !important; border-bottom-color: var(--panel-2) !important; }
+  .maplibregl-popup-close-button { color: var(--text-muted); }
   .popup h3 { margin: 0 0 6px 0; font-size: 14px; font-weight: 700; }
   .popup .row { font-size: 12.5px; color: var(--text-dim); margin-top: 3px; }
   .popup .row b { color: var(--text); font-weight: 600; }
@@ -308,6 +301,13 @@
   <div id="map"></div>
 
   <aside>
+    <div class="card">
+      <h2>Research question</h2>
+      <div style="font-size:12.5px; color:var(--text-dim); line-height:1.55;">
+        How accurately can AI estimate and interpret the relationship between wildfire-related destruction and homelessness across California CoCs, compared with the relationship observed in real HUD/CAL&nbsp;FIRE data? See the two panels below: <strong>fire &rarr; homelessness correlation</strong> (the ground truth) and <strong>AI vs. ground truth</strong> (whether an LLM shown only fire history infers the same weak relationship, or a stronger one).
+      </div>
+    </div>
+
     <div class="card">
       <h2>Controls</h2>
       <div class="control-row">
@@ -350,11 +350,11 @@
       <div class="trend-stack">
         <div class="trend-item">
           <div class="trend-label"><span class="key blue"></span>Homeless count</div>
-          <canvas id="trendChartHomeless" height="78"></canvas>
+          <div id="trendChartHomeless" class="chart" style="height:78px;"></div>
         </div>
         <div class="trend-item">
           <div class="trend-label"><span class="key orange"></span>Acres burned (major fires)</div>
-          <canvas id="trendChartFire" height="90"></canvas>
+          <div id="trendChartFire" class="chart" style="height:90px;"></div>
         </div>
       </div>
     </div>
@@ -365,7 +365,7 @@
         <label for="corrLag" style="min-width:110px;">Timing</label>
         <select id="corrLag">
           <option value="0">Same year</option>
-          <option value="1">Fire year &rarr; next year's count</option>
+          <option value="1" selected>Fire year &rarr; next year's count</option>
         </select>
       </div>
       <label class="toggle-row" style="min-width:0; margin-top:2px;">
@@ -373,14 +373,21 @@
         Only CoC-years with a major fire on record
       </label>
       <div id="corrStat" style="font-size:12.5px; color:var(--text-dim); margin:10px 0;">&mdash;</div>
-      <canvas id="corrChart" height="190"></canvas>
-      <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC in one year: acres burned within that CoC's boundary (x) vs. its homeless count (y). Points at x&nbsp;=&nbsp;0 are CoC-years with no major (&ge;1,000-acre) fire on record. Line is the least-squares fit. Large urban CoCs dominate homeless totals but rarely burn heavily, while large rural CoCs burn heavily but have small populations &mdash; this population/geography mismatch pulls the raw correlation toward zero independent of any real relationship, so treat r as a starting point, not a verdict.</div>
+      <div id="corrChart" class="chart" style="height:190px;"></div>
+      <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC in one year: acres burned within that CoC's boundary (x) vs. its homeless count (y). Points at x&nbsp;=&nbsp;0 are CoC-years with no major (&ge;1,000-acre) fire on record. Line is the least-squares fit. Default timing is fire-year &rarr; next year's count (t&nbsp;&rarr;&nbsp;t+1), on the theory that displacement shows up in the following PIT count rather than the same one; toggle to "Same year" to compare. Large urban CoCs dominate homeless totals but rarely burn heavily, while large rural CoCs burn heavily but have small populations &mdash; this population/geography mismatch pulls the raw correlation toward zero independent of any real relationship, so treat r as a starting point, not a verdict.</div>
+    </div>
+
+    <div class="card">
+      <h2>AI vs. ground truth <span class="count" id="aiCompareCount"></span></h2>
+      <div id="aiCompareStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
+      <div id="aiCompareChart" class="chart" style="height:190px; display:none;"></div>
+      <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC. X is the real per-CoC Pearson r (same-year lag) between fire acreage and homeless count, computed directly from the joined data. Y is an LLM's estimate of that same figure, made from that CoC's wildfire history alone &mdash; it was never shown the actual homeless counts. Points above the dashed y&nbsp;=&nbsp;x line are CoCs where the model overstated fire's relationship to homelessness versus the real data; points below understated it. Generated by ai_estimate_influence.py and compare_ai_vs_ground_truth.py (needs an ANTHROPIC_API_KEY); this panel is blank until those have been run.</div>
     </div>
 
     <div class="card">
       <h2>Selected CoC</h2>
       <div id="selectedCoc"><span class="empty-hint">Click a region on the map for its detail.</span></div>
-      <canvas id="cocChart" height="150" style="margin-top:10px; display:none;"></canvas>
+      <div id="cocChart" class="chart" style="height:150px; margin-top:10px; display:none;"></div>
     </div>
 
     <div class="legend">
@@ -400,7 +407,7 @@
 </div>
 
 <footer>
-  Sources: HUD PIT/HIC CoC data &amp; CoC boundaries (HUD-eGIS, huduser.gov) &middot; CAL FIRE FRAP historical fire perimeters (fire.ca.gov). Boundaries and fire geometry simplified for display.
+  Sources: HUD PIT/HIC CoC data &amp; CoC boundaries (HUD-eGIS, huduser.gov) &middot; CAL FIRE FRAP historical fire perimeters (fire.ca.gov) &middot; basemap &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors. Boundaries and fire geometry simplified for display.
 </footer>
 
 <script>
@@ -423,16 +430,15 @@ const state = {
   hicByCoc: new Map(),
   firesByYear: [],
   firesByCoc: new Map(), // "CA-500" -> [{year, fire_count, acres_burned}]
-  corrLag: 0,
-  corrChart: null,
-  cocLayer: null,
-  fireLayer: null,
-  geoFeaturesById: new Map(),
-  trendChartHomeless: null,
-  trendChartFire: null,
-  cocChart: null,
+  corrLag: 1,
   selectedCocNum: null,
+  geoFeaturesById: new Map(),
+  cocBoundsById: new Map(), // "CA-500" -> [minLng,minLat,maxLng,maxLat]
   fireGeoRaw: null,
+  cocGeo: null,
+  aiCompare: null,
+  mapLoaded: false,
+  hoveredCocId: null,
 };
 
 const metricSelect = document.getElementById("metricSelect");
@@ -444,14 +450,17 @@ METRICS.forEach(m => {
 });
 metricSelect.value = state.metric;
 
-const map = L.map("map", { zoomControl: true }).setView([37.2, -119.5], 6);
-// NOTE: CARTO retired the old "dark_matter" raster path (now 404s); "dark_nolabels"
-// is the current equivalent and avoids place-label clutter over the choropleth.
-L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png", {
-  attribution: '&copy; OpenStreetMap &copy; CARTO',
-  subdomains: "abcd",
-  maxZoom: 19,
-}).addTo(map);
+// CARTO's Dark Matter is a free, no-API-key gray-scale MapLibre vector-tile
+// style (no color hues except our own data layers) -- matches the assignment's
+// basemap requirement while keeping the dashboard's existing dark theme.
+const map = new maplibregl.Map({
+  container: "map",
+  style: "https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json",
+  center: [-119.5, 37.2],
+  zoom: 5.4,
+  attributionControl: false,
+});
+map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
 
 // Sequential blue ramp (magnitude of homelessness), light -> dark. Fire stays
 // exclusively orange/red so the two encodings never compete for the same hue.
@@ -511,27 +520,103 @@ function currentMax() {
   return max || 1;
 }
 
-function styleCocFeature(feature) {
-  const cocNum = feature.properties.COCNUM;
-  const val = getMetricValue(cocNum, state.year, state.metric);
-  const max = currentMax();
-  const selected = cocNum === state.selectedCocNum;
-  return {
-    fillColor: colorScale(val, max),
-    fillOpacity: val == null ? 0.15 : 0.82,
-    color: selected ? "#3987e5" : "#0d0d0d",
-    weight: selected ? 2.5 : 1,
-  };
+// ---------------------------------------------------------------------------
+// D3 chart helpers. Charts use <title> elements on marks (native browser
+// tooltips) rather than custom hover-tracking divs -- simpler and adequate
+// for a first-version dashboard with a handful of series and a few dozen points.
+// ---------------------------------------------------------------------------
+
+const CHART_W = 328;
+
+function drawLineChart(containerId, years, values, { color, fillColor, showXAxis, unit }) {
+  const el = document.getElementById(containerId);
+  const height = el.clientHeight || parseInt(el.style.height, 10) || 100;
+  const margin = { top: 4, right: 4, bottom: showXAxis ? 16 : 2, left: 30 };
+  const innerW = CHART_W - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const container = d3.select(el);
+  container.selectAll("*").remove();
+  const svg = container.append("svg").attr("width", CHART_W).attr("height", height);
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain(d3.extent(years)).range([0, innerW]);
+  const valid = values.filter(v => v != null);
+  const y = d3.scaleLinear().domain([0, d3.max(valid) || 1]).nice(4).range([innerH, 0]);
+  const data = years.map((yr, i) => [yr, values[i]]);
+
+  g.append("g").attr("class", "grid")
+    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(""));
+
+  const lineGen = d3.line().defined(d => d[1] != null).x(d => x(d[0])).y(d => y(d[1])).curve(d3.curveMonotoneX);
+  const areaGen = d3.area().defined(d => d[1] != null).x(d => x(d[0])).y0(innerH).y1(d => y(d[1])).curve(d3.curveMonotoneX);
+
+  g.append("path").datum(data).attr("fill", fillColor).attr("d", areaGen);
+  g.append("path").datum(data).attr("fill", "none").attr("stroke", color).attr("stroke-width", 2).attr("d", lineGen);
+
+  g.selectAll(".pt").data(data.filter(d => d[1] != null)).enter().append("circle")
+    .attr("class", "pt")
+    .attr("cx", d => x(d[0])).attr("cy", d => y(d[1]))
+    .attr("r", 8).attr("fill", "transparent")
+    .append("title").text(d => `${d[0]}: ${fmt(d[1])}${unit ? " " + unit : ""}`);
+
+  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(d3.format("~s")));
+
+  if (showXAxis) {
+    g.append("g").attr("transform", `translate(0,${innerH})`)
+      .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format("d")));
+  }
 }
 
-function popupHtml(feature) {
-  const p = feature.properties;
-  const val = getMetricValue(p.COCNUM, state.year, state.metric);
-  return `<div class="popup">
-    <h3>${p.COCNAME || p.COCNUM}</h3>
-    <div class="row">${p.COCNUM}</div>
-    <div class="row">${state.metric} (${state.year}): <b>${fmt(val)}</b></div>
-  </div>`;
+function drawScatterChart(containerId, points, opts) {
+  const { height, xDomain, yDomain, xLabel, yLabel, fitLine, diagLine, pointColor, tooltipFn } = opts;
+  const el = document.getElementById(containerId);
+  const margin = { top: 8, right: 10, bottom: 30, left: 42 };
+  const innerW = CHART_W - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const container = d3.select(el);
+  container.selectAll("*").remove();
+  const svg = container.append("svg").attr("width", CHART_W).attr("height", height);
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain(xDomain).nice().range([0, innerW]);
+  const y = d3.scaleLinear().domain(yDomain).nice().range([innerH, 0]);
+
+  g.append("g").attr("class", "grid")
+    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(""));
+
+  if (diagLine) {
+    g.append("line")
+      .attr("x1", x(xDomain[0])).attr("y1", y(xDomain[0]))
+      .attr("x2", x(xDomain[1])).attr("y2", y(xDomain[1]))
+      .attr("stroke", "#898781").attr("stroke-width", 1).attr("stroke-dasharray", "4,4");
+  }
+
+  if (fitLine) {
+    g.append("line")
+      .attr("x1", x(fitLine.x1)).attr("y1", y(fitLine.y1))
+      .attr("x2", x(fitLine.x2)).attr("y2", y(fitLine.y2))
+      .attr("stroke", "#e0692c").attr("stroke-width", 2);
+  }
+
+  g.selectAll(".dot").data(points).enter().append("circle")
+    .attr("class", "dot")
+    .attr("cx", d => x(d.x)).attr("cy", d => y(d.y))
+    .attr("r", 4).attr("fill", pointColor || "#3987e5cc")
+    .attr("stroke", "#0d0d0d").attr("stroke-width", 1)
+    .append("title").text(tooltipFn);
+
+  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(d3.format("~s")));
+  g.append("g").attr("transform", `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(5).tickFormat(d3.format("~s")));
+
+  svg.append("text").attr("class", "axis-label")
+    .attr("x", margin.left + innerW / 2).attr("y", height - 2).attr("text-anchor", "middle")
+    .text(xLabel);
+  svg.append("text").attr("class", "axis-label")
+    .attr("transform", `translate(11,${margin.top + innerH / 2}) rotate(-90)`).attr("text-anchor", "middle")
+    .text(yLabel);
 }
 
 // Two single-axis small multiples sharing the same year domain, rather than one
@@ -555,91 +640,11 @@ function renderTrendCharts() {
   const acresByYear = new Map(state.firesByYear.map(r => [r.year, r.total_acres]));
   const fireAcres = years.map(y => acresByYear.get(y) ?? null);
 
-  const sharedScaleOpts = {
-    x: {
-      ticks: { color: "#898781", font: { size: 9 } },
-      grid: { color: "#2c2c2a", drawTicks: false },
-      border: { display: false },
-    },
-  };
-
-  if (state.trendChartHomeless) state.trendChartHomeless.destroy();
-  state.trendChartHomeless = new Chart(document.getElementById("trendChartHomeless").getContext("2d"), {
-    type: "line",
-    data: {
-      labels: years,
-      datasets: [{
-        data: homelessTotals,
-        borderColor: "#3987e5",
-        backgroundColor: "#3987e51a",
-        borderWidth: 2,
-        tension: 0.25,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        pointHitRadius: 12,
-        pointBackgroundColor: "#3987e5",
-        fill: true,
-      }],
-    },
-    options: {
-      responsive: true,
-      interaction: { mode: "index", intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          titleColor: "#fff", bodyColor: "#fff", backgroundColor: "#202020",
-          callbacks: { label: ctx => ` ${fmt(ctx.parsed.y)} ${state.metric.toLowerCase()}` },
-        },
-      },
-      scales: {
-        ...sharedScaleOpts,
-        x: { ...sharedScaleOpts.x, ticks: { ...sharedScaleOpts.x.ticks, display: false } },
-        y: {
-          ticks: { color: "#898781", font: { size: 9 }, maxTicksLimit: 4 },
-          grid: { color: "#2c2c2a" },
-          border: { display: false },
-        },
-      },
-    },
+  drawLineChart("trendChartHomeless", years, homelessTotals, {
+    color: "#3987e5", fillColor: "#3987e51a", showXAxis: false, unit: state.metric.toLowerCase(),
   });
-
-  if (state.trendChartFire) state.trendChartFire.destroy();
-  state.trendChartFire = new Chart(document.getElementById("trendChartFire").getContext("2d"), {
-    type: "line",
-    data: {
-      labels: years,
-      datasets: [{
-        data: fireAcres,
-        borderColor: "#e0692c",
-        backgroundColor: "#e0692c1a",
-        borderWidth: 2,
-        tension: 0.25,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        pointHitRadius: 12,
-        pointBackgroundColor: "#e0692c",
-        fill: true,
-      }],
-    },
-    options: {
-      responsive: true,
-      interaction: { mode: "index", intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          titleColor: "#fff", bodyColor: "#fff", backgroundColor: "#202020",
-          callbacks: { label: ctx => ` ${fmt(ctx.parsed.y)} acres burned` },
-        },
-      },
-      scales: {
-        ...sharedScaleOpts,
-        y: {
-          ticks: { color: "#898781", font: { size: 9 }, maxTicksLimit: 4 },
-          grid: { color: "#2c2c2a" },
-          border: { display: false },
-        },
-      },
-    },
+  drawLineChart("trendChartFire", years, fireAcres, {
+    color: "#e0692c", fillColor: "#e0692c1a", showXAxis: true, unit: "acres burned",
   });
 }
 
@@ -771,71 +776,51 @@ function renderCorrelationChart() {
 
   const fit = points.length >= 2 ? linearFit(points) : null;
   const maxX = Math.max(1, ...points.map(p => p.x));
-  const fitLine = fit ? [
-    { x: 0, y: fit.intercept },
-    { x: maxX, y: fit.intercept + fit.slope * maxX },
-  ] : [];
+  const maxY = Math.max(1, ...points.map(p => p.y));
 
-  const ctx = document.getElementById("corrChart").getContext("2d");
-  if (state.corrChart) state.corrChart.destroy();
-  state.corrChart = new Chart(ctx, {
-    type: "scatter",
-    data: {
-      datasets: [
-        {
-          label: "CoC-year",
-          data: points,
-          backgroundColor: "#3987e5cc",
-          borderColor: "#0d0d0d",
-          borderWidth: 1,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          pointHitRadius: 12,
-        },
-        {
-          type: "line",
-          label: "Least-squares fit",
-          data: fitLine,
-          borderColor: "#e0692c",
-          borderWidth: 2,
-          pointRadius: 0,
-          fill: false,
-          tension: 0,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          titleColor: "#fff",
-          bodyColor: "#fff",
-          backgroundColor: "#202020",
-          callbacks: {
-            label: ctx => {
-              const p = ctx.raw;
-              if (p.coc == null) return "";
-              return `${p.coc}, ${p.year}: ${fmt(p.x)} acres, ${fmt(p.y)} homeless`;
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          title: { display: true, text: "Acres burned in CoC", color: "#898781", font: { size: 10 } },
-          ticks: { color: "#898781", font: { size: 9 } },
-          grid: { color: "#2c2c2a" },
-          border: { display: false },
-        },
-        y: {
-          title: { display: true, text: state.metric, color: "#898781", font: { size: 10 } },
-          ticks: { color: "#898781", font: { size: 9 } },
-          grid: { color: "#2c2c2a" },
-          border: { display: false },
-        },
-      },
-    },
+  drawScatterChart("corrChart", points, {
+    height: 190,
+    xDomain: [0, maxX],
+    yDomain: [0, maxY],
+    xLabel: "Acres burned in CoC",
+    yLabel: state.metric,
+    fitLine: fit ? { x1: 0, y1: fit.intercept, x2: maxX, y2: fit.intercept + fit.slope * maxX } : null,
+    tooltipFn: d => `${d.coc}, ${d.year}: ${fmt(d.x)} acres, ${fmt(d.y)} homeless`,
+  });
+}
+
+// Static per-CoC comparison (doesn't depend on year/metric/lag controls), so
+// it's rendered once at init rather than from update(). See "AI-vs-ground-truth
+// experiment" in CLAUDE.md for how ai_vs_ground_truth.json is produced.
+function renderAiCompareChart() {
+  const statBox = document.getElementById("aiCompareStat");
+  const countEl = document.getElementById("aiCompareCount");
+  const chartEl = document.getElementById("aiCompareChart");
+  if (!state.aiCompare || !state.aiCompare.by_coc || !state.aiCompare.by_coc.length) {
+    statBox.textContent = "Not generated yet — run ai_estimate_influence.py then compare_ai_vs_ground_truth.py.";
+    countEl.textContent = "";
+    chartEl.style.display = "none";
+    return;
+  }
+  chartEl.style.display = "block";
+  const { summary, by_coc } = state.aiCompare;
+  countEl.textContent = `(${summary.n_compared} CoCs)`;
+  const biasWord = summary.mean_signed_error > 0.03 ? "overstates" : summary.mean_signed_error < -0.03 ? "understates" : "roughly tracks";
+  statBox.innerHTML = `Model <strong>${biasWord}</strong> the real fire&rarr;homelessness relationship on average (mean signed error <strong>${summary.mean_signed_error >= 0 ? "+" : ""}${summary.mean_signed_error.toFixed(3)}</strong>, mean |error| <strong>${summary.mean_abs_error.toFixed(3)}</strong>)<br>
+  ${summary.pct_exaggerates}% exaggerate &middot; ${summary.pct_underestimates}% underestimate &middot; ${summary.pct_sign_flip}% sign flip &middot; ${summary.pct_roughly_matches}% roughly match`;
+
+  const points = by_coc.map(r => ({
+    x: r.ground_truth_r, y: r.ai_estimate, coc: r.coc_number, name: r.coc_name, cls: r.classification,
+  }));
+
+  drawScatterChart("aiCompareChart", points, {
+    height: 190,
+    xDomain: [-1, 1],
+    yDomain: [-1, 1],
+    xLabel: "Ground-truth Pearson r",
+    yLabel: "AI estimated r",
+    diagLine: true,
+    tooltipFn: d => `${d.name} (${d.coc}): ground truth r = ${d.x.toFixed(2)}, AI estimate = ${d.y.toFixed(2)} — ${d.cls.replace(/_/g, " ")}`,
   });
 }
 
@@ -854,91 +839,86 @@ function renderCocDetail(feature) {
     ${latestHic ? `Year-round beds (${latestHic.year}): <strong>${fmt(latestHic["Total Year-Round Beds (ES, TH, SH)"])}</strong>` : ""}
   `;
 
-  const canvas = document.getElementById("cocChart");
-  canvas.style.display = rows.length ? "block" : "none";
+  const chartEl = document.getElementById("cocChart");
+  chartEl.style.display = rows.length ? "block" : "none";
   if (!rows.length) return;
 
-  const ctx = canvas.getContext("2d");
-  if (state.cocChart) state.cocChart.destroy();
-  state.cocChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: rows.map(r => r.year),
-      datasets: [{
-        label: state.metric,
-        data: rows.map(r => r[state.metric]),
-        borderColor: "#3987e5",
-        backgroundColor: "#3987e51a",
-        borderWidth: 2,
-        tension: 0.25,
-        pointRadius: 3,
-        pointHoverRadius: 5,
-        pointHitRadius: 12,
-        pointBackgroundColor: "#3987e5",
-        fill: true,
-      }],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { titleColor: "#fff", bodyColor: "#fff", backgroundColor: "#202020" },
-      },
-      scales: {
-        x: { ticks: { color: "#898781", font: { size: 9 } }, grid: { color: "#2c2c2a" }, border: { display: false } },
-        y: { ticks: { color: "#898781", font: { size: 9 } }, grid: { color: "#2c2c2a" }, border: { display: false } },
-      },
-    },
+  drawLineChart("cocChart", rows.map(r => r.year), rows.map(r => r[state.metric]), {
+    color: "#3987e5", fillColor: "#3987e51a", showXAxis: true, unit: state.metric.toLowerCase(),
   });
 }
 
+// ---------------------------------------------------------------------------
+// Map: CoC choropleth + fire perimeters + permanent count labels, via
+// MapLibre feature-state (set per feature id, no source re-parsing per redraw).
+// ---------------------------------------------------------------------------
+
+function geometryBounds(geometry) {
+  let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
+  const visit = coords => {
+    if (typeof coords[0] === "number") {
+      const [lng, lat] = coords;
+      if (lng < minLng) minLng = lng;
+      if (lng > maxLng) maxLng = lng;
+      if (lat < minLat) minLat = lat;
+      if (lat > maxLat) maxLat = lat;
+    } else {
+      coords.forEach(visit);
+    }
+  };
+  visit(geometry.coordinates);
+  return [minLng, minLat, maxLng, maxLat];
+}
+
 function refreshMapStyle() {
-  if (state.cocLayer) {
-    state.cocLayer.eachLayer(layer => {
-      layer.setStyle(styleCocFeature(layer.feature));
+  if (!state.mapLoaded) return;
+  const max = currentMax();
+  for (const [cocNum, feature] of state.geoFeaturesById.entries()) {
+    const val = getMetricValue(cocNum, state.year, state.metric);
+    const selected = cocNum === state.selectedCocNum;
+    map.setFeatureState({ source: "coc", id: cocNum }, {
+      fillColor: colorScale(val, max),
+      fillOpacity: val == null ? 0.15 : 0.82,
+      outlineColor: selected ? "#3987e5" : "#0d0d0d",
+      outlineWidth: selected ? 2.5 : 1,
     });
   }
 }
 
 const LABEL_MIN_PX = 46; // hide a CoC's label until its polygon is at least this wide/tall on screen
 
+// text-field is a *layout* property, which MapLibre does not allow to read from
+// feature-state (only paint properties can) -- so the label text has to live on
+// the GeoJSON feature itself, updated via source.setData() rather than
+// setFeatureState(). Visibility (text-opacity) is a paint property and can stay
+// feature-state driven, avoiding a setData() call on every pan/zoom.
 function refreshLabels() {
-  if (!state.cocLayer) return;
-  state.cocLayer.eachLayer(layer => {
-    const val = getMetricValue(layer.feature.properties.COCNUM, state.year, state.metric);
-    const text = val == null ? "—" : fmt(val);
-    if (layer.getTooltip()) {
-      layer.setTooltipContent(text);
-    } else {
-      layer.bindTooltip(text, {
-        permanent: true,
-        direction: "center",
-        className: "coc-label",
-      });
-    }
-  });
+  if (!state.mapLoaded) return;
+  for (const feature of state.cocGeo.features) {
+    const cocNum = feature.properties.COCNUM;
+    const val = getMetricValue(cocNum, state.year, state.metric);
+    feature.properties.label = val == null ? "—" : fmt(val);
+  }
+  map.getSource("coc").setData(state.cocGeo);
   updateLabelVisibility();
 }
 
 function updateLabelVisibility() {
-  if (!state.cocLayer) return;
+  if (!state.mapLoaded) return;
   const masterShow = document.getElementById("labelToggle").checked;
-  state.cocLayer.eachLayer(layer => {
+  for (const [cocNum, bounds] of state.cocBoundsById.entries()) {
     if (!masterShow) {
-      layer.closeTooltip();
-      return;
+      map.setFeatureState({ source: "coc", id: cocNum }, { labelOpacity: 0 });
+      continue;
     }
-    const bounds = layer.getBounds();
-    const nePt = map.latLngToLayerPoint(bounds.getNorthEast());
-    const swPt = map.latLngToLayerPoint(bounds.getSouthWest());
-    const widthPx = Math.abs(nePt.x - swPt.x);
-    const heightPx = Math.abs(swPt.y - nePt.y);
-    if (widthPx >= LABEL_MIN_PX && heightPx >= LABEL_MIN_PX) {
-      layer.openTooltip();
-    } else {
-      layer.closeTooltip();
-    }
-  });
+    const [minLng, minLat, maxLng, maxLat] = bounds;
+    const p1 = map.project([minLng, minLat]);
+    const p2 = map.project([maxLng, maxLat]);
+    const widthPx = Math.abs(p2.x - p1.x);
+    const heightPx = Math.abs(p2.y - p1.y);
+    const visible = widthPx >= LABEL_MIN_PX && heightPx >= LABEL_MIN_PX;
+    map.setFeatureState({ source: "coc", id: cocNum }, { labelOpacity: visible ? 1 : 0 });
+  }
 }
 
 function refreshStats() {
@@ -953,43 +933,29 @@ function refreshStats() {
   document.getElementById("statAcres").textContent = fireRow ? fmt(fireRow.total_acres) : "0";
 }
 
-function fireLayerStyle() {
-  return {
-    color: "#e0692c",
-    weight: 1,
-    fillColor: "#e0692c",
-    fillOpacity: 0.4,
-    opacity: 0.85,
-  };
-}
-
-function fireOnEachFeature(feature, layer) {
-  const p = feature.properties;
-  const alarm = p.ALARM_DATE ? new Date(p.ALARM_DATE).toLocaleDateString() : "unknown";
-  layer.bindPopup(`<div class="popup">
-    <h3>${p.FIRE_NAME || "Unnamed fire"} (${p.YEAR_})</h3>
-    <div class="row">Agency: <b>${p.AGENCY || "—"}</b></div>
-    <div class="row">Acres: <b>${fmt(p.GIS_ACRES)}</b></div>
-    <div class="row">Cause: <b>${p.CAUSE_NAME || "Unknown"}</b></div>
-    <div class="row">Alarm date: <b>${alarm}</b></div>
-  </div>`);
-}
-
-// Fires are rebuilt per selected year (rather than showing all 2000-2024 fires
+// Fires are filtered per selected year (rather than showing all 2000-2024 fires
 // at once) so the map layer actually reflects the year control, matching the
 // choropleth and stat tiles instead of showing 24 years of fires unconditionally.
 function rebuildFireLayer() {
-  if (state.fireLayer) map.removeLayer(state.fireLayer);
+  if (!state.mapLoaded) return;
+  map.setFilter("fire-fill", ["==", ["get", "YEAR_"], state.year]);
+  map.setFilter("fire-line", ["==", ["get", "YEAR_"], state.year]);
   const yearFeatures = state.fireGeoRaw.features.filter(f => f.properties.YEAR_ === state.year);
-  state.fireLayer = L.geoJSON({ type: "FeatureCollection", features: yearFeatures }, {
-    style: fireLayerStyle,
-    onEachFeature: fireOnEachFeature,
-  });
   const label = document.getElementById("fireToggleLabel");
   label.textContent = `Show ${state.year} wildfire perimeters (${yearFeatures.length})`;
-  if (document.getElementById("fireToggle").checked) {
-    state.fireLayer.addTo(map);
-  }
+  const visible = document.getElementById("fireToggle").checked ? "visible" : "none";
+  map.setLayoutProperty("fire-fill", "visibility", visible);
+  map.setLayoutProperty("fire-line", "visibility", visible);
+}
+
+function popupHtml(feature) {
+  const p = feature.properties;
+  const val = getMetricValue(p.COCNUM, state.year, state.metric);
+  return `<div class="popup">
+    <h3>${p.COCNAME || p.COCNUM}</h3>
+    <div class="row">${p.COCNUM}</div>
+    <div class="row">${state.metric} (${state.year}): <b>${fmt(val)}</b></div>
+  </div>`;
 }
 
 function update() {
@@ -1007,14 +973,14 @@ function update() {
 
 async function init() {
   const [pitRows, hicRows, vetRows, fireYearRows, fireCocRows, cocGeo, fireGeo, caOutline] = await Promise.all([
-    loadJSON("data/ca_coc_pit_by_year.json"),
-    loadJSON("data/ca_coc_hic_by_year.json"),
-    loadJSON("data/ca_coc_pit_veterans_by_year.json"),
-    loadJSON("data/ca_fires_by_year.json"),
-    loadJSON("data/ca_fires_by_coc_year.json"),
-    loadJSON("data/ca_coc_boundaries.min.geojson"),
-    loadJSON("data/ca_fire_perimeters.geojson"),
-    loadJSON("data/ca_state_outline.geojson"),
+    loadJSON("site/data/ca_coc_pit_by_year.json"),
+    loadJSON("site/data/ca_coc_hic_by_year.json"),
+    loadJSON("site/data/ca_coc_pit_veterans_by_year.json"),
+    loadJSON("site/data/ca_fires_by_year.json"),
+    loadJSON("site/data/ca_fires_by_coc_year.json"),
+    loadJSON("site/data/ca_coc_boundaries.min.geojson"),
+    loadJSON("site/data/ca_fire_perimeters.geojson"),
+    loadJSON("site/data/ca_state_outline.geojson"),
   ]);
 
   state.pitByCoc = indexByCoc(pitRows);
@@ -1022,38 +988,130 @@ async function init() {
   state.vetByCoc = indexByCoc(vetRows);
   state.firesByYear = fireYearRows;
   state.firesByCoc = indexByCoc(fireCocRows);
+  state.fireGeoRaw = fireGeo;
+  state.cocGeo = cocGeo;
+
+  for (const feature of cocGeo.features) {
+    const cocNum = feature.properties.COCNUM;
+    state.geoFeaturesById.set(cocNum, feature);
+    state.cocBoundsById.set(cocNum, geometryBounds(feature.geometry));
+  }
+
+  await new Promise(resolve => {
+    if (map.loaded()) resolve();
+    else map.on("load", resolve);
+  });
 
   // "Spotlight" mask: dim everything outside California (rather than leaving the
   // basemap's bare ocean/out-of-state rendering, which reads as broken/empty) by
   // filling a world-sized ring with a California-shaped hole punched out of it.
-  // fill-rule:evenodd (set in CSS below) makes the hole render correctly
-  // regardless of the source ring winding direction.
   const worldRing = [[-170, -60], [170, -60], [170, 75], [-170, 75], [-170, -60]];
   const caHoleRings = caOutline.features.flatMap(f => {
     const g = f.geometry;
     const polys = g.type === "MultiPolygon" ? g.coordinates : [g.coordinates];
     return polys.map(poly => poly[0]); // outer ring of each CA polygon/island
   });
-  const maskLayer = L.geoJSON(
-    { type: "Feature", geometry: { type: "Polygon", coordinates: [worldRing, ...caHoleRings] } },
-    { className: "ca-mask", interactive: false, style: { stroke: false, fillColor: "#0d0d0d", fillOpacity: 0.72 } }
-  ).addTo(map);
+  map.addSource("mask", {
+    type: "geojson",
+    data: { type: "Feature", geometry: { type: "Polygon", coordinates: [worldRing, ...caHoleRings] } },
+  });
+  map.addLayer({
+    id: "mask-fill", type: "fill", source: "mask",
+    paint: { "fill-color": "#0d0d0d", "fill-opacity": 0.72 },
+  });
 
-  state.cocLayer = L.geoJSON(cocGeo, {
-    style: styleCocFeature,
-    onEachFeature: (feature, layer) => {
-      state.geoFeaturesById.set(feature.properties.COCNUM, feature);
-      layer.bindPopup(() => popupHtml(feature));
-      layer.on("mouseover", () => layer.setStyle({ weight: 2.5 }));
-      layer.on("mouseout", () => layer.setStyle(styleCocFeature(feature)));
-      layer.on("click", () => {
-        renderCocDetail(feature);
-        refreshMapStyle();
-      });
+  map.addSource("coc", { type: "geojson", data: cocGeo, promoteId: "COCNUM" });
+  map.addLayer({
+    id: "coc-fill", type: "fill", source: "coc",
+    paint: {
+      "fill-color": ["coalesce", ["feature-state", "fillColor"], "#3a3a38"],
+      "fill-opacity": ["coalesce", ["feature-state", "fillOpacity"], 0.15],
     },
-  }).addTo(map);
+  });
+  map.addLayer({
+    id: "coc-outline", type: "line", source: "coc",
+    paint: {
+      "line-color": ["coalesce", ["feature-state", "outlineColor"], "#0d0d0d"],
+      "line-width": ["case",
+        ["boolean", ["feature-state", "hover"], false], 2.5,
+        ["coalesce", ["feature-state", "outlineWidth"], 1],
+      ],
+    },
+  });
+  map.addLayer({
+    id: "coc-labels", type: "symbol", source: "coc",
+    layout: {
+      "text-field": ["get", "label"],
+      "text-size": 11,
+      "text-allow-overlap": true,
+      "text-ignore-placement": true,
+    },
+    paint: {
+      "text-color": "#ffffff",
+      "text-halo-color": "rgba(10,10,10,0.78)",
+      "text-halo-width": 3,
+      "text-opacity": ["coalesce", ["feature-state", "labelOpacity"], 0],
+    },
+  });
 
-  state.fireGeoRaw = fireGeo;
+  map.addSource("fires", { type: "geojson", data: fireGeo });
+  map.addLayer({
+    id: "fire-fill", type: "fill", source: "fires",
+    filter: ["==", ["get", "YEAR_"], state.year],
+    paint: { "fill-color": "#e0692c", "fill-opacity": 0.4 },
+  });
+  map.addLayer({
+    id: "fire-line", type: "line", source: "fires",
+    filter: ["==", ["get", "YEAR_"], state.year],
+    paint: { "line-color": "#e0692c", "line-width": 1, "line-opacity": 0.85 },
+  });
+
+  map.on("mousemove", "coc-fill", e => {
+    if (!e.features.length) return;
+    const id = e.features[0].id;
+    if (state.hoveredCocId !== null && state.hoveredCocId !== id) {
+      map.setFeatureState({ source: "coc", id: state.hoveredCocId }, { hover: false });
+    }
+    state.hoveredCocId = id;
+    map.setFeatureState({ source: "coc", id }, { hover: true });
+    map.getCanvas().style.cursor = "pointer";
+  });
+  map.on("mouseleave", "coc-fill", () => {
+    if (state.hoveredCocId !== null) {
+      map.setFeatureState({ source: "coc", id: state.hoveredCocId }, { hover: false });
+    }
+    state.hoveredCocId = null;
+    map.getCanvas().style.cursor = "";
+  });
+  map.on("click", "coc-fill", e => {
+    if (!e.features.length) return;
+    const feature = e.features[0];
+    const orig = state.geoFeaturesById.get(feature.properties.COCNUM);
+    if (!orig) return;
+    renderCocDetail(orig);
+    refreshMapStyle();
+    new maplibregl.Popup().setLngLat(e.lngLat).setHTML(popupHtml(orig)).addTo(map);
+  });
+
+  map.on("click", "fire-fill", e => {
+    if (!e.features.length) return;
+    const p = e.features[0].properties;
+    const alarm = p.ALARM_DATE ? new Date(p.ALARM_DATE).toLocaleDateString() : "unknown";
+    new maplibregl.Popup().setLngLat(e.lngLat).setHTML(`<div class="popup">
+      <h3>${p.FIRE_NAME || "Unnamed fire"} (${p.YEAR_})</h3>
+      <div class="row">Agency: <b>${p.AGENCY || "—"}</b></div>
+      <div class="row">Acres: <b>${fmt(p.GIS_ACRES)}</b></div>
+      <div class="row">Cause: <b>${p.CAUSE_NAME || "Unknown"}</b></div>
+      <div class="row">Alarm date: <b>${alarm}</b></div>
+    </div>`).addTo(map);
+  });
+  map.on("mouseenter", "fire-fill", () => { map.getCanvas().style.cursor = "pointer"; });
+  map.on("mouseleave", "fire-fill", () => { map.getCanvas().style.cursor = ""; });
+
+  map.on("zoomend", updateLabelVisibility);
+  map.on("moveend", updateLabelVisibility);
+
+  state.mapLoaded = true;
 
   const yearSlider = document.getElementById("yearSlider");
   const setSliderFill = () => {
@@ -1074,12 +1132,20 @@ async function init() {
   });
   document.getElementById("fireToggle").addEventListener("change", rebuildFireLayer);
   document.getElementById("labelToggle").addEventListener("change", updateLabelVisibility);
-  map.on("zoomend moveend", updateLabelVisibility);
   document.getElementById("corrLag").addEventListener("change", e => {
     state.corrLag = parseInt(e.target.value, 10);
     renderCorrelationChart();
   });
   document.getElementById("corrExcludeZero").addEventListener("change", renderCorrelationChart);
+
+  // Optional: only present once ai_estimate_influence.py + compare_ai_vs_ground_truth.py
+  // have been run, so this is loaded separately and failure doesn't block the rest of init.
+  try {
+    state.aiCompare = await loadJSON("site/data/ai_vs_ground_truth.json");
+  } catch (err) {
+    state.aiCompare = null;
+  }
+  renderAiCompareChart();
 
   update();
 }
