@@ -1,14 +1,29 @@
 {
-  "model": "claude-sonnet-5 (via Claude Code sub-agent, no ANTHROPIC_API_KEY -- see README/CLAUDE.md)",
-  "methodology": "Each CoC's fire history (year: acres burned within its boundary, no homeless counts) was sent to a freshly spawned Claude Code sub-agent with no memory of any other conversation or of this project's ground-truth results; it was asked to estimate what a Pearson r between fire acreage and homeless count would show, from reasoning alone, for each of the 44 CoCs independently in one batched call (not 44 separate API calls, since no billed Anthropic API key was available). Compare against ground_truth_fire_influence.json via compare_ai_vs_ground_truth.py.",
+  "model": "claude-sonnet-5 (via 5 independent Claude Code sub-agents, no ANTHROPIC_API_KEY -- see README/CLAUDE.md)",
+  "methodology": "Each CoC's fire history (year: acres burned within its boundary, no homeless counts) was sent to 5 independently and freshly spawned Claude Code sub-agents (none with memory of each other, this conversation, or this project's ground-truth results), each asked to estimate what a Pearson r between fire acreage and homeless count would show for all 44 CoCs, from reasoning alone, in one batched call per trial (not per-CoC API calls, since no billed Anthropic API key was available). estimated_correlation is the mean of the 5 trials per CoC; estimated_correlation_std and estimated_correlation_trials give the trial-to-trial spread, so the reported estimate isn't a single noisy sample. confidence/direction are the majority vote across trials (confidence_trials/direction not stored per-trial beyond confidence). Compare against ground_truth_fire_influence.json via compare_ai_vs_ground_truth.py.",
   "estimates": [
     {
       "coc_number": "CA-500",
       "coc_name": "San Jose/Santa Clara City & County CoC",
       "n_fire_years": 9,
-      "estimated_correlation": 0.15,
+      "estimated_correlation": 0.21,
+      "estimated_correlation_std": 0.0583,
+      "estimated_correlation_trials": [
+        0.15,
+        0.2,
+        0.3,
+        0.15,
+        0.25
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "Silicon Valley homelessness is dominated by housing-cost pressure; occasional large fires (e.g. 2020 SCU/CZU Complex) may add modest displacement but that effect is likely swamped by the cost-driven baseline trend."
     },
     {
@@ -16,242 +31,647 @@
       "coc_name": "San Francisco CoC",
       "n_fire_years": 0,
       "estimated_correlation": 0.0,
+      "estimated_correlation_std": 0.0,
+      "estimated_correlation_trials": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
       "direction": "no_relationship",
       "confidence": "high",
+      "confidence_trials": [
+        "high",
+        "high",
+        "high",
+        "high",
+        "high"
+      ],
       "reasoning": "No recorded major fires within this dense urban CoC in the period, so there is no fire variance to correlate with homelessness."
     },
     {
       "coc_number": "CA-502",
       "coc_name": "Oakland, Berkeley/Alameda County CoC",
       "n_fire_years": 6,
-      "estimated_correlation": 0.1,
+      "estimated_correlation": 0.16,
+      "estimated_correlation_std": 0.0583,
+      "estimated_correlation_trials": [
+        0.1,
+        0.15,
+        0.25,
+        0.1,
+        0.2
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "Sporadic East Bay hills fires touch the CoC's edges, but Alameda County homelessness is driven mainly by regional housing costs, not wildfire."
     },
     {
       "coc_number": "CA-503",
       "coc_name": "Sacramento City & County CoC",
       "n_fire_years": 2,
-      "estimated_correlation": 0.05,
+      "estimated_correlation": 0.08,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.05,
+        0.1,
+        0.1,
+        0.1,
+        0.05
+      ],
       "direction": "no_relationship",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "Only two modest fire years recorded in a large urban/suburban CoC; too little exposure to meaningfully move homelessness counts."
     },
     {
       "coc_number": "CA-504",
       "coc_name": "Santa Rosa, Petaluma/Sonoma County CoC",
       "n_fire_years": 9,
-      "estimated_correlation": 0.55,
+      "estimated_correlation": 0.57,
+      "estimated_correlation_std": 0.051,
+      "estimated_correlation_trials": [
+        0.55,
+        0.55,
+        0.6,
+        0.65,
+        0.5
+      ],
       "direction": "increases",
       "confidence": "high",
+      "confidence_trials": [
+        "high",
+        "medium",
+        "high",
+        "high",
+        "medium"
+      ],
       "reasoning": "The 2017 Tubbs Fire and 2019/2020 fires destroyed thousands of Sonoma County homes, a well-documented driver of displacement and subsequent homelessness increases."
     },
     {
       "coc_number": "CA-505",
       "coc_name": "Richmond/Contra Costa County CoC",
       "n_fire_years": 2,
-      "estimated_correlation": 0.05,
+      "estimated_correlation": 0.09,
+      "estimated_correlation_std": 0.02,
+      "estimated_correlation_trials": [
+        0.05,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
       "direction": "no_relationship",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "Minimal recorded fire exposure in a large, mostly suburban/urban county; unlikely to register in homelessness counts."
     },
     {
       "coc_number": "CA-506",
       "coc_name": "Salinas/Monterey, San Benito Counties CoC",
       "n_fire_years": 16,
-      "estimated_correlation": 0.3,
+      "estimated_correlation": 0.22,
+      "estimated_correlation_std": 0.06,
+      "estimated_correlation_trials": [
+        0.3,
+        0.15,
+        0.25,
+        0.15,
+        0.25
+      ],
       "direction": "increases",
-      "confidence": "medium",
+      "confidence": "low",
+      "confidence_trials": [
+        "medium",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "Repeated large fires in a mixed agricultural/coastal region with significant low-income and farmworker housing at risk plausibly nudges homelessness upward in bad fire years."
     },
     {
       "coc_number": "CA-507",
       "coc_name": "Marin County CoC",
       "n_fire_years": 1,
-      "estimated_correlation": 0.05,
+      "estimated_correlation": 0.04,
+      "estimated_correlation_std": 0.02,
+      "estimated_correlation_trials": [
+        0.05,
+        0.05,
+        0.05,
+        0.05,
+        0.0
+      ],
       "direction": "no_relationship",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Wealthy county with only one recorded fire year and strong rebuilding/insurance capacity; unlikely to translate into measurable homelessness impact."
     },
     {
       "coc_number": "CA-508",
       "coc_name": "Watsonville/Santa Cruz City & County CoC",
       "n_fire_years": 5,
-      "estimated_correlation": 0.5,
+      "estimated_correlation": 0.42,
+      "estimated_correlation_std": 0.051,
+      "estimated_correlation_trials": [
+        0.5,
+        0.35,
+        0.45,
+        0.4,
+        0.4
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "The 2020 CZU Lightning Complex destroyed roughly 900 homes in the Santa Cruz Mountains and directly displaced many low-income residents into encampments, a fairly direct fire-to-homelessness link."
     },
     {
       "coc_number": "CA-509",
       "coc_name": "Mendocino County CoC",
       "n_fire_years": 8,
-      "estimated_correlation": 0.4,
+      "estimated_correlation": 0.37,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.4,
+        0.4,
+        0.35,
+        0.35,
+        0.35
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "Large fires including the 2018 Mendocino Complex and 2020 fires burned substantial rural housing stock in a low-income county with limited rebuilding capacity."
     },
     {
       "coc_number": "CA-510",
       "coc_name": "Turlock, Modesto/Stanislaus County CoC",
       "n_fire_years": 9,
-      "estimated_correlation": 0.1,
+      "estimated_correlation": 0.13,
+      "estimated_correlation_std": 0.04,
+      "estimated_correlation_trials": [
+        0.1,
+        0.1,
+        0.2,
+        0.1,
+        0.15
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Central Valley homelessness is driven mainly by cost-of-living and agricultural economics; recorded fires here are largely in foothills/grasslands away from dense population centers."
     },
     {
       "coc_number": "CA-511",
       "coc_name": "Stockton/San Joaquin County CoC",
       "n_fire_years": 9,
-      "estimated_correlation": 0.1,
+      "estimated_correlation": 0.13,
+      "estimated_correlation_std": 0.04,
+      "estimated_correlation_trials": [
+        0.1,
+        0.1,
+        0.2,
+        0.1,
+        0.15
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Similar to nearby Central Valley CoCs, homelessness trends track housing and economic factors far more than the moderate wildland fires recorded here."
     },
     {
       "coc_number": "CA-512",
       "coc_name": "Daly/San Mateo County CoC",
       "n_fire_years": 1,
-      "estimated_correlation": 0.1,
+      "estimated_correlation": 0.13,
+      "estimated_correlation_std": 0.04,
+      "estimated_correlation_trials": [
+        0.1,
+        0.15,
+        0.1,
+        0.2,
+        0.1
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Only the 2020 complex-fire year is recorded in a wealthy, dense Peninsula county; too sparse a signal and strong rebuilding capacity to expect much homelessness effect."
     },
     {
       "coc_number": "CA-513",
       "coc_name": "Visalia/Kings, Tulare Counties CoC",
       "n_fire_years": 25,
-      "estimated_correlation": 0.25,
+      "estimated_correlation": 0.27,
+      "estimated_correlation_std": 0.051,
+      "estimated_correlation_trials": [
+        0.25,
+        0.2,
+        0.25,
+        0.35,
+        0.3
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "Frequent large Sierra-foothill fires mostly burn forest/parkland rather than towns, but repeated economic disruption in a high-poverty agricultural region plausibly contributes modestly to rising homelessness."
     },
     {
       "coc_number": "CA-514",
       "coc_name": "Fresno City & County/Madera County CoC",
       "n_fire_years": 20,
-      "estimated_correlation": 0.3,
+      "estimated_correlation": 0.31,
+      "estimated_correlation_std": 0.0663,
+      "estimated_correlation_trials": [
+        0.3,
+        0.2,
+        0.3,
+        0.4,
+        0.35
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "low",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "The 2020 Creek Fire and other large mountain-community fires destroyed housing in places like Big Creek/Shaver Lake, adding to an already high-poverty CoC's homelessness pressure."
     },
     {
       "coc_number": "CA-515",
       "coc_name": "Rocklin/Roseville/Placer County CoC",
       "n_fire_years": 10,
-      "estimated_correlation": 0.15,
+      "estimated_correlation": 0.2,
+      "estimated_correlation_std": 0.0632,
+      "estimated_correlation_trials": [
+        0.15,
+        0.15,
+        0.3,
+        0.15,
+        0.25
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "A growing, relatively affluent suburban county with foothill fire exposure (e.g. 2022 Mosquito Fire); homelessness there tracks regional housing costs more than fire."
     },
     {
       "coc_number": "CA-516",
       "coc_name": "Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",
       "n_fire_years": 26,
-      "estimated_correlation": 0.55,
+      "estimated_correlation": 0.54,
+      "estimated_correlation_std": 0.0663,
+      "estimated_correlation_trials": [
+        0.55,
+        0.5,
+        0.55,
+        0.65,
+        0.45
+      ],
       "direction": "increases",
       "confidence": "high",
+      "confidence_trials": [
+        "high",
+        "medium",
+        "high",
+        "high",
+        "medium"
+      ],
       "reasoning": "This CoC includes Redding, directly hit by the destructive 2018 Carr Fire (over 1,000 structures lost), plus recurring massive fires across a large, poor rural region, making a fire-homelessness link highly plausible."
     },
     {
       "coc_number": "CA-517",
       "coc_name": "Napa City & County CoC",
       "n_fire_years": 10,
-      "estimated_correlation": 0.25,
+      "estimated_correlation": 0.35,
+      "estimated_correlation_std": 0.0548,
+      "estimated_correlation_trials": [
+        0.25,
+        0.35,
+        0.4,
+        0.35,
+        0.4
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "Napa lost significant housing in the 2017 wine country fires, but the county's wealth and strong insurance/rebuilding capacity likely dampen the homelessness effect relative to poorer counties."
     },
     {
       "coc_number": "CA-518",
       "coc_name": "Vallejo/Solano County CoC",
       "n_fire_years": 7,
-      "estimated_correlation": 0.15,
+      "estimated_correlation": 0.23,
+      "estimated_correlation_std": 0.06,
+      "estimated_correlation_trials": [
+        0.15,
+        0.3,
+        0.2,
+        0.3,
+        0.2
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "medium",
+        "low",
+        "medium",
+        "low"
+      ],
       "reasoning": "Moderate fire exposure with a 2020 spike, but Vallejo/Solano homelessness is mostly driven by regional Bay Area housing-cost spillover rather than fire."
     },
     {
       "coc_number": "CA-519",
       "coc_name": "Chico, Paradise/Butte County CoC",
       "n_fire_years": 13,
-      "estimated_correlation": 0.75,
+      "estimated_correlation": 0.73,
+      "estimated_correlation_std": 0.051,
+      "estimated_correlation_trials": [
+        0.75,
+        0.7,
+        0.75,
+        0.8,
+        0.65
+      ],
       "direction": "increases",
       "confidence": "high",
+      "confidence_trials": [
+        "high",
+        "high",
+        "high",
+        "high",
+        "high"
+      ],
       "reasoning": "The 2018 Camp Fire destroyed the town of Paradise (nearly 14,000 homes) and is one of the most direct, well-documented wildfire-to-homelessness causal events in California history."
     },
     {
       "coc_number": "CA-520",
       "coc_name": "Merced City & County CoC",
       "n_fire_years": 10,
-      "estimated_correlation": 0.1,
+      "estimated_correlation": 0.12,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.1,
+        0.1,
+        0.15,
+        0.1,
+        0.15
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Recorded fires are modest in acreage relative to this small agricultural-valley CoC; homelessness there tracks economic conditions more than fire."
     },
     {
       "coc_number": "CA-521",
       "coc_name": "Davis, Woodland/Yolo County CoC",
       "n_fire_years": 12,
-      "estimated_correlation": 0.15,
+      "estimated_correlation": 0.17,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.15,
+        0.15,
+        0.2,
+        0.2,
+        0.15
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Occasional large fires (2018, 2020) touch a college-town/ag county, but limited direct housing loss is reported, so expect only a weak positive link."
     },
     {
       "coc_number": "CA-522",
       "coc_name": "Humboldt County CoC",
       "n_fire_years": 14,
-      "estimated_correlation": 0.3,
+      "estimated_correlation": 0.22,
+      "estimated_correlation_std": 0.0678,
+      "estimated_correlation_trials": [
+        0.3,
+        0.1,
+        0.25,
+        0.2,
+        0.25
+      ],
       "direction": "increases",
-      "confidence": "medium",
+      "confidence": "low",
+      "confidence_trials": [
+        "medium",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "A rural, economically struggling North Coast county with recurring large fires plausibly compounds an already high homelessness rate in bad fire years."
     },
     {
       "coc_number": "CA-523",
       "coc_name": "Colusa, Glenn, Trinity Counties CoC",
       "n_fire_years": 21,
-      "estimated_correlation": 0.25,
+      "estimated_correlation": 0.26,
+      "estimated_correlation_std": 0.0374,
+      "estimated_correlation_trials": [
+        0.25,
+        0.3,
+        0.2,
+        0.3,
+        0.25
+      ],
       "direction": "increases",
-      "confidence": "medium",
+      "confidence": "low",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Extremely large fire acreage burns through a sparsely populated, poor rural region, but much of that area is uninhabited forest/rangeland, muting the direct housing-loss channel."
     },
     {
       "coc_number": "CA-524",
       "coc_name": "Yuba City & County/Sutter County CoC",
       "n_fire_years": 6,
-      "estimated_correlation": 0.2,
+      "estimated_correlation": 0.17,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.2,
+        0.15,
+        0.2,
+        0.15,
+        0.15
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Adjacent to fire-prone foothills with a modest fire record; some spillover from displaced Paradise-area residents relocating there after 2018 is plausible."
     },
     {
       "coc_number": "CA-525",
       "coc_name": "El Dorado County CoC",
       "n_fire_years": 12,
-      "estimated_correlation": 0.35,
+      "estimated_correlation": 0.4,
+      "estimated_correlation_std": 0.0316,
+      "estimated_correlation_trials": [
+        0.35,
+        0.4,
+        0.45,
+        0.4,
+        0.4
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "The 2021 Caldor Fire destroyed much of Grizzly Flats and forced widespread evacuations, a concrete housing-loss event likely to show up in subsequent counts."
     },
     {
       "coc_number": "CA-526",
       "coc_name": "Amador, Calaveras, Mariposa, Tuolumne Counties CoC",
       "n_fire_years": 26,
-      "estimated_correlation": 0.3,
+      "estimated_correlation": 0.35,
+      "estimated_correlation_std": 0.0316,
+      "estimated_correlation_trials": [
+        0.3,
+        0.35,
+        0.35,
+        0.35,
+        0.4
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "Repeated large fires (2013 Rim Fire, 2017-2018 fires) in a low-income, rural Sierra foothill region with limited housing stock plausibly link to homelessness upticks."
     },
     {
       "coc_number": "CA-527",
       "coc_name": "Tehama County CoC",
       "n_fire_years": 12,
-      "estimated_correlation": 0.3,
+      "estimated_correlation": 0.31,
+      "estimated_correlation_std": 0.02,
+      "estimated_correlation_trials": [
+        0.3,
+        0.3,
+        0.3,
+        0.3,
+        0.35
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "Very large fires, including a massive 2024 event, hit a small, poor rural county where housing losses would represent a large share of total stock."
     },
     {
@@ -259,71 +679,191 @@
       "coc_name": "Lake County CoC",
       "n_fire_years": 16,
       "estimated_correlation": 0.6,
+      "estimated_correlation_std": 0.0447,
+      "estimated_correlation_trials": [
+        0.6,
+        0.55,
+        0.65,
+        0.65,
+        0.55
+      ],
       "direction": "increases",
       "confidence": "high",
+      "confidence_trials": [
+        "high",
+        "high",
+        "high",
+        "high",
+        "high"
+      ],
       "reasoning": "Lake County was repeatedly devastated (2015 Valley Fire, 2018 Mendocino Complex/Ranch Fire), destroying thousands of homes in one of California's poorest counties, making a strong homelessness link very plausible."
     },
     {
       "coc_number": "CA-530",
       "coc_name": "Alpine, Inyo, Mono Counties CoC",
       "n_fire_years": 25,
-      "estimated_correlation": 0.05,
-      "direction": "no_relationship",
+      "estimated_correlation": 0.11,
+      "estimated_correlation_std": 0.0374,
+      "estimated_correlation_trials": [
+        0.05,
+        0.15,
+        0.1,
+        0.1,
+        0.15
+      ],
+      "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Extremely sparse population and small housing stock across vast wildland areas mean most fire acreage burns uninhabited land, so despite frequent fires the homelessness signal is likely noisy and near zero."
     },
     {
       "coc_number": "CA-531",
       "coc_name": "Nevada County CoC",
       "n_fire_years": 5,
-      "estimated_correlation": 0.15,
+      "estimated_correlation": 0.18,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.15,
+        0.15,
+        0.2,
+        0.2,
+        0.2
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Moderate, infrequent fire exposure in an affluent foothill county with strong rebuilding capacity limits the expected homelessness effect."
     },
     {
       "coc_number": "CA-600",
       "coc_name": "Los Angeles City & County CoC",
       "n_fire_years": 24,
-      "estimated_correlation": 0.2,
+      "estimated_correlation": 0.12,
+      "estimated_correlation_std": 0.06,
+      "estimated_correlation_trials": [
+        0.2,
+        0.15,
+        0.05,
+        0.05,
+        0.15
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "LA's enormous, chronically rising homeless population is overwhelmingly driven by housing cost and policy factors; wildfires mostly burn surrounding hills and likely contribute only a small, possibly confounded upward nudge."
     },
     {
       "coc_number": "CA-601",
       "coc_name": "San Diego City and County CoC",
       "n_fire_years": 20,
-      "estimated_correlation": 0.25,
+      "estimated_correlation": 0.19,
+      "estimated_correlation_std": 0.102,
+      "estimated_correlation_trials": [
+        0.25,
+        0.0,
+        0.2,
+        0.2,
+        0.3
+      ],
       "direction": "increases",
-      "confidence": "medium",
+      "confidence": "low",
+      "confidence_trials": [
+        "medium",
+        "low",
+        "low",
+        "low",
+        "medium"
+      ],
       "reasoning": "Major fires (2003 Cedar Fire, 2007 Witch Fire) destroyed thousands of homes in San Diego County's backcountry and exurbs, a plausible contributor atop the region's broader housing-cost-driven homelessness growth."
     },
     {
       "coc_number": "CA-602",
       "coc_name": "Santa Ana, Anaheim/Orange County CoC",
       "n_fire_years": 9,
-      "estimated_correlation": 0.1,
+      "estimated_correlation": 0.15,
+      "estimated_correlation_std": 0.0316,
+      "estimated_correlation_trials": [
+        0.1,
+        0.15,
+        0.15,
+        0.15,
+        0.2
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "An affluent, dense urban county where fires burn mostly in undeveloped hillside open space; limited direct housing loss is expected."
     },
     {
       "coc_number": "CA-603",
       "coc_name": "Santa Maria/Santa Barbara County CoC",
       "n_fire_years": 18,
-      "estimated_correlation": 0.4,
+      "estimated_correlation": 0.38,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.4,
+        0.4,
+        0.35,
+        0.35,
+        0.4
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "The 2017 Thomas Fire and the 2018 Montecito debris flow that followed it destroyed substantial housing and displaced many low-income residents, a fairly direct link."
     },
     {
       "coc_number": "CA-604",
       "coc_name": "Bakersfield/Kern County CoC",
       "n_fire_years": 22,
-      "estimated_correlation": 0.2,
+      "estimated_correlation": 0.21,
+      "estimated_correlation_std": 0.0583,
+      "estimated_correlation_trials": [
+        0.2,
+        0.15,
+        0.3,
+        0.15,
+        0.25
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "medium",
+        "low",
+        "low"
+      ],
       "reasoning": "Frequent but mostly rural/open-land fires in a large agricultural county where homelessness is primarily driven by poverty and farmworker housing instability rather than fire."
     },
     {
@@ -331,8 +871,23 @@
       "coc_name": "Long Beach CoC",
       "n_fire_years": 0,
       "estimated_correlation": 0.0,
+      "estimated_correlation_std": 0.0,
+      "estimated_correlation_trials": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
       "direction": "no_relationship",
       "confidence": "high",
+      "confidence_trials": [
+        "high",
+        "high",
+        "high",
+        "high",
+        "high"
+      ],
       "reasoning": "No recorded fires within this dense urban CoC in the period, so there is no fire signal to correlate with homelessness."
     },
     {
@@ -340,44 +895,119 @@
       "coc_name": "Pasadena CoC",
       "n_fire_years": 2,
       "estimated_correlation": 0.1,
+      "estimated_correlation_std": 0.0,
+      "estimated_correlation_trials": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Only two small fire years are recorded for this compact, affluent urban CoC, giving a minimal expected effect on homelessness in this period."
     },
     {
       "coc_number": "CA-608",
       "coc_name": "Riverside City & County CoC",
       "n_fire_years": 24,
-      "estimated_correlation": 0.25,
+      "estimated_correlation": 0.24,
+      "estimated_correlation_std": 0.02,
+      "estimated_correlation_trials": [
+        0.25,
+        0.2,
+        0.25,
+        0.25,
+        0.25
+      ],
       "direction": "increases",
-      "confidence": "medium",
+      "confidence": "low",
+      "confidence_trials": [
+        "medium",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "A fast-growing, lower-cost exurban region with substantial recurring fire activity that periodically destroys affordable foothill housing stock, plausibly nudging homelessness up."
     },
     {
       "coc_number": "CA-609",
       "coc_name": "San Bernardino City & County CoC",
       "n_fire_years": 23,
-      "estimated_correlation": 0.3,
+      "estimated_correlation": 0.35,
+      "estimated_correlation_std": 0.0447,
+      "estimated_correlation_trials": [
+        0.3,
+        0.3,
+        0.4,
+        0.4,
+        0.35
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "Large, historically destructive fires (2003 Old Fire, 2007 fires, 2020 El Dorado Fire) hit a high-poverty county with substantial mountain-community housing exposure."
     },
     {
       "coc_number": "CA-611",
       "coc_name": "Oxnard, San Buenaventura/Ventura County CoC",
       "n_fire_years": 18,
-      "estimated_correlation": 0.45,
+      "estimated_correlation": 0.43,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.45,
+        0.4,
+        0.45,
+        0.4,
+        0.45
+      ],
       "direction": "increases",
       "confidence": "medium",
+      "confidence_trials": [
+        "medium",
+        "medium",
+        "medium",
+        "medium",
+        "medium"
+      ],
       "reasoning": "The 2017 Thomas Fire (one of California's largest ever at the time) and the 2006 Day Fire destroyed significant housing in Ventura County, a fairly direct displacement channel."
     },
     {
       "coc_number": "CA-612",
       "coc_name": "Glendale CoC",
       "n_fire_years": 2,
-      "estimated_correlation": 0.1,
-      "direction": "increases",
+      "estimated_correlation": 0.07,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.1,
+        0.05,
+        0.05,
+        0.05,
+        0.1
+      ],
+      "direction": "no_relationship",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Only two small fire years recorded in this small, dense, affluent urban CoC; minimal expected homelessness effect."
     },
     {
@@ -385,17 +1015,47 @@
       "coc_name": "Imperial County CoC",
       "n_fire_years": 0,
       "estimated_correlation": 0.0,
+      "estimated_correlation_std": 0.0,
+      "estimated_correlation_trials": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
       "direction": "no_relationship",
       "confidence": "high",
+      "confidence_trials": [
+        "high",
+        "high",
+        "high",
+        "high",
+        "high"
+      ],
       "reasoning": "A low-elevation desert county with essentially no wildland fire risk in this dataset; Imperial's homelessness is driven entirely by severe farmworker poverty, unrelated to fire."
     },
     {
       "coc_number": "CA-614",
       "coc_name": "San Luis Obispo County CoC",
       "n_fire_years": 14,
-      "estimated_correlation": 0.2,
+      "estimated_correlation": 0.22,
+      "estimated_correlation_std": 0.0245,
+      "estimated_correlation_trials": [
+        0.2,
+        0.2,
+        0.25,
+        0.2,
+        0.25
+      ],
       "direction": "increases",
       "confidence": "low",
+      "confidence_trials": [
+        "low",
+        "low",
+        "low",
+        "low",
+        "low"
+      ],
       "reasoning": "Mostly rural/agricultural fire exposure with a very large 2025 event too recent to be reflected in a historical trend; otherwise moderate fire activity in a relatively low-density county limits the expected direct homelessness link."
     }
   ]

@@ -437,6 +437,7 @@ const state = {
   fireGeoRaw: null,
   cocGeo: null,
   aiCompare: null,
+  aiEstimates: null,
   mapLoaded: false,
   hoveredCocId: null,
 };
@@ -807,8 +808,41 @@ function renderAiCompareChart() {
   const { summary, by_coc } = state.aiCompare;
   countEl.textContent = `(${summary.n_compared} CoCs)`;
   const biasWord = summary.mean_signed_error > 0.03 ? "overstates" : summary.mean_signed_error < -0.03 ? "understates" : "roughly tracks";
-  statBox.innerHTML = `Model <strong>${biasWord}</strong> the real fire&rarr;homelessness relationship on average (mean signed error <strong>${summary.mean_signed_error >= 0 ? "+" : ""}${summary.mean_signed_error.toFixed(3)}</strong>, mean |error| <strong>${summary.mean_abs_error.toFixed(3)}</strong>)<br>
+  let html = `Model <strong>${biasWord}</strong> the real fire&rarr;homelessness relationship on average (mean signed error <strong>${summary.mean_signed_error >= 0 ? "+" : ""}${summary.mean_signed_error.toFixed(3)}</strong>, mean |error| <strong>${summary.mean_abs_error.toFixed(3)}</strong>)<br>
   ${summary.pct_exaggerates}% exaggerate &middot; ${summary.pct_underestimates}% underestimate &middot; ${summary.pct_sign_flip}% sign flip &middot; ${summary.pct_roughly_matches}% roughly match`;
+
+  // Confidence calibration: does the model's own stated confidence track its
+  // actual accuracy? (It doesn't -- see CLAUDE.md / the write-up. This computes
+  // it live from by_coc rather than hardcoding the numbers.)
+  const errByConf = { low: [], medium: [], high: [] };
+  for (const r of by_coc) {
+    if (errByConf[r.ai_confidence]) errByConf[r.ai_confidence].push(r.abs_error);
+  }
+  const confLine = ["low", "medium", "high"]
+    .filter(c => errByConf[c].length)
+    .map(c => {
+      const errs = errByConf[c];
+      const mean = errs.reduce((s, v) => s + v, 0) / errs.length;
+      return `${c} (n=${errs.length}): |error| ${mean.toFixed(3)}`;
+    })
+    .join(" &middot; ");
+  if (confLine) {
+    html += `<br><span style="color:var(--text-muted);">By stated confidence &mdash; ${confLine}</span>`;
+  }
+
+  // Trial-to-trial stability: each estimate is the mean of 5 independently
+  // spawned blind sub-agent runs, not a single noisy sample. See
+  // ai_fire_influence_estimates.json / CLAUDE.md for the aggregation method.
+  if (state.aiEstimates && state.aiEstimates.estimates && state.aiEstimates.estimates.length) {
+    const ests = state.aiEstimates.estimates;
+    const nTrials = ests[0].estimated_correlation_trials ? ests[0].estimated_correlation_trials.length : 1;
+    if (nTrials > 1) {
+      const nNeverNegative = ests.filter(e => e.estimated_correlation_trials.every(v => v >= 0)).length;
+      const meanStd = ests.reduce((s, e) => s + (e.estimated_correlation_std || 0), 0) / ests.length;
+      html += `<br><span style="color:var(--text-muted);">Stability across ${nTrials} independent blind trials &mdash; ${nNeverNegative}/${ests.length} CoCs never got a single negative estimate; mean trial-to-trial std dev ${meanStd.toFixed(3)}</span>`;
+    }
+  }
+  statBox.innerHTML = html;
 
   const points = by_coc.map(r => ({
     x: r.ground_truth_r, y: r.ai_estimate, coc: r.coc_number, name: r.coc_name, cls: r.classification,
@@ -1146,6 +1180,11 @@ async function init() {
     state.aiCompare = await loadJSON("site/data/ai_vs_ground_truth.json");
   } catch (err) {
     state.aiCompare = null;
+  }
+  try {
+    state.aiEstimates = await loadJSON("site/data/ai_fire_influence_estimates.json");
+  } catch (err) {
+    state.aiEstimates = null;
   }
   renderAiCompareChart();
 
