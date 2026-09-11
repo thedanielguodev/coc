@@ -1,0 +1,186 @@
+{
+  "metric": "Overall Homeless",
+  "methodology": "For each year, a single cross-sectional Pearson r is computed across all CoCs with a PIT count that year, pairing that CoC's same-year acres burned (0 if no major fire) against its homeless count -- i.e. 44 separate single-year snapshots instead of one pooled 18-year regression. significant_p05 flags r's with an uncorrected p < 0.05; significant_bonferroni applies a Bonferroni correction for testing 18 years at once (alpha = 0.05/18 = 0.00278), since testing many years is expected to produce a small number of false positives by chance alone. leave_one_out_r recomputes r after dropping that year's single largest-acreage CoC, to check whether an apparent year-level correlation is actually driven by one outlier region (typically Los Angeles) rather than a real pattern.",
+  "years": [
+    {
+      "year": 2007,
+      "n": 40,
+      "pearson_r": 0.2603,
+      "p_value": 0.09648,
+      "significant_p05": false,
+      "leave_one_out_r": 0.3101,
+      "leave_one_out_dropped_coc": "CA-601",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2008,
+      "n": 40,
+      "pearson_r": -0.0739,
+      "p_value": 0.64772,
+      "significant_p05": false,
+      "leave_one_out_r": -0.0362,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2009,
+      "n": 40,
+      "pearson_r": 0.7556,
+      "p_value": 0.0,
+      "significant_p05": true,
+      "leave_one_out_r": 0.0452,
+      "leave_one_out_dropped_coc": "CA-600",
+      "significant_bonferroni": true
+    },
+    {
+      "year": 2010,
+      "n": 40,
+      "pearson_r": 0.3257,
+      "p_value": 0.0337,
+      "significant_p05": true,
+      "leave_one_out_r": 0.4329,
+      "leave_one_out_dropped_coc": "CA-604",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2011,
+      "n": 40,
+      "pearson_r": -0.0456,
+      "p_value": 0.77818,
+      "significant_p05": false,
+      "leave_one_out_r": 0.0041,
+      "leave_one_out_dropped_coc": "CA-604",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2012,
+      "n": 40,
+      "pearson_r": -0.0732,
+      "p_value": 0.65112,
+      "significant_p05": false,
+      "leave_one_out_r": 0.0282,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2013,
+      "n": 40,
+      "pearson_r": 0.0173,
+      "p_value": 0.91517,
+      "significant_p05": false,
+      "leave_one_out_r": 0.2732,
+      "leave_one_out_dropped_coc": "CA-526",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2014,
+      "n": 40,
+      "pearson_r": -0.0781,
+      "p_value": 0.62903,
+      "significant_p05": false,
+      "leave_one_out_r": -0.0613,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2015,
+      "n": 43,
+      "pearson_r": -0.1224,
+      "p_value": 0.42964,
+      "significant_p05": false,
+      "leave_one_out_r": -0.1064,
+      "leave_one_out_dropped_coc": "CA-523",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2016,
+      "n": 43,
+      "pearson_r": 0.2072,
+      "p_value": 0.17508,
+      "significant_p05": false,
+      "leave_one_out_r": 0.3157,
+      "leave_one_out_dropped_coc": "CA-506",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2017,
+      "n": 43,
+      "pearson_r": -0.0433,
+      "p_value": 0.78143,
+      "significant_p05": false,
+      "leave_one_out_r": -0.0162,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2018,
+      "n": 43,
+      "pearson_r": -0.0115,
+      "p_value": 0.94115,
+      "significant_p05": false,
+      "leave_one_out_r": 0.0239,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2019,
+      "n": 44,
+      "pearson_r": 0.0486,
+      "p_value": 0.75226,
+      "significant_p05": false,
+      "leave_one_out_r": 0.106,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2020,
+      "n": 44,
+      "pearson_r": 0.0351,
+      "p_value": 0.82003,
+      "significant_p05": false,
+      "leave_one_out_r": 0.0727,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2021,
+      "n": 44,
+      "pearson_r": -0.069,
+      "p_value": 0.65387,
+      "significant_p05": false,
+      "leave_one_out_r": -0.133,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2022,
+      "n": 44,
+      "pearson_r": -0.0476,
+      "p_value": 0.75745,
+      "significant_p05": false,
+      "leave_one_out_r": -0.035,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2023,
+      "n": 44,
+      "pearson_r": -0.0225,
+      "p_value": 0.88411,
+      "significant_p05": false,
+      "leave_one_out_r": -0.0052,
+      "leave_one_out_dropped_coc": "CA-516",
+      "significant_bonferroni": false
+    },
+    {
+      "year": 2024,
+      "n": 44,
+      "pearson_r": 0.0858,
+      "p_value": 0.57656,
+      "significant_p05": false,
+      "leave_one_out_r": 0.362,
+      "leave_one_out_dropped_coc": "CA-527",
+      "significant_bonferroni": false
+    }
+  ]
+}
