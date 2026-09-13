@@ -554,6 +554,13 @@
         </div>
         <div class="empty-hint" style="margin-top:8px; display:block;">Click any column header to sort, click a row to select that CoC on the map.</div>
       </div>
+
+      <div class="card" id="yearFactorCard" style="display:none;">
+        <h2>Is year a factor in the AI's error?</h2>
+        <div id="yearFactorStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
+        <div id="yearFactorChart" class="chart" style="height:170px;"></div>
+        <div class="empty-hint" style="margin-top:8px; display:block;">Raised in class: does the AI's error track <em>when</em> a CoC's worst fire happened &mdash; e.g. more recent, more widely-covered fires producing bigger overestimates? Each point is one CoC: x is that CoC's peak (largest-acreage) fire year, y is the AI's absolute error for it. A flat trend line means no &mdash; recency doesn't predict how wrong the AI is. See paper_response.md for two other cuts on this same question (mean error by decade; ground truth split into 2007-2015 vs 2016-2024), both also null.</div>
+      </div>
     </div>
 
     <div class="tab-panel" data-tab-panel="cases" hidden>
@@ -807,8 +814,10 @@ function drawBarChart(containerId, bars, opts) {
 }
 
 function drawScatterChart(containerId, points, opts) {
-  const { height, xDomain, yDomain, xLabel, yLabel, fitLine, diagLine, pointColor, tooltipFn, tickFormat, onClick } = opts;
+  const { height, xDomain, yDomain, xLabel, yLabel, fitLine, diagLine, pointColor, tooltipFn, tickFormat, xTickFormat, yTickFormat, onClick } = opts;
   const fmtTick = tickFormat || d3.format("~s");
+  const fmtXTick = xTickFormat || fmtTick;
+  const fmtYTick = yTickFormat || fmtTick;
   const el = document.getElementById(containerId);
   const margin = { top: 8, right: 10, bottom: 30, left: 42 };
   const innerW = CHART_W - margin.left - margin.right;
@@ -851,9 +860,9 @@ function drawScatterChart(containerId, points, opts) {
     .on("click", (event, d) => { if (onClick) onClick(d); })
     .append("title").text(tooltipFn);
 
-  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(fmtTick));
+  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(fmtYTick));
   g.append("g").attr("transform", `translate(0,${innerH})`)
-    .call(d3.axisBottom(x).ticks(5).tickFormat(fmtTick));
+    .call(d3.axisBottom(x).ticks(5).tickFormat(fmtXTick));
 
   svg.append("text").attr("class", "axis-label")
     .attr("x", margin.left + innerW / 2).attr("y", height - 2).attr("text-anchor", "middle")
@@ -1212,27 +1221,9 @@ function renderAiCompareChart() {
     }
   }
 
-  // Is year a factor in the bias? (Raised in class: does the AI's error track
-  // *when* a CoC's worst fire happened -- e.g. more recent, more widely
-  // covered fires producing bigger overestimates.) Computed live from data
-  // already on the page: each CoC's peak (largest-acreage) fire year vs. its
-  // AI error. See paper_response.md for the full write-up and two other cuts
-  // on this same question (mean error by decade; ground truth split into
-  // 2007-2015 vs 2016-2024) -- all three come back null.
-  if (state.firesByCoc && state.firesByCoc.size) {
-    const yearPoints = [];
-    for (const r of by_coc) {
-      const rows = state.firesByCoc.get(r.coc_number);
-      if (!rows || !rows.length) continue;
-      const peakYear = rows.reduce((best, row) => (row.acres_burned > (best?.acres_burned ?? -1) ? row : best), null)?.year;
-      if (peakYear != null) yearPoints.push({ x: peakYear, y: r.abs_error });
-    }
-    const yearErrorR = yearPoints.length >= 2 ? pearson(yearPoints) : null;
-    if (yearErrorR != null) {
-      html += `<br><span style="color:var(--text-muted);">Is year a factor? Peak-fire-year (recency) vs. AI |error| across CoCs: r&nbsp;=&nbsp;${yearErrorR.toFixed(3)} &mdash; no, more recent/famous fires don't predict bigger AI errors.</span>`;
-    }
-  }
   statBox.innerHTML = html;
+
+  renderYearFactorChart(by_coc);
 
   const CONF_COLOR = { low: "#3987e566", medium: "#3987e5cc", high: "#e0692c" };
   const points = by_coc.map(r => ({
@@ -1300,6 +1291,54 @@ function renderAiRankingTable(byCoc) {
       arrow.textContent = rankingSort.dir === 1 ? "▲" : "▼";
       th.appendChild(arrow);
     }
+  });
+}
+
+// Raised in class: does the AI's error track *when* a CoC's worst fire
+// happened -- e.g. more recent, more widely-covered fires producing bigger
+// overestimates? Computed live from data already loaded (state.firesByCoc +
+// the AI-compare summary), no separate pipeline step. See paper_response.md
+// for two other cuts on this same question (mean error by decade; ground
+// truth split into 2007-2015 vs 2016-2024) -- all three come back null.
+function renderYearFactorChart(byCoc) {
+  const card = document.getElementById("yearFactorCard");
+  const statBox = document.getElementById("yearFactorStat");
+  if (!byCoc || !byCoc.length || !state.firesByCoc || !state.firesByCoc.size) {
+    card.style.display = "none";
+    return;
+  }
+
+  const points = [];
+  for (const r of byCoc) {
+    const rows = state.firesByCoc.get(r.coc_number);
+    if (!rows || !rows.length) continue;
+    const peakYear = rows.reduce((best, row) => (row.acres_burned > (best?.acres_burned ?? -1) ? row : best), null)?.year;
+    if (peakYear != null) points.push({ x: peakYear, y: r.abs_error, coc: r.coc_number, name: r.coc_name });
+  }
+  if (points.length < 2) {
+    card.style.display = "none";
+    return;
+  }
+  card.style.display = "block";
+
+  const r = pearson(points);
+  statBox.innerHTML = `Peak-fire-year (recency) vs. AI |error|: r&nbsp;=&nbsp;<strong>${r.toFixed(3)}</strong> &mdash; <strong>no</strong>, more recent/famous fires don't predict bigger AI errors. (Flat line below = no relationship.)`;
+
+  const fit = linearFit(points);
+  const minYear = Math.min(...points.map(p => p.x));
+  const maxYear = Math.max(...points.map(p => p.x));
+
+  drawScatterChart("yearFactorChart", points, {
+    height: 170,
+    xDomain: [minYear, maxYear],
+    yDomain: [0, Math.max(0.1, ...points.map(p => p.y))],
+    xLabel: "CoC's peak fire year",
+    yLabel: "AI |error|",
+    fitLine: { x1: minYear, y1: fit.intercept + fit.slope * minYear, x2: maxYear, y2: fit.intercept + fit.slope * maxYear },
+    xTickFormat: d3.format("d"),
+    yTickFormat: d3.format(".2f"),
+    onClick: d => selectCoc(d.coc),
+    tooltipFn: d => `${d.name} (${d.coc}): peak fire year ${d.x}, AI |error| = ${d.y.toFixed(2)}`,
   });
 }
 
