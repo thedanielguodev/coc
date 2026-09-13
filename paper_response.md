@@ -22,4 +22,29 @@ Manvi et al. compare LLM zero-shot predictions against real geospatial ground tr
 
 ## Synthesis for my own framing
 
-Both papers reinforce the same structural point I should lean on in my write-up: an LLM's error against ground truth is more interesting, and more publishable, when it is *systematic* (same direction every time, replicates across independent trials) rather than merely noisy. My own results already show this — across 5 (soon 10) independent blind trials, 0 of 220+ per-CoC estimates were ever negative, and the bias direction (overstating the fire→homelessness relationship) was stable across every trial. That stability is what elevates "the AI got this wrong" into "the AI has a specific, repeatable failure mode," which is the same evidentiary bar both assigned papers use.
+Both papers reinforce the same structural point I should lean on in my write-up: an LLM's error against ground truth is more interesting, and more publishable, when it is *systematic* (same direction every time, replicates across independent trials) rather than merely noisy. My own results already show this — across 10 independent blind trials, 0 of 440 per-CoC estimates were ever negative, and the bias direction (overstating the fire→homelessness relationship) was stable across every trial. That stability is what elevates "the AI got this wrong" into "the AI has a specific, repeatable failure mode," which is the same evidentiary bar both assigned papers use.
+
+## Robustness check: is year a factor in the bias? (raised in class, 2026-09-06)
+
+Bo Zhao's direct suggestion after seeing the dashboard's year control: since the ground truth and the AI's bias both vary across CoCs, does *when* a CoC's fire history happened change anything? I checked this three ways rather than picking whichever framing looked most favorable:
+
+| Check | Result |
+|---|---|
+| Correlation between a CoC's peak (largest-acreage) fire year and the AI's signed error for that CoC | r = -0.017 |
+| Same, against absolute error | r = +0.007 |
+| Mean absolute error grouped by decade of peak fire year (2000s / 2010s / 2020s) | 0.264 / 0.421 / 0.290 — no monotonic trend |
+| Ground truth statewide pooled r, first half of the data (2007–2015) vs. second half (2016–2024) | +0.041 vs. -0.001 — both still ≈ zero |
+
+**Conclusion: no, year is not a factor.** The null ground-truth result and the AI's overestimation bias are both stable across the full 2007–2024 period — not concentrated in, or explained by, any particular era, and not correlated with how recent (and presumably how well-covered in the model's training data) a CoC's worst fire was. This is a useful negative result in its own right: it rules out "the AI is just overweighting recent, widely-reported disasters" as the specific mechanism, even though that was my leading hypothesis for *why* the bias exists. The bias appears to be a more general prior about wildfire and housing instability, not narrowly anchored to famous recent events. This check is also computed live on the dashboard (AI vs. Ground Truth tab, "Is year a factor?" line) from the same underlying data, so it stays correct if the estimates are regenerated.
+
+## Limitations (raised in class, 2026-09-06)
+
+Bo Zhao asked everyone to discuss, in a limitations/discussion section, that the underlying data itself can carry bias or gaps independent of anything the AI does. For this project:
+
+- **HUD PIT counts are a single-night snapshot**, taken by volunteer counts that vary in coverage and methodology year to year and CoC to CoC — not a continuous census. Two CoCs' counts in the same year aren't necessarily comparable in *how* thoroughly they were counted, only in what each reports.
+- **HUD's homelessness definition is narrow by design**: it excludes people doubled up with family/friends, in motels via insurance, or in FEMA transitional housing — exactly the categories a lot of disaster-displaced people fall into (see the Butte County case study). The near-zero correlation may partly reflect this definitional boundary, not just an absence of real-world effect.
+- **CAL FIRE's DINS structure-damage data only starts in 2013** — the "structures destroyed" robustness check earlier in this project silently has no signal for 2000-2012 fires, which could bias that specific check toward the modern era without it being visible in the results.
+- **The ≥1,000-acre fire filter** (kept for dataset size/browser performance) excludes smaller fires that still destroyed housing — a small subdivision fire under 1,000 acres wouldn't appear in this dataset at all, even if it displaced people.
+- **CoC boundaries are treated as fixed** across 2007–2024 in this analysis (the current boundary set is applied to all years), when in reality HUD has periodically merged, split, or renamed CoCs over that period. Years compared for the "same" CoC number may not correspond to exactly the same geographic footprint throughout.
+- **The AI estimates were produced via batched sub-agent calls** (all 44 regions given to the model in one context per trial, not fully isolated one-at-a-time API calls) because no billed Anthropic API key was available. This means a trial's estimate for one region could in principle be influenced by seeing the other 43 in the same context, which a fully isolated per-region call (the original design) would have prevented.
+- **Some per-CoC ground-truth Pearson r values rest on very few data points** — a handful of CoCs have only 1-2 recorded fire-years, making their individual "ground truth" r a noisy estimate in its own right, not a fixed truth. The statewide pooled r (n=756) is the more reliable headline number for this reason.

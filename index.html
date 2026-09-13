@@ -1211,6 +1211,27 @@ function renderAiCompareChart() {
       html += `<br><span style="color:var(--text-muted);">Stability across ${nTrials} independent blind trials &mdash; ${nNeverNegative}/${ests.length} CoCs never got a single negative estimate across ${nTrials * ests.length} total guesses; mean trial-to-trial std dev ${meanStd.toFixed(3)}</span>`;
     }
   }
+
+  // Is year a factor in the bias? (Raised in class: does the AI's error track
+  // *when* a CoC's worst fire happened -- e.g. more recent, more widely
+  // covered fires producing bigger overestimates.) Computed live from data
+  // already on the page: each CoC's peak (largest-acreage) fire year vs. its
+  // AI error. See paper_response.md for the full write-up and two other cuts
+  // on this same question (mean error by decade; ground truth split into
+  // 2007-2015 vs 2016-2024) -- all three come back null.
+  if (state.firesByCoc && state.firesByCoc.size) {
+    const yearPoints = [];
+    for (const r of by_coc) {
+      const rows = state.firesByCoc.get(r.coc_number);
+      if (!rows || !rows.length) continue;
+      const peakYear = rows.reduce((best, row) => (row.acres_burned > (best?.acres_burned ?? -1) ? row : best), null)?.year;
+      if (peakYear != null) yearPoints.push({ x: peakYear, y: r.abs_error });
+    }
+    const yearErrorR = yearPoints.length >= 2 ? pearson(yearPoints) : null;
+    if (yearErrorR != null) {
+      html += `<br><span style="color:var(--text-muted);">Is year a factor? Peak-fire-year (recency) vs. AI |error| across CoCs: r&nbsp;=&nbsp;${yearErrorR.toFixed(3)} &mdash; no, more recent/famous fires don't predict bigger AI errors.</span>`;
+    }
+  }
   statBox.innerHTML = html;
 
   const CONF_COLOR = { low: "#3987e566", medium: "#3987e5cc", high: "#e0692c" };
