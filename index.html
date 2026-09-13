@@ -280,6 +280,130 @@
     color: var(--text-muted);
     font-style: italic;
   }
+  .card { transition: box-shadow .18s ease; }
+  .card:hover { box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 14px 30px -12px rgba(0,0,0,0.75); }
+  details.card summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  details.card summary::-webkit-details-marker { display: none; }
+  details.card summary::after {
+    content: "";
+    width: 8px; height: 8px;
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+    transform: rotate(45deg);
+    transition: transform .15s ease;
+    flex-shrink: 0;
+  }
+  details.card[open] summary::after { transform: rotate(-135deg); }
+  details.card .details-body { margin-top: 12px; }
+  aside::-webkit-scrollbar { width: 8px; }
+  aside::-webkit-scrollbar-track { background: transparent; }
+  aside::-webkit-scrollbar-thumb { background: var(--panel-2); border-radius: 4px; }
+  .tabbar {
+    display: flex;
+    gap: 3px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 3px;
+  }
+  .tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 7px 4px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font);
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+    white-space: nowrap;
+  }
+  .tab-btn:hover:not(.active) { color: var(--text-dim); }
+  .tab-btn.active {
+    background: var(--panel);
+    color: var(--text);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 4px 12px -6px rgba(0,0,0,0.6);
+  }
+  .tab-panel { display: flex; flex-direction: column; gap: 14px; }
+  .tab-panel[hidden] { display: none; }
+  .search-wrap { position: relative; margin-top: 10px; }
+  .search-input {
+    width: 100%;
+    background: var(--panel-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 7px 10px;
+    font-size: 12.5px;
+    font-family: var(--font);
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0; right: 0;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    max-height: 240px;
+    overflow-y: auto;
+    z-index: 30;
+    box-shadow: 0 16px 32px -10px rgba(0,0,0,0.7);
+  }
+  .search-result-item {
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover, .search-result-item.hl { background: var(--panel); color: var(--text); }
+  .search-result-item b { color: var(--text); }
+  .data-table-wrap {
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .data-table-wrap::-webkit-scrollbar { width: 7px; }
+  .data-table-wrap::-webkit-scrollbar-thumb { background: var(--panel-2); border-radius: 4px; }
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  table.data-table thead th {
+    position: sticky; top: 0;
+    text-align: left;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    background: var(--panel-2);
+    padding: 7px 8px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--hairline);
+    white-space: nowrap;
+  }
+  table.data-table thead th:hover { color: var(--text); }
+  table.data-table thead th .arrow { color: var(--accent-2); margin-left: 3px; }
+  table.data-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--hairline);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  table.data-table tbody tr { cursor: pointer; transition: background .1s ease; }
+  table.data-table tbody tr:hover td { background: var(--panel-2); color: var(--text); }
+  table.data-table tbody tr.selected td { background: var(--accent-2-soft); color: var(--text); }
+  table.data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
   footer {
     padding: 8px 22px;
     font-size: 11px;
@@ -301,12 +425,12 @@
   <div id="map"></div>
 
   <aside>
-    <div class="card">
-      <h2>Research question</h2>
-      <div style="font-size:12.5px; color:var(--text-dim); line-height:1.55;">
-        How accurately can AI estimate and interpret the relationship between wildfire-related destruction and homelessness across California CoCs, compared with the relationship observed in real HUD/CAL&nbsp;FIRE data? See the two panels below: <strong>fire &rarr; homelessness correlation</strong> (the ground truth) and <strong>AI vs. ground truth</strong> (whether an LLM shown only fire history infers the same weak relationship, or a stronger one).
+    <details class="card" open>
+      <summary><h2 style="margin:0;">Research question</h2></summary>
+      <div class="details-body" style="font-size:12.5px; color:var(--text-dim); line-height:1.55;">
+        How accurately can AI estimate and interpret the relationship between wildfire-related destruction and homelessness across California CoCs, compared with the relationship observed in real HUD/CAL&nbsp;FIRE data? See the <strong>Correlation</strong> tab (the ground truth) and <strong>AI vs. Truth</strong> tab (whether an LLM shown only fire history infers the same weak relationship, or a stronger one).
       </div>
-    </div>
+    </details>
 
     <div class="card">
       <h2>Controls</h2>
@@ -329,6 +453,10 @@
           Show homeless counts on map
         </label>
       </div>
+      <div class="search-wrap">
+        <input type="text" id="cocSearch" class="search-input" placeholder="Jump to a CoC by name or number&hellip;" autocomplete="off">
+        <div id="cocSearchResults" class="search-results" hidden></div>
+      </div>
     </div>
 
     <div class="card">
@@ -345,70 +473,102 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2>Statewide trend, 2007&ndash;2024</h2>
-      <div class="trend-stack">
-        <div class="trend-item">
-          <div class="trend-label"><span class="key blue"></span>Homeless count</div>
-          <div id="trendChartHomeless" class="chart" style="height:78px;"></div>
+    <div class="tabbar">
+      <button class="tab-btn active" data-tab="trends">Trends</button>
+      <button class="tab-btn" data-tab="correlation">Correlation</button>
+      <button class="tab-btn" data-tab="ai">AI vs. Truth</button>
+      <button class="tab-btn" data-tab="cases">Case Study</button>
+    </div>
+
+    <div class="tab-panel" data-tab-panel="trends">
+      <div class="card">
+        <h2>Statewide trend, 2007&ndash;2024</h2>
+        <div class="trend-stack">
+          <div class="trend-item">
+            <div class="trend-label"><span class="key blue"></span>Homeless count</div>
+            <div id="trendChartHomeless" class="chart" style="height:78px;"></div>
+          </div>
+          <div class="trend-item">
+            <div class="trend-label"><span class="key orange"></span>Acres burned (major fires)</div>
+            <div id="trendChartFire" class="chart" style="height:90px;"></div>
+          </div>
         </div>
-        <div class="trend-item">
-          <div class="trend-label"><span class="key orange"></span>Acres burned (major fires)</div>
-          <div id="trendChartFire" class="chart" style="height:90px;"></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-tab-panel="correlation" hidden>
+      <div class="card">
+        <h2>Fire &rarr; homelessness correlation</h2>
+        <div class="control-row">
+          <label for="corrLag" style="min-width:110px;">Timing</label>
+          <select id="corrLag">
+            <option value="0">Same year</option>
+            <option value="1" selected>Fire year &rarr; next year's count</option>
+          </select>
         </div>
+        <label class="toggle-row" style="min-width:0; margin-top:2px;">
+          <input type="checkbox" id="corrExcludeZero">
+          Only CoC-years with a major fire on record
+        </label>
+        <div id="corrStat" style="font-size:12.5px; color:var(--text-dim); margin:10px 0;">&mdash;</div>
+        <div id="corrChart" class="chart" style="height:190px;"></div>
+        <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC in one year: acres burned within that CoC's boundary (x) vs. its homeless count (y). Points at x&nbsp;=&nbsp;0 are CoC-years with no major (&ge;1,000-acre) fire on record. Line is the least-squares fit. Default timing is fire-year &rarr; next year's count (t&nbsp;&rarr;&nbsp;t+1), on the theory that displacement shows up in the following PIT count rather than the same one; toggle to "Same year" to compare. Large urban CoCs dominate homeless totals but rarely burn heavily, while large rural CoCs burn heavily but have small populations &mdash; this population/geography mismatch pulls the raw correlation toward zero independent of any real relationship, so treat r as a starting point, not a verdict.</div>
+      </div>
+
+      <div class="card">
+        <h2>Fire &rarr; homelessness, year by year</h2>
+        <div id="yearlyCorrStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
+        <div id="yearlyCorrChart" class="chart" style="height:150px;"></div>
+        <div class="empty-hint" style="margin-top:8px; display:block;">The pooled chart above averages all 18 years together, which could hide a real effect that only shows up in specific catastrophic-fire years. This instead computes a separate cross-sectional correlation <em>within</em> each single year, across all 44 CoCs. Orange bars pass an uncorrected p&nbsp;&lt;&nbsp;0.05; solid orange survives correcting for testing 18 years at once. Hover any bar for its leave-one-out check (does the result survive dropping that year's single largest-acreage CoC?). Generated by compute_yearly_fire_influence.py.</div>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Fire &rarr; homelessness correlation</h2>
-      <div class="control-row">
-        <label for="corrLag" style="min-width:110px;">Timing</label>
-        <select id="corrLag">
-          <option value="0">Same year</option>
-          <option value="1" selected>Fire year &rarr; next year's count</option>
-        </select>
+    <div class="tab-panel" data-tab-panel="ai" hidden>
+      <div class="card">
+        <h2>AI vs. ground truth <span class="count" id="aiCompareCount"></span></h2>
+        <div id="aiCompareStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
+        <div id="aiCompareChart" class="chart" style="height:190px; display:none;"></div>
+        <div id="aiCompareLegend" style="display:none; gap:14px; font-size:11px; color:var(--text-muted); margin-top:6px; align-items:center; flex-wrap:wrap;">
+          <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#3987e566; width:9px; height:9px;"></span>low confidence</span>
+          <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#3987e5cc; width:9px; height:9px;"></span>medium</span>
+          <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#e0692c; width:9px; height:9px;"></span>high</span>
+          <span style="display:inline-flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:2px; background:#898781;"></span>y&nbsp;=&nbsp;x (perfect)</span>
+          <span style="display:inline-flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:2px; background:#e0692c;"></span>AI's actual trend</span>
+        </div>
+        <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC, colored by the AI's own stated confidence for that estimate &mdash; click a point (or a table row below) to select that CoC on the map. X is the real per-CoC Pearson r (same-year lag) between fire acreage and homeless count, computed directly from the joined data. Y is an LLM's estimate of that same figure, made from that CoC's wildfire history alone &mdash; it was never shown the actual homeless counts. The gray dashed line is y&nbsp;=&nbsp;x (what perfect agreement would look like); the solid orange line is the actual least-squares trend through the AI's own guesses &mdash; how flat it is versus the diagonal shows the AI's guesses barely track the real value at all, not just that they're shifted upward. Generated by ai_estimate_influence.py (needs an ANTHROPIC_API_KEY) or a blind Claude Code sub-agent given only fire histories, then compare_ai_vs_ground_truth.py; this panel is blank until those have been run. See CLAUDE.md for how these estimates were produced.</div>
       </div>
-      <label class="toggle-row" style="min-width:0; margin-top:2px;">
-        <input type="checkbox" id="corrExcludeZero">
-        Only CoC-years with a major fire on record
-      </label>
-      <div id="corrStat" style="font-size:12.5px; color:var(--text-dim); margin:10px 0;">&mdash;</div>
-      <div id="corrChart" class="chart" style="height:190px;"></div>
-      <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC in one year: acres burned within that CoC's boundary (x) vs. its homeless count (y). Points at x&nbsp;=&nbsp;0 are CoC-years with no major (&ge;1,000-acre) fire on record. Line is the least-squares fit. Default timing is fire-year &rarr; next year's count (t&nbsp;&rarr;&nbsp;t+1), on the theory that displacement shows up in the following PIT count rather than the same one; toggle to "Same year" to compare. Large urban CoCs dominate homeless totals but rarely burn heavily, while large rural CoCs burn heavily but have small populations &mdash; this population/geography mismatch pulls the raw correlation toward zero independent of any real relationship, so treat r as a starting point, not a verdict.</div>
-    </div>
 
-    <div class="card">
-      <h2>Fire &rarr; homelessness, year by year</h2>
-      <div id="yearlyCorrStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
-      <div id="yearlyCorrChart" class="chart" style="height:150px;"></div>
-      <div class="empty-hint" style="margin-top:8px; display:block;">The pooled chart above averages all 18 years together, which could hide a real effect that only shows up in specific catastrophic-fire years. This instead computes a separate cross-sectional correlation <em>within</em> each single year, across all 44 CoCs. Orange bars pass an uncorrected p&nbsp;&lt;&nbsp;0.05; solid orange survives correcting for testing 18 years at once. Hover any bar for its leave-one-out check (does the result survive dropping that year's single largest-acreage CoC?). Generated by compute_yearly_fire_influence.py.</div>
-    </div>
-
-    <div class="card">
-      <h2>AI vs. ground truth <span class="count" id="aiCompareCount"></span></h2>
-      <div id="aiCompareStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
-      <div id="aiCompareChart" class="chart" style="height:190px; display:none;"></div>
-      <div id="aiCompareLegend" style="display:none; gap:14px; font-size:11px; color:var(--text-muted); margin-top:6px; align-items:center; flex-wrap:wrap;">
-        <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#3987e566; width:9px; height:9px;"></span>low confidence</span>
-        <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#3987e5cc; width:9px; height:9px;"></span>medium</span>
-        <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#e0692c; width:9px; height:9px;"></span>high</span>
-        <span style="display:inline-flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:2px; background:#898781;"></span>y&nbsp;=&nbsp;x (perfect)</span>
-        <span style="display:inline-flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:2px; background:#e0692c;"></span>AI's actual trend</span>
+      <div class="card" id="aiRankingCard" style="display:none;">
+        <h2>Per-CoC ranking</h2>
+        <div class="data-table-wrap">
+          <table class="data-table" id="aiRankingTable">
+            <thead><tr>
+              <th data-sort="coc_name">CoC</th>
+              <th data-sort="ground_truth_r">Real r</th>
+              <th data-sort="ai_estimate">AI r</th>
+              <th data-sort="abs_error">|Error|</th>
+              <th data-sort="ai_confidence">Conf.</th>
+            </tr></thead>
+            <tbody id="aiRankingBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-hint" style="margin-top:8px; display:block;">Click any column header to sort, click a row to select that CoC on the map.</div>
       </div>
-      <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC, colored by the AI's own stated confidence for that estimate. X is the real per-CoC Pearson r (same-year lag) between fire acreage and homeless count, computed directly from the joined data. Y is an LLM's estimate of that same figure, made from that CoC's wildfire history alone &mdash; it was never shown the actual homeless counts. The gray dashed line is y&nbsp;=&nbsp;x (what perfect agreement would look like); the solid orange line is the actual least-squares trend through the AI's own guesses &mdash; how flat it is versus the diagonal shows the AI's guesses barely track the real value at all, not just that they're shifted upward. Generated by ai_estimate_influence.py (needs an ANTHROPIC_API_KEY) or a blind Claude Code sub-agent given only fire histories, then compare_ai_vs_ground_truth.py; this panel is blank until those have been run. See CLAUDE.md for how these estimates were produced.</div>
     </div>
 
-    <div class="card">
-      <h2>Case study: Paradise, Butte County</h2>
-      <div id="caseStudyStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
-      <div id="caseStudyChart" class="chart" style="height:150px;"></div>
-      <div class="empty-hint" style="margin-top:8px; display:block;">The 2018 Camp Fire destroyed the town of Paradise almost entirely &mdash; the single most catastrophic housing-loss wildfire event in this dataset. Even here, Butte County's official PIT homeless count barely moves relative to its own noisy year-to-year swings. This is why the pooled statewide null result above isn't a data artifact: it holds up even in the most extreme real case, because HUD's PIT count only captures people literally unsheltered or in emergency shelter on one specific night &mdash; it structurally excludes most disaster-displaced people (doubled up with family, in FEMA housing, or relocated out of county).</div>
-    </div>
+    <div class="tab-panel" data-tab-panel="cases" hidden>
+      <div class="card">
+        <h2>Case study: Paradise, Butte County</h2>
+        <div id="caseStudyStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
+        <div id="caseStudyChart" class="chart" style="height:150px;"></div>
+        <div class="empty-hint" style="margin-top:8px; display:block;">The 2018 Camp Fire destroyed the town of Paradise almost entirely &mdash; the single most catastrophic housing-loss wildfire event in this dataset. Even here, Butte County's official PIT homeless count barely moves relative to its own noisy year-to-year swings. This is why the pooled statewide null result above isn't a data artifact: it holds up even in the most extreme real case, because HUD's PIT count only captures people literally unsheltered or in emergency shelter on one specific night &mdash; it structurally excludes most disaster-displaced people (doubled up with family, in FEMA housing, or relocated out of county).</div>
+      </div>
 
-    <div class="card">
-      <h2>Selected CoC</h2>
-      <div id="selectedCoc"><span class="empty-hint">Click a region on the map for its detail.</span></div>
-      <div id="cocChart" class="chart" style="height:150px; margin-top:10px; display:none;"></div>
+      <div class="card">
+        <h2>Selected CoC</h2>
+        <div id="selectedCoc"><span class="empty-hint">Click a region on the map, search above, or click an AI-comparison point/row to see its detail.</span></div>
+        <div id="cocChart" class="chart" style="height:150px; margin-top:10px; display:none;"></div>
+      </div>
     </div>
 
     <div class="legend">
@@ -551,6 +711,14 @@ function currentMax() {
 
 const CHART_W = 328;
 
+// A light fade-in on every redraw (year/metric/tab changes trigger a full
+// clear-and-rebuild of the SVG, not a data-join transition) gives charts a
+// "live" feel without the complexity of enter/update/exit transitions on
+// three different mark types.
+function fadeInChart(container) {
+  container.style("opacity", 0).transition().duration(220).style("opacity", 1);
+}
+
 function drawLineChart(containerId, years, values, { color, fillColor, showXAxis, unit }) {
   const el = document.getElementById(containerId);
   const height = el.clientHeight || parseInt(el.style.height, 10) || 100;
@@ -560,6 +728,7 @@ function drawLineChart(containerId, years, values, { color, fillColor, showXAxis
 
   const container = d3.select(el);
   container.selectAll("*").remove();
+  fadeInChart(container);
   const svg = container.append("svg").attr("width", CHART_W).attr("height", height);
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -603,6 +772,7 @@ function drawBarChart(containerId, bars, opts) {
   const el = document.getElementById(containerId);
   const container = d3.select(el);
   container.selectAll("*").remove();
+  fadeInChart(container);
   const svg = container.append("svg").attr("width", width).attr("height", height);
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -637,7 +807,7 @@ function drawBarChart(containerId, bars, opts) {
 }
 
 function drawScatterChart(containerId, points, opts) {
-  const { height, xDomain, yDomain, xLabel, yLabel, fitLine, diagLine, pointColor, tooltipFn, tickFormat } = opts;
+  const { height, xDomain, yDomain, xLabel, yLabel, fitLine, diagLine, pointColor, tooltipFn, tickFormat, onClick } = opts;
   const fmtTick = tickFormat || d3.format("~s");
   const el = document.getElementById(containerId);
   const margin = { top: 8, right: 10, bottom: 30, left: 42 };
@@ -646,6 +816,7 @@ function drawScatterChart(containerId, points, opts) {
 
   const container = d3.select(el);
   container.selectAll("*").remove();
+  fadeInChart(container);
   const svg = container.append("svg").attr("width", CHART_W).attr("height", height);
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -674,6 +845,10 @@ function drawScatterChart(containerId, points, opts) {
     .attr("cx", d => x(d.x)).attr("cy", d => y(d.y))
     .attr("r", 4).attr("fill", d => typeof pointColor === "function" ? pointColor(d) : (pointColor || "#3987e5cc"))
     .attr("stroke", "#0d0d0d").attr("stroke-width", 1)
+    .style("cursor", onClick ? "pointer" : "default")
+    .on("mouseover", function () { d3.select(this).attr("r", 6); })
+    .on("mouseout", function () { d3.select(this).attr("r", 4); })
+    .on("click", (event, d) => { if (onClick) onClick(d); })
     .append("title").text(tooltipFn);
 
   g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(fmtTick));
@@ -1057,6 +1232,53 @@ function renderAiCompareChart() {
     tickFormat: d3.format(".1f"),
     pointColor: d => CONF_COLOR[d.conf] || "#3987e5cc",
     tooltipFn: d => `${d.name} (${d.coc}): ground truth r = ${d.x.toFixed(2)}, AI estimate = ${d.y.toFixed(2)} (${d.conf} confidence) — ${d.cls.replace(/_/g, " ")}`,
+    onClick: d => selectCoc(d.coc),
+  });
+
+  renderAiRankingTable(by_coc);
+}
+
+let rankingSort = { key: "abs_error", dir: -1 };
+
+function renderAiRankingTable(byCoc) {
+  const card = document.getElementById("aiRankingCard");
+  const tbody = document.getElementById("aiRankingBody");
+  if (!byCoc || !byCoc.length) {
+    card.style.display = "none";
+    return;
+  }
+  card.style.display = "block";
+
+  const rows = byCoc.slice().sort((a, b) => {
+    const av = a[rankingSort.key], bv = b[rankingSort.key];
+    const cmp = typeof av === "string" ? av.localeCompare(bv) : av - bv;
+    return cmp * rankingSort.dir;
+  });
+
+  tbody.innerHTML = "";
+  for (const r of rows) {
+    const tr = document.createElement("tr");
+    tr.dataset.coc = r.coc_number;
+    if (r.coc_number === state.selectedCocNum) tr.classList.add("selected");
+    tr.innerHTML = `
+      <td>${r.coc_name.length > 26 ? r.coc_name.slice(0, 24) + "…" : r.coc_name} <span style="color:var(--text-muted);">(${r.coc_number})</span></td>
+      <td class="num">${r.ground_truth_r >= 0 ? "+" : ""}${r.ground_truth_r.toFixed(2)}</td>
+      <td class="num">${r.ai_estimate >= 0 ? "+" : ""}${r.ai_estimate.toFixed(2)}</td>
+      <td class="num">${r.abs_error.toFixed(2)}</td>
+      <td>${r.ai_confidence}</td>
+    `;
+    tr.addEventListener("click", () => selectCoc(r.coc_number));
+    tbody.appendChild(tr);
+  }
+
+  document.querySelectorAll("#aiRankingTable thead th").forEach(th => {
+    th.querySelector(".arrow")?.remove();
+    if (th.dataset.sort === rankingSort.key) {
+      const arrow = document.createElement("span");
+      arrow.className = "arrow";
+      arrow.textContent = rankingSort.dir === 1 ? "▲" : "▼";
+      th.appendChild(arrow);
+    }
   });
 }
 
@@ -1082,6 +1304,39 @@ function renderCocDetail(feature) {
   drawLineChart("cocChart", rows.map(r => r.year), rows.map(r => r[state.metric]), {
     color: "#3987e5", fillColor: "#3987e51a", showXAxis: true, unit: state.metric.toLowerCase(),
   });
+}
+
+// ---------------------------------------------------------------------------
+// Tabs + cross-linked selection: clicking a region on the map, a point on the
+// AI-comparison scatter, a row in the ranking table, or a search result all
+// funnel through the same selectCoc() so every entry point stays in sync
+// (map highlight, "Selected CoC" detail, ranking-table row highlight).
+// ---------------------------------------------------------------------------
+
+function setActiveTab(tabName) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabName));
+  document.querySelectorAll("[data-tab-panel]").forEach(p => { p.hidden = p.dataset.tabPanel !== tabName; });
+}
+
+function selectCoc(cocNum, opts = {}) {
+  const feature = state.geoFeaturesById.get(cocNum);
+  if (!feature) return;
+  renderCocDetail(feature);
+  refreshMapStyle();
+  highlightRankingRow(cocNum);
+  if (opts.flyTo !== false) {
+    const bounds = state.cocBoundsById.get(cocNum);
+    if (bounds) {
+      map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], { padding: 70, maxZoom: 9, duration: 700 });
+    }
+  }
+  if (opts.switchTab !== false) setActiveTab("cases");
+}
+
+function highlightRankingRow(cocNum) {
+  const tbody = document.getElementById("aiRankingBody");
+  if (!tbody) return;
+  tbody.querySelectorAll("tr").forEach(tr => tr.classList.toggle("selected", tr.dataset.coc === cocNum));
 }
 
 // ---------------------------------------------------------------------------
@@ -1262,6 +1517,8 @@ async function init() {
     paint: {
       "fill-color": ["coalesce", ["feature-state", "fillColor"], "#3a3a38"],
       "fill-opacity": ["coalesce", ["feature-state", "fillOpacity"], 0.15],
+      "fill-color-transition": { duration: 350 },
+      "fill-opacity-transition": { duration: 350 },
     },
   });
   map.addLayer({
@@ -1272,6 +1529,7 @@ async function init() {
         ["boolean", ["feature-state", "hover"], false], 2.5,
         ["coalesce", ["feature-state", "outlineWidth"], 1],
       ],
+      "line-color-transition": { duration: 250 },
     },
   });
   map.addLayer({
@@ -1287,6 +1545,7 @@ async function init() {
       "text-halo-color": "rgba(10,10,10,0.78)",
       "text-halo-width": 3,
       "text-opacity": ["coalesce", ["feature-state", "labelOpacity"], 0],
+      "text-opacity-transition": { duration: 250 },
     },
   });
 
@@ -1324,8 +1583,7 @@ async function init() {
     const feature = e.features[0];
     const orig = state.geoFeaturesById.get(feature.properties.COCNUM);
     if (!orig) return;
-    renderCocDetail(orig);
-    refreshMapStyle();
+    selectCoc(feature.properties.COCNUM, { flyTo: false, switchTab: false });
     new maplibregl.Popup().setLngLat(e.lngLat).setHTML(popupHtml(orig)).addTo(map);
   });
 
@@ -1373,6 +1631,84 @@ async function init() {
     renderCorrelationChart();
   });
   document.getElementById("corrExcludeZero").addEventListener("change", renderCorrelationChart);
+
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => setActiveTab(btn.dataset.tab));
+  });
+
+  document.querySelectorAll("#aiRankingTable thead th").forEach(th => {
+    th.addEventListener("click", () => {
+      const key = th.dataset.sort;
+      rankingSort.dir = rankingSort.key === key ? -rankingSort.dir : (key === "coc_name" ? 1 : -1);
+      rankingSort.key = key;
+      if (state.aiCompare && state.aiCompare.by_coc) renderAiRankingTable(state.aiCompare.by_coc);
+    });
+  });
+
+  // CoC search: a simple type-ahead over the 44 loaded regions, so a specific
+  // region can be selected without needing to click its (sometimes tiny) map
+  // polygon precisely.
+  const searchIndex = Array.from(state.geoFeaturesById.values()).map(f => ({
+    cocNum: f.properties.COCNUM, cocName: f.properties.COCNAME || f.properties.COCNUM,
+  })).sort((a, b) => a.cocName.localeCompare(b.cocName));
+  const searchInput = document.getElementById("cocSearch");
+  const searchResults = document.getElementById("cocSearchResults");
+  let searchHlIndex = -1;
+  let searchMatches = [];
+
+  function renderSearchResults(matches) {
+    searchMatches = matches;
+    searchHlIndex = matches.length ? 0 : -1;
+    if (!matches.length) { searchResults.hidden = true; searchResults.innerHTML = ""; return; }
+    searchResults.innerHTML = matches.map((m, i) => {
+      const bIdx = m.cocName.toLowerCase().indexOf(searchInput.value.toLowerCase());
+      const label = bIdx >= 0
+        ? `${m.cocName.slice(0, bIdx)}<b>${m.cocName.slice(bIdx, bIdx + searchInput.value.length)}</b>${m.cocName.slice(bIdx + searchInput.value.length)}`
+        : m.cocName;
+      return `<div class="search-result-item${i === 0 ? " hl" : ""}" data-coc="${m.cocNum}" data-idx="${i}">${label} <span style="color:var(--text-muted);">(${m.cocNum})</span></div>`;
+    }).join("");
+    searchResults.hidden = false;
+  }
+
+  function pickSearchResult(cocNum) {
+    selectCoc(cocNum, { flyTo: true, switchTab: true });
+    searchInput.value = "";
+    searchResults.hidden = true;
+    searchInput.blur();
+  }
+
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) { searchResults.hidden = true; return; }
+    const matches = searchIndex.filter(m =>
+      m.cocName.toLowerCase().includes(q) || m.cocNum.toLowerCase().includes(q)
+    ).slice(0, 8);
+    renderSearchResults(matches);
+  });
+  searchInput.addEventListener("keydown", e => {
+    if (searchResults.hidden || !searchMatches.length) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      searchHlIndex = Math.min(searchMatches.length - 1, searchHlIndex + 1);
+      searchResults.querySelectorAll(".search-result-item").forEach((el, i) => el.classList.toggle("hl", i === searchHlIndex));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      searchHlIndex = Math.max(0, searchHlIndex - 1);
+      searchResults.querySelectorAll(".search-result-item").forEach((el, i) => el.classList.toggle("hl", i === searchHlIndex));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (searchMatches[searchHlIndex]) pickSearchResult(searchMatches[searchHlIndex].cocNum);
+    } else if (e.key === "Escape") {
+      searchResults.hidden = true;
+    }
+  });
+  searchResults.addEventListener("click", e => {
+    const item = e.target.closest(".search-result-item");
+    if (item) pickSearchResult(item.dataset.coc);
+  });
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".search-wrap")) searchResults.hidden = true;
+  });
 
   // Optional: only present once ai_estimate_influence.py + compare_ai_vs_ground_truth.py
   // have been run, so this is loaded separately and failure doesn't block the rest of init.
