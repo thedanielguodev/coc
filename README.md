@@ -1,20 +1,25 @@
-# California CoC: Wildfire &amp; Homelessness Dashboard
+# Do Wildfires Show Up in California's Homeless Counts?
+
+A data project comparing HUD homeless counts for California's 44 Continuums of Care (CoCs) with CAL FIRE wildfire records, 2007–2024, and testing how well AI models estimate the relationship without seeing the counts.
 
 **Live dashboard:** https://thedanielguodev.github.io/coc/
 
 ## Research question
 
-How accurately can AI estimate and interpret the relationship between wildfire-related housing destruction and homelessness across California Continuums of Care (CoCs), compared with the relationship observed in real-world data?
+Can an AI model, given only a region's wildfire history, estimate the relationship between wildfire and the homeless count that HUD's data actually shows? If not, are its errors random or systematic?
 
-Homelessness is difficult to measure, and the datasets used to represent it are shaped by specific definitions, collection methods, and institutions. It seems intuitive that destroying homes through wildfire would increase homelessness — but the ground-truth analysis here finds no meaningful relationship between fire acreage and Point-in-Time homeless counts at the CoC level (Pearson r close to 0, not statistically significant, in both the same-year and fire-year-→-next-year framings). This project asks whether an AI model, given only a CoC's wildfire history and asked to estimate that same relationship, recognizes that uncertainty or instead infers a stronger connection based on the intuitive but unsupported narrative.
+Homelessness is difficult to measure, and the datasets used to represent it are shaped by specific definitions, collection methods, and institutions. It seems intuitive that destroying homes through wildfire would increase homelessness. At the CoC level, though, fire exposure shows no detectable pooled association with Point-in-Time homeless counts (acres burned r = 0.011; structures destroyed r = 0.003), and a two-way fixed-effects model finds only small, non-significant positive estimates. PIT counts miss many people displaced by fire, so this does not show that wildfire has no effect on housing loss. The project asks whether an AI model recognizes how weak the relationship is in this data or infers a stronger one from the intuitive story.
 
 ## What's in the dashboard
 
-- **Map** — a MapLibre GL JS choropleth of California's 44 CoCs on a gray-scale vector basemap (CARTO Dark Matter), colored by homeless count for the selected year/metric, with wildfire perimeters (CAL FIRE FRAP, ≥1,000 acres) overlaid per year.
-- **Statewide trend** — homeless count and acres burned, 2007–2024, as D3 line charts.
-- **Fire → homelessness correlation** — a D3 scatter of acres burned (within a CoC's boundary) vs. that CoC's homeless count, one point per CoC-year, with a least-squares fit line, Pearson r, and Spearman ρ. Toggle between same-year and fire-year-→-next-year timing.
-- **AI vs. ground truth** — an LLM (Claude) is shown *only* each CoC's fire history — never the actual homeless counts — and asked to estimate the same per-CoC Pearson r. This panel plots the AI's estimate against the real value to see whether the model systematically exaggerates, underestimates, or roughly tracks the (mostly negligible) real relationship.
-- **Selected CoC** — click any region for its own homeless-count trend over time.
+The page is laid out as a research report with numbered figures and tables:
+
+- **Map**: a MapLibre GL JS choropleth of the 44 CoCs on a gray-scale CARTO basemap, shaded by the selected year and measure, with that year's fire perimeters. Clicking a region opens its history beside the map.
+- **Statewide trends** (Figure 1): homeless count and acres burned, 2007–2024.
+- **Fire and homeless counts** (Figures 2–3, Tables 1–2): the pooled scatter with a same-year or next-year toggle, year-by-year correlations with a Bonferroni correction and leave-one-out check, pooled correlations for acres burned and structures destroyed, and the fixed-effects estimates.
+- **AI estimates** (Figures 4–7, Tables 3–4): each CoC's AI estimate against its observed correlation, error by stated confidence, a recency check, and the comparison across models and prompts. A sortable table lists every CoC.
+- **Butte County** (Figure 8): the Camp Fire against Butte County's count.
+- **Data and methods**, limitations, data downloads, and a suggested citation.
 
 ## Data sources
 
@@ -30,7 +35,9 @@ Fire acreage is attributed to CoCs by a spatial join (`join_fires_to_coc.py`): e
 2. `ai_estimate_influence.py` sends Claude each CoC's name and fire history (year → acres burned) *only* — no PIT counts — and asks it to independently estimate that CoC's Pearson r.
 3. `compare_ai_vs_ground_truth.py` diffs the AI's estimate against the real value per CoC (signed error, absolute error, and a exaggerates / underestimates / sign-flip / roughly-matches classification) and computes the statewide bias summary the dashboard's "AI vs. ground truth" panel renders.
 
-This arm is optional and needs an `ANTHROPIC_API_KEY`; see the pipeline run order below.
+Follow-up runs (`ai_estimate_gemini.py`, `compare_ai_conditions.py`) repeat the test with a paragraph describing what the PIT count measures, and on a second model (Gemini). Adding the description lowered Claude's average estimate from 0.28 to 0.19 against an observed 0.05; Gemini 3.5 Flash-Lite estimated 0.13 and 0.06. No model ever predicted a negative correlation, and none could rank regions by their observed relationship.
+
+This arm is optional. The Claude script needs `ANTHROPIC_API_KEY` and the Gemini script needs `GEMINI_API_KEY`; see the pipeline run order below.
 
 ## Running locally
 
@@ -60,5 +67,7 @@ Run in this order; each step reads the previous step's output in `data/`:
 .venv/bin/python compute_panel_fe.py            # stricter check: two-way (CoC + year) fixed-effects regression, CoC-clustered SEs, acres + structures, lag0/lag1, log/level -> data/panel_fe_influence.json
 .venv/bin/python ai_estimate_influence.py        # optional, needs ANTHROPIC_API_KEY: per-CoC LLM influence estimate from fire history alone (PIT data withheld) -> data/ai_fire_influence_estimates.json
 .venv/bin/python compare_ai_vs_ground_truth.py   # optional, needs the previous two: diffs AI estimates against ground truth -> data/ai_vs_ground_truth.json
+.venv/bin/python ai_estimate_gemini.py --condition both --model gemini-3.5-flash-lite  # optional, needs GEMINI_API_KEY -> data/ai_estimates_gemini_<condition>.json
+.venv/bin/python compare_ai_conditions.py   # compares each model x prompt condition -> data/ai_condition_comparison.json
 .venv/bin/python build_site_data.py       # converts CSVs to JSON and stages everything into site/data/
 ```

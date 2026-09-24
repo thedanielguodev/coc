@@ -1,0 +1,3065 @@
+{
+ "model": "claude-sonnet-5 (via 10 independent Claude Code sub-agents, each in a clean git worktree without CLAUDE.md, no ANTHROPIC_API_KEY)",
+ "condition": "pit_informed",
+ "run_date": "2026-09-23",
+ "design": "batched: all 44 CoCs in one prompt per trial; each trial a fresh sub-agent with no memory of other trials or of ground truth; told not to read files or search. Trial 1 returned JSON in its reply (reasoning text not retained); trials 2-10 saved JSON directly.",
+ "prompt": "You are participating in a research study on how well AI causal/statistical intuition matches real data. You will be given a U.S. Continuum of Care (CoC) homelessness-services region's wildfire history and asked to estimate its statistical relationship to that region's homeless count. You are NOT given the actual homeless counts -- estimate from first-principles reasoning about wildfire's plausible effects on housing stability (destroyed housing stock, displacement, evacuation, insurance/rebuilding costs, economic disruption) plus whatever general knowledge you have of this region, not from being told the answer. Give your honest best estimate, not a hedge toward zero.\n\nAbout the homeless counts you are estimating against: they are HUD Point-in-Time (PIT) counts. A PIT count is a single-night count, taken in late January, of people staying in emergency shelters, transitional housing, or unsheltered locations such as streets, cars, and encampments. It does not count people staying with friends or family, people in hotels or rentals paid for by insurance or FEMA, or people who moved out of the region. Counting methods differ across regions and change over time, and in 2021 most California regions skipped the unsheltered count because of COVID-19. The correlation you are estimating is between each year's acres burned and that same year's PIT count, over roughly 2007 to 2024.\n\nDo not use any tools, read any files, or search for anything. Answer only from the information in this message.\n\nBelow are 44 regions. For EACH region, estimate what a Pearson correlation coefficient (-1.0 to 1.0) between this region's annual acres burned and its same-year homeless count would show.\n\nRegion: San Jose/Santa Clara City & County CoC (CA-500)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 2,978 acres burned\n  2003: 6,633 acres burned\n  2004: 1,225 acres burned\n  2006: 1,935 acres burned\n  2007: 23,634 acres burned\n  2008: 250 acres burned\n  2009: 1,689 acres burned\n  2016: 4,461 acres burned\n  2020: 175,536 acres burned\n\nRegion: San Francisco CoC (CA-501)\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion: Oakland, Berkeley/Alameda County CoC (CA-502)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 187 acres burned\n  2003: 3,764 acres burned\n  2005: 3,957 acres burned\n  2006: 2,445 acres burned\n  2015: 2,857 acres burned\n  2020: 23,981 acres burned\n\nRegion: Sacramento City & County CoC (CA-503)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2017: 1,070 acres burned\n  2020: 5,062 acres burned\n\nRegion: Santa Rosa, Petaluma/Sonoma County CoC (CA-504)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 40 acres burned\n  2004: 11,641 acres burned\n  2013: 3,506 acres burned\n  2015: 3,740 acres burned\n  2016: 1,547 acres burned\n  2017: 86,531 acres burned\n  2019: 77,208 acres burned\n  2020: 84,203 acres burned\n  2024: 1,207 acres burned\n\nRegion: Richmond/Contra Costa County CoC (CA-505)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2013: 3,108 acres burned\n  2020: 2,995 acres burned\n\nRegion: Salinas/Monterey, San Benito Counties CoC (CA-506)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 9,570 acres burned\n  2005: 1,383 acres burned\n  2006: 14,509 acres burned\n  2007: 59 acres burned\n  2008: 260,118 acres burned\n  2009: 8,693 acres burned\n  2012: 2,329 acres burned\n  2015: 1,076 acres burned\n  2016: 145,794 acres burned\n  2017: 4,690 acres burned\n  2018: 3,536 acres burned\n  2019: 2,521 acres burned\n  2020: 185,435 acres burned\n  2021: 3,996 acres burned\n  2024: 2,569 acres burned\n  2025: 21 acres burned\n\nRegion: Marin County CoC (CA-507)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2020: 4,902 acres burned\n\nRegion: Watsonville/Santa Cruz City & County CoC (CA-508)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 30 acres burned\n  2008: 3,925 acres burned\n  2009: 7,783 acres burned\n  2016: 13 acres burned\n  2020: 63,696 acres burned\n\nRegion: Mendocino County CoC (CA-509)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 984 acres burned\n  2006: 14,114 acres burned\n  2008: 50,776 acres burned\n  2012: 41,839 acres burned\n  2014: 12,533 acres burned\n  2017: 36,523 acres burned\n  2018: 25,350 acres burned\n  2020: 192,813 acres burned\n\nRegion: Turlock, Modesto/Stanislaus County CoC (CA-510)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2003: 31,174 acres burned\n  2004: 1,459 acres burned\n  2006: 34,876 acres burned\n  2007: 24,114 acres burned\n  2011: 1,122 acres burned\n  2018: 5,976 acres burned\n  2019: 2,234 acres burned\n  2020: 172,280 acres burned\n  2025: 3,456 acres burned\n\nRegion: Stockton/San Joaquin County CoC (CA-511)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 842 acres burned\n  2003: 886 acres burned\n  2005: 2,483 acres burned\n  2006: 3,096 acres burned\n  2009: 14,231 acres burned\n  2015: 133 acres burned\n  2018: 159 acres burned\n  2020: 23,873 acres burned\n  2024: 14,167 acres burned\n\nRegion: Daly/San Mateo County CoC (CA-512)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2020: 22,856 acres burned\n\nRegion: Visalia/Kings, Tulare Counties CoC (CA-513)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 79,223 acres burned\n  2002: 150,635 acres burned\n  2003: 24,028 acres burned\n  2004: 4,708 acres burned\n  2005: 4,087 acres burned\n  2006: 11,606 acres burned\n  2007: 9,436 acres burned\n  2008: 14,934 acres burned\n  2009: 5,308 acres burned\n  2010: 13,012 acres burned\n  2011: 22,662 acres burned\n  2012: 1,909 acres burned\n  2013: 2,050 acres burned\n  2014: 1,423 acres burned\n  2015: 8,083 acres burned\n  2016: 27,473 acres burned\n  2017: 93,580 acres burned\n  2018: 7,702 acres burned\n  2019: 1,876 acres burned\n  2020: 181,350 acres burned\n  2021: 195,830 acres burned\n  2022: 1,394 acres burned\n  2023: 4,667 acres burned\n  2024: 47,130 acres burned\n  2025: 1,799 acres burned\n\nRegion: Fresno City & County/Madera County CoC (CA-514)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 11,740 acres burned\n  2002: 1,498 acres burned\n  2004: 1,145 acres burned\n  2005: 17,031 acres burned\n  2006: 13,004 acres burned\n  2007: 3,518 acres burned\n  2008: 15,416 acres burned\n  2010: 9,022 acres burned\n  2013: 22,938 acres burned\n  2014: 13,832 acres burned\n  2015: 156,162 acres burned\n  2016: 13,956 acres burned\n  2017: 63,006 acres burned\n  2018: 14,424 acres burned\n  2020: 409,505 acres burned\n  2021: 8,512 acres burned\n  2022: 3,159 acres burned\n  2023: 440 acres burned\n  2024: 55,868 acres burned\n  2025: 85,537 acres burned\n\nRegion: Rocklin/Roseville/Placer County CoC (CA-515)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 23,120 acres burned\n  2006: 8,418 acres burned\n  2008: 21,400 acres burned\n  2012: 2,635 acres burned\n  2013: 27,430 acres burned\n  2014: 29,346 acres burned\n  2016: 121 acres burned\n  2018: 1,120 acres burned\n  2021: 916 acres burned\n  2022: 63,376 acres burned\n\nRegion: Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC (CA-516)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 59,692 acres burned\n  2001: 60,255 acres burned\n  2002: 516,836 acres burned\n  2003: 27,528 acres burned\n  2004: 32,048 acres burned\n  2005: 8,306 acres burned\n  2006: 68,644 acres burned\n  2007: 114,278 acres burned\n  2008: 376,629 acres burned\n  2009: 36,097 acres burned\n  2010: 11,898 acres burned\n  2011: 6,477 acres burned\n  2012: 609,735 acres burned\n  2013: 50,627 acres burned\n  2014: 343,973 acres burned\n  2015: 50,509 acres burned\n  2016: 40,955 acres burned\n  2017: 429,676 acres burned\n  2018: 449,863 acres burned\n  2019: 83,205 acres burned\n  2020: 723,050 acres burned\n  2021: 1,431,954 acres burned\n  2022: 91,209 acres burned\n  2023: 165,490 acres burned\n  2024: 34,495 acres burned\n  2025: 59,424 acres burned\n\nRegion: Napa City & County CoC (CA-517)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 4,860 acres burned\n  2004: 32,646 acres burned\n  2008: 756 acres burned\n  2014: 3,921 acres burned\n  2015: 5,339 acres burned\n  2016: 188 acres burned\n  2017: 70,092 acres burned\n  2018: 35,065 acres burned\n  2020: 206,315 acres burned\n  2025: 6,822 acres burned\n\nRegion: Vallejo/Solano County CoC (CA-518)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2004: 1,007 acres burned\n  2008: 3,346 acres burned\n  2015: 7,405 acres burned\n  2016: 0 acres burned\n  2017: 6,477 acres burned\n  2018: 2,158 acres burned\n  2020: 43,426 acres burned\n\nRegion: Chico, Paradise/Butte County CoC (CA-519)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 2,131 acres burned\n  2001: 9,748 acres burned\n  2002: 2,142 acres burned\n  2004: 1,955 acres burned\n  2007: 1,057 acres burned\n  2008: 82,761 acres burned\n  2013: 2,462 acres burned\n  2015: 1,046 acres burned\n  2017: 22,435 acres burned\n  2018: 153,028 acres burned\n  2020: 152,190 acres burned\n  2021: 24,101 acres burned\n  2024: 58,222 acres burned\n\nRegion: Merced City & County CoC (CA-520)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 1,707 acres burned\n  2001: 1,797 acres burned\n  2003: 2,628 acres burned\n  2005: 1,105 acres burned\n  2010: 1,600 acres burned\n  2015: 1,729 acres burned\n  2016: 1,246 acres burned\n  2017: 1,730 acres burned\n  2018: 3,933 acres burned\n  2020: 5,814 acres burned\n\nRegion: Davis, Woodland/Yolo County CoC (CA-521)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 1,514 acres burned\n  2003: 1,048 acres burned\n  2004: 6,117 acres burned\n  2006: 13,969 acres burned\n  2012: 247 acres burned\n  2014: 6,599 acres burned\n  2015: 9,694 acres burned\n  2016: 5,542 acres burned\n  2017: 2,366 acres burned\n  2018: 57,254 acres burned\n  2019: 2,162 acres burned\n  2020: 75,982 acres burned\n\nRegion: Humboldt County CoC (CA-522)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2003: 22,763 acres burned\n  2004: 2,007 acres burned\n  2006: 6,574 acres burned\n  2008: 10,130 acres burned\n  2009: 4,635 acres burned\n  2013: 11,784 acres burned\n  2015: 36,018 acres burned\n  2018: 3,677 acres burned\n  2020: 53,363 acres burned\n  2021: 2,421 acres burned\n  2022: 31,156 acres burned\n  2023: 13,850 acres burned\n  2024: 18,187 acres burned\n  2025: 1 acres burned\n\nRegion: Colusa, Glenn, Trinity Counties CoC (CA-523)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 2,120 acres burned\n  2001: 21,252 acres burned\n  2003: 10,514 acres burned\n  2004: 2,046 acres burned\n  2006: 104,582 acres burned\n  2007: 1,438 acres burned\n  2008: 231,583 acres burned\n  2009: 5,635 acres burned\n  2011: 1,457 acres burned\n  2012: 61,753 acres burned\n  2013: 802 acres burned\n  2014: 6,257 acres burned\n  2015: 192,823 acres burned\n  2017: 39,786 acres burned\n  2018: 145,883 acres burned\n  2019: 1,600 acres burned\n  2020: 618,156 acres burned\n  2021: 341,529 acres burned\n  2022: 10,442 acres burned\n  2023: 4,198 acres burned\n  2024: 21,492 acres burned\n\nRegion: Yuba City & County/Sutter County CoC (CA-524)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2008: 1,355 acres burned\n  2009: 2,973 acres burned\n  2010: 1,289 acres burned\n  2017: 12,166 acres burned\n  2018: 1,238 acres burned\n  2020: 1,309 acres burned\n\nRegion: El Dorado County CoC (CA-525)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 1,762 acres burned\n  2004: 7,558 acres burned\n  2006: 2 acres burned\n  2007: 3,070 acres burned\n  2014: 72,170 acres burned\n  2016: 5,524 acres burned\n  2017: 197 acres burned\n  2019: 3,442 acres burned\n  2020: 1,668 acres burned\n  2021: 219,802 acres burned\n  2022: 13,394 acres burned\n  2024: 1,955 acres burned\n\nRegion: Amador, Calaveras, Mariposa, Tuolumne Counties CoC (CA-526)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 10,798 acres burned\n  2001: 38,221 acres burned\n  2002: 1,875 acres burned\n  2003: 17,283 acres burned\n  2004: 32,938 acres burned\n  2005: 1,057 acres burned\n  2006: 8,027 acres burned\n  2007: 1,106 acres burned\n  2008: 42,755 acres burned\n  2009: 19,668 acres burned\n  2010: 1,711 acres burned\n  2011: 7,313 acres burned\n  2012: 4,504 acres burned\n  2013: 258,959 acres burned\n  2014: 11,006 acres burned\n  2015: 70,846 acres burned\n  2016: 996 acres burned\n  2017: 98,956 acres burned\n  2018: 127,266 acres burned\n  2019: 5,508 acres burned\n  2020: 14,829 acres burned\n  2021: 4,663 acres burned\n  2022: 36,423 acres burned\n  2023: 9,826 acres burned\n  2024: 9,104 acres burned\n  2025: 13,662 acres burned\n\nRegion: Tehama County CoC (CA-527)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,284 acres burned\n  2005: 3,409 acres burned\n  2006: 1,247 acres burned\n  2008: 92,238 acres burned\n  2012: 18,210 acres burned\n  2013: 18,325 acres burned\n  2017: 101 acres burned\n  2018: 10,009 acres burned\n  2019: 16,690 acres burned\n  2020: 237,164 acres burned\n  2021: 114,432 acres burned\n  2024: 376,225 acres burned\n\nRegion: Lake County CoC (CA-529)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,635 acres burned\n  2001: 6,557 acres burned\n  2003: 5,548 acres burned\n  2004: 603 acres burned\n  2005: 1,720 acres burned\n  2008: 7,592 acres burned\n  2009: 1,552 acres burned\n  2012: 8,430 acres burned\n  2014: 379 acres burned\n  2015: 142,004 acres burned\n  2016: 3,928 acres burned\n  2017: 2,206 acres burned\n  2018: 336,378 acres burned\n  2019: 554 acres burned\n  2020: 63,450 acres burned\n  2024: 396 acres burned\n\nRegion: Alpine, Inyo, Mono Counties CoC (CA-530)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 6,435 acres burned\n  2001: 8,304 acres burned\n  2002: 35,666 acres burned\n  2003: 6,797 acres burned\n  2004: 12,067 acres burned\n  2005: 14,027 acres burned\n  2006: 22,502 acres burned\n  2007: 38,235 acres burned\n  2008: 5,930 acres burned\n  2009: 2,811 acres burned\n  2010: 1,204 acres burned\n  2011: 6,845 acres burned\n  2012: 13,711 acres burned\n  2013: 14,267 acres burned\n  2015: 28,133 acres burned\n  2016: 8,275 acres burned\n  2017: 12,552 acres burned\n  2018: 26,303 acres burned\n  2019: 16,882 acres burned\n  2020: 59,942 acres burned\n  2021: 71,951 acres burned\n  2022: 4,140 acres burned\n  2023: 85 acres burned\n  2024: 4,224 acres burned\n  2025: 3,580 acres burned\n\nRegion: Nevada County CoC (CA-531)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 14,120 acres burned\n  2008: 3,582 acres burned\n  2009: 856 acres burned\n  2015: 2,316 acres burned\n  2021: 1,703 acres burned\n\nRegion: Los Angeles City & County CoC (CA-600)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 8,190 acres burned\n  2002: 90,865 acres burned\n  2003: 35,301 acres burned\n  2004: 35,332 acres burned\n  2005: 5,849 acres burned\n  2006: 17,388 acres burned\n  2007: 86,396 acres burned\n  2008: 30,760 acres burned\n  2009: 163,070 acres burned\n  2010: 12,582 acres burned\n  2012: 4,192 acres burned\n  2013: 30,268 acres burned\n  2014: 1,952 acres burned\n  2015: 1,462 acres burned\n  2016: 46,775 acres burned\n  2017: 28,713 acres burned\n  2018: 61,616 acres burned\n  2019: 13,381 acres burned\n  2020: 152,892 acres burned\n  2021: 1,203 acres burned\n  2022: 5,228 acres burned\n  2023: 1,531 acres burned\n  2024: 68,474 acres burned\n  2025: 52,072 acres burned\n\nRegion: San Diego City and County CoC (CA-601)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,591 acres burned\n  2001: 11,847 acres burned\n  2002: 71,950 acres burned\n  2003: 399,852 acres burned\n  2004: 8,762 acres burned\n  2005: 3,863 acres burned\n  2006: 16,678 acres burned\n  2007: 335,287 acres burned\n  2011: 16,127 acres burned\n  2012: 32,180 acres burned\n  2013: 13,365 acres burned\n  2014: 25,335 acres burned\n  2016: 8,850 acres burned\n  2017: 5,994 acres burned\n  2018: 1,238 acres burned\n  2020: 19,442 acres burned\n  2021: 6,736 acres burned\n  2022: 4,456 acres burned\n  2024: 1,629 acres burned\n  2025: 7,681 acres burned\n\nRegion: Santa Ana, Anaheim/Orange County CoC (CA-602)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 3,588 acres burned\n  2005: 962 acres burned\n  2006: 10,505 acres burned\n  2007: 30,048 acres burned\n  2008: 15,653 acres burned\n  2017: 9,806 acres burned\n  2018: 7,551 acres burned\n  2020: 21,835 acres burned\n  2024: 21,375 acres burned\n\nRegion: Santa Maria/Santa Barbara County CoC (CA-603)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 9,330 acres burned\n  2002: 7,503 acres burned\n  2004: 8,310 acres burned\n  2006: 19,244 acres burned\n  2007: 224,132 acres burned\n  2008: 11,491 acres burned\n  2009: 106,549 acres burned\n  2010: 1,220 acres burned\n  2013: 1,912 acres burned\n  2016: 52,760 acres burned\n  2017: 84,947 acres burned\n  2018: 38 acres burned\n  2019: 2,597 acres burned\n  2020: 1,293 acres burned\n  2021: 16,952 acres burned\n  2023: 5,762 acres burned\n  2024: 39,993 acres burned\n  2025: 47,862 acres burned\n\nRegion: Bakersfield/Kern County CoC (CA-604)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 6,160 acres burned\n  2002: 3,418 acres burned\n  2003: 4,252 acres burned\n  2005: 4,675 acres burned\n  2006: 12,604 acres burned\n  2007: 15,211 acres burned\n  2008: 37,346 acres burned\n  2010: 17,223 acres burned\n  2011: 97,838 acres burned\n  2012: 14,895 acres burned\n  2013: 1,614 acres burned\n  2014: 8,108 acres burned\n  2016: 63,956 acres burned\n  2017: 5,894 acres burned\n  2018: 3,516 acres burned\n  2019: 3,284 acres burned\n  2020: 10,635 acres burned\n  2021: 31,850 acres burned\n  2022: 2,465 acres burned\n  2023: 8,593 acres burned\n  2024: 94,016 acres burned\n  2025: 11,392 acres burned\n\nRegion: Long Beach CoC (CA-606)\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion: Pasadena CoC (CA-607)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2009: 677 acres burned\n  2025: 361 acres burned\n\nRegion: Riverside City & County CoC (CA-608)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 4,466 acres burned\n  2001: 2,032 acres burned\n  2002: 127 acres burned\n  2003: 20,949 acres burned\n  2004: 37,194 acres burned\n  2005: 15,222 acres burned\n  2006: 48,486 acres burned\n  2008: 388 acres burned\n  2009: 2,411 acres burned\n  2010: 1,028 acres burned\n  2011: 1,027 acres burned\n  2012: 4,815 acres burned\n  2013: 54,778 acres burned\n  2015: 1,049 acres burned\n  2016: 1,459 acres burned\n  2017: 12,140 acres burned\n  2018: 29,965 acres burned\n  2019: 2,833 acres burned\n  2020: 30,324 acres burned\n  2021: 57 acres burned\n  2022: 33,954 acres burned\n  2023: 14,198 acres burned\n  2024: 9,050 acres burned\n  2025: 5,123 acres burned\n\nRegion: San Bernardino City & County CoC (CA-609)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 2,245 acres burned\n  2002: 15,964 acres burned\n  2003: 146,247 acres burned\n  2004: 1,194 acres burned\n  2005: 76,569 acres burned\n  2006: 84,596 acres burned\n  2007: 31,848 acres burned\n  2008: 12,148 acres burned\n  2009: 7,238 acres burned\n  2011: 2,868 acres burned\n  2013: 1,384 acres burned\n  2014: 2,142 acres burned\n  2015: 35,534 acres burned\n  2016: 44,378 acres burned\n  2017: 1,594 acres burned\n  2018: 1,343 acres burned\n  2019: 115 acres burned\n  2020: 90,981 acres burned\n  2021: 2,490 acres burned\n  2022: 1,079 acres burned\n  2023: 93,076 acres burned\n  2024: 51,470 acres burned\n  2025: 5,328 acres burned\n\nRegion: Oxnard, San Buenaventura/Ventura County CoC (CA-611)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 1,024 acres burned\n  2002: 21,641 acres burned\n  2003: 153,930 acres burned\n  2005: 23,430 acres burned\n  2006: 162,592 acres burned\n  2007: 47,180 acres burned\n  2008: 1,885 acres burned\n  2009: 17,527 acres burned\n  2013: 26,407 acres burned\n  2015: 1,270 acres burned\n  2016: 2,300 acres burned\n  2017: 238,033 acres burned\n  2018: 36,932 acres burned\n  2019: 11,849 acres burned\n  2020: 1,939 acres burned\n  2023: 2,715 acres burned\n  2024: 24,910 acres burned\n  2025: 2,152 acres burned\n\nRegion: Glendale CoC (CA-612)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2009: 884 acres burned\n  2017: 407 acres burned\n\nRegion: Imperial County CoC (CA-613)\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion: San Luis Obispo County CoC (CA-614)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 52 acres burned\n  2002: 3,403 acres burned\n  2003: 2,307 acres burned\n  2006: 1,660 acres burned\n  2010: 3,188 acres burned\n  2011: 2,582 acres burned\n  2015: 4,258 acres burned\n  2016: 47,648 acres burned\n  2017: 9,668 acres burned\n  2018: 975 acres burned\n  2019: 2,875 acres burned\n  2020: 6,538 acres burned\n  2024: 7,969 acres burned\n  2025: 166,194 acres burned\n\nReturn ONLY a JSON array with one object per region, in the order given, with exactly these keys:\n\"coc_number\" (string), \"estimated_correlation\" (number, -1.0 to 1.0), \"direction\" (\"increases\" | \"decreases\" | \"no_relationship\"), \"confidence\" (\"low\" | \"medium\" | \"high\"), \"reasoning\" (one sentence).\nNo text before or after the JSON array.",
+ "trials": [
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "medium"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.6,
+    "direction": "increases",
+    "confidence": "high"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "medium"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage here is mostly wildland (2020 SCU Complex) far from dense San Jose housing stock, so it should have little effect on a homeless count dominated by Bay Area housing costs."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this CoC, so there is no fire signal to correlate with the homeless count."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fires here are modest and mostly in the Oakland/Berkeley hills wildland-urban interface, too small relative to Alameda County's large housing-cost-driven homeless population to move the count."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only small fire years (2017, 2020) in a dense urban county where homelessness trends are driven by cost of living, not wildfire."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs Fire destroyed roughly 5,300 homes in Santa Rosa, a housing-stock shock large enough to plausibly push some displaced residents into shelters or the street in subsequent PIT counts."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage is small and infrequent, unlikely to meaningfully affect Contra Costa's homeless count."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Large acreage years (e.g. 2008, 2020) are mostly remote wildland (Big Sur, Los Padres backcountry) with little housing destroyed in populated Salinas/Monterey areas."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only one fire year on record in an affluent county with a small, low-variance homeless count."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex destroyed roughly 1,500 structures in the Santa Cruz Mountains, a plausible driver of a post-2020 increase in the county's PIT count."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated large rural fires (2008, 2012, 2018, 2020) likely destroyed some housing in this poor, sparsely populated county, giving a modest plausible link."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage is largely agricultural/grassland with limited structure loss near Modesto/Turlock's population centers."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fires are modest relative to Stockton/San Joaquin's urban homeless population, which is driven mainly by Central Valley housing and economic conditions."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only one fire year (2020, mostly wildland CZU Complex fringe) in a dense, high-cost San Mateo County unlikely to move the homeless count."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Enormous, near-annual acreage in Sequoia/Sierra forestland is mostly wildland, but occasional fires reaching mountain foothill communities in this high-poverty region could add a small displacement effect."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 Creek Fire destroyed hundreds of homes in Sierra foothill communities like Big Creek and Shaver Lake, plausibly nudging Fresno/Madera's count upward afterward."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire destroyed most of Grizzly Flats and threatened South Lake Tahoe, a housing-stock shock plausibly linked to a subsequent homelessness increase in this county."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "This multi-county region has repeatedly absorbed catastrophic town-destroying fires (2018 Carr Fire in Redding, 2021 Dixie Fire destroying Greenville), making a real homelessness link plausible."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 Atlas/Tubbs fires and 2020 Glass Fire destroyed homes and wineries in Napa, but affluent, well-insured homeowners are less likely to end up in a literal PIT count, muting the effect."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2020 LNU Complex acreage destroyed some structures in unincorporated Solano County, giving a modest plausible link."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.6,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire destroyed the town of Paradise (about 19,000 structures) and is widely documented to have caused a large subsequent spike in Butte County's homeless count."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage is small and mostly agricultural/grassland, unlikely to affect Merced's homeless count."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Large 2020 LNU Complex acreage in Yolo County was mostly rural grassland with limited housing destruction near Davis/Woodland."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Repeated large fires in Humboldt are mostly remote forestland with historically limited structure loss."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Very large acreage totals here are in sparsely populated rural/forest land with few structures at risk."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage is small and infrequent, unlikely to move Yuba/Sutter's homeless count."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2021 Caldor Fire destroyed homes in Grizzly Flats (El Dorado County) and prompted a major evacuation of South Lake Tahoe, giving a plausible modest link."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2015 Butte Fire destroyed roughly 475 homes in Calaveras County and the 2013 Rim Fire and later fires added further housing stress in this rural, lower-income region."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated large fires including the 2024 Park Fire likely destroyed homes near Cohasset in this poor rural county, giving a plausible modest positive link."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2015 Valley Fire destroyed about 1,955 structures (most of Middletown) and repeated large fires since have hit one of California's poorest counties, making a real homelessness link plausible."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Huge acreage totals are almost entirely remote Sierra/Inyo wilderness with very little housing at risk."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire years here are modest with no catastrophic town-destroying event on record, so little expected effect on the homeless count."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Despite some large destructive fires (e.g. 2018 Woolsey Fire in Malibu), Los Angeles's enormous homeless population is driven overwhelmingly by housing costs, diluting any fire-driven signal to near zero."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "The 2003 Cedar Fire and 2007 Witch Fire destroyed many homes, but San Diego's large urban homeless population is driven mainly by cost of living, diluting the effect."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fires here are moderate and in a wealthy, large urban county where the homeless count is dominated by economic factors rather than wildfire."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire destroyed over a thousand structures and the subsequent Montecito debris flow caused massive community disruption, plausibly increasing displacement in this county."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Large acreage totals are mostly desert/wildland with limited structure loss near Bakersfield's population centers."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this CoC, so there is no fire signal to correlate with the homeless count."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Essentially no fire history in this small urban CoC, so no meaningful relationship is expected."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Repeated large fires are mostly in desert/wildland fringe areas, with Riverside's urban core homeless population driven by cost of living rather than fire."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated large fires (2003 Old Fire, 2007 fires) destroyed homes in the San Bernardino Mountains communities, giving a plausible modest link despite the large urban core diluting it."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire, then the largest fire in California history, destroyed over a thousand structures within the city of Ventura itself, a plausible driver of increased local homelessness."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Negligible fire acreage in this small urban CoC, so little expected relationship."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this desert county, so there is no fire signal to correlate with the homeless count."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fires here are moderate with limited documented structure loss in populated areas, so little expected effect on San Luis Obispo's homeless count."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fire exposure is sporadic and this tech-heavy urban county's homelessness is driven mainly by housing costs, so any fire effect is likely small and diluted."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record within this dense urban CoC, so acreage cannot meaningfully covary with the homeless count."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Alameda County has only modest, mostly hillside fire acreage relative to its large urban population, limiting plausible displacement impact."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Very limited recorded fire acreage in this urban capital region suggests little room for wildfire to move the homeless count."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "Repeated catastrophic urban-interface fires (Tubbs 2017 alone destroyed roughly 5,000 Santa Rosa structures) plausibly drove direct, sustained housing loss and displacement into the homeless count."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage here is small and infrequent relative to a large urban East Bay population, so an effect on homelessness is unlikely to be detectable."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large fires like the 2008 Basin Complex and 2020 fires burned mostly wildland/agricultural land rather than dense housing stock, so effects on homelessness are plausible but muted."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only a single modest fire year is on record for affluent Marin County, giving little basis for a wildfire-driven homelessness effect."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex destroyed roughly 1,500 homes in the Santa Cruz Mountains, a plausible direct driver of a same-year homelessness spike."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Mendocino County has repeatedly suffered very large, structure-destroying fires (including the record-setting 2018 Mendocino Complex) against a small rural population, raising the plausible housing-loss impact per capita."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Central Valley agricultural land dominates the fire acreage here, so structural/housing impact on this urban CoC's homeless count is likely limited."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires in San Joaquin County appear modest relative to the urban Stockton population, suggesting only a weak plausible link to homelessness."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only a single fire year (2020, largely a CZU Complex spillover) is recorded for this dense, high-cost peninsula county, limiting the plausible effect."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Near-annual large Sierra Nevada wildland fires repeatedly threaten foothill communities in Tulare/Kings, plausibly contributing periodic displacement even though most acreage is remote forest."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 Creek Fire and other large fires destroyed homes in Sierra foothill communities feeding into this CoC, giving a plausible direct pathway to increased homelessness."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "This fast-growing suburban Sacramento-adjacent county has intermittent large fires (e.g., 2022 Mosquito Fire) but a strong regional economy likely buffers much of the housing-loss impact."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "This region includes the 2018 Carr Fire, which burned directly into Redding and destroyed roughly 1,600 structures, plus consistently enormous acreage most years, a strong plausible driver of housing loss and homelessness."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Napa's wine country fires (2017 Atlas Fire, 2020 Glass Fire) destroyed substantial housing stock, plausibly pushing up the homeless count in high-fire years."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Solano County's fire acreage is moderate and mostly grassland/wildland, so the plausible housing-loss pathway to homelessness is weaker than in forested/urban-interface counties."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire destroyed the town of Paradise almost entirely (~14,000 homes) and displaced tens of thousands into the Chico area, making this the single clearest plausible case of wildfire directly driving a homelessness increase."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Merced's recorded fire acreage is small and infrequent, limiting plausible impact on this agricultural valley CoC's homeless count."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yolo County has some large fire years (2018 County Fire, 2020 LNU Complex) but these burned mostly rural/agricultural land around Davis/Woodland rather than dense housing."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Humboldt has frequent moderate-to-large wildland fires and an already economically stressed, rural population, giving a plausible modest link to homelessness."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "This mostly rural, sparsely populated tri-county region sees enormous fire acreage, but with few structures at risk the plausible homelessness effect is diluted despite the scale."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sutter/Yuba's fire acreage is modest and infrequent, suggesting little plausible influence on the homeless count."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire forced a full evacuation of South Lake Tahoe and burned extensively through El Dorado County, a plausible driver of displacement-related homelessness."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large fires near Yosemite (2013 Rim Fire, 2017 Detwiler, 2018 Ferguson) repeatedly threatened small mountain communities in this four-county region, plausibly contributing to periodic housing loss."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Tehama County has had some very large fire years (including 2024's Park Fire) but is sparsely populated rural land, limiting the direct structural-loss pathway."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Lake County has suffered repeated catastrophic fires relative to its small, already economically vulnerable population (e.g., the 2015 Valley Fire destroyed ~1,900 structures in Middletown), plausibly amplifying homelessness."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "This remote, sparsely populated eastern Sierra region burns large wildland acreage most years but has little housing stock at risk, limiting plausible impact."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Nevada County's recorded fire years are relatively modest in scale, suggesting a weak plausible link to homelessness."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Los Angeles's enormous existing homeless population is driven overwhelmingly by housing costs and economic factors, so even sizable fire years likely contribute only a small marginal effect, partly confounded with a shared rising trend over time."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "San Diego's early massive fires (2003 Cedar Fire, 2007 Witch Fire) destroyed thousands of homes, a plausible driver of displacement into the homeless count in those years."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Orange County's fires are moderate and its affluent, well-resourced housing market likely buffers much of the potential homelessness impact."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Repeated massive fires (2007 Zaca, 2009 Jesusita, 2017 Thomas Fire with its follow-on debris flows) directly damaged housing in Santa Barbara County, a plausible driver of increased homelessness."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Kern County's large fire acreage is mostly desert/wildland rather than dense housing, limiting the plausible direct impact on homelessness."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record for this dense coastal urban CoC, so no plausible wildfire-driven effect exists."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Pasadena has only trivial recorded fire acreage, giving essentially no basis for a wildfire effect on homelessness."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Riverside has several large fire years but they are mostly in exurban/wildland terrain, giving only a modest plausible pathway to the urban homeless count."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "San Bernardino's mountain communities have repeatedly suffered destructive fires (e.g., 2003 Old Fire destroyed over 1,000 structures) against a large, economically vulnerable population base, a plausible driver of homelessness increases."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire and 2018 Woolsey Fire caused major direct housing loss in Ventura County, a plausible strong driver of same-year or near-term homelessness increases."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Glendale's recorded fire acreage is minimal, giving little basis for any wildfire-driven homelessness effect."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record in this desert county, so wildfire acreage cannot plausibly explain homelessness variation here."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Luis Obispo has intermittent large fires (e.g., 2016 Chimney Fire) but a largely rural/agricultural land base limits the direct housing-loss pathway to homelessness."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires mostly burn wildland hills around Santa Clara Valley with limited direct housing-stock destruction, so any effect on PIT counts is likely small and indirect via evacuation and economic disruption."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No recorded major fires within San Francisco's boundary means there is no wildfire variable to correlate with its homeless count."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires here are small and mostly confined to Oakland/Berkeley hills open space, so structural housing loss and displacement effects are likely minor."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Very little fire acreage falls within the urbanized Sacramento core, so a meaningful relationship to homeless counts is unlikely."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs Fire and 2019/2020 fires destroyed thousands of homes directly within Santa Rosa and Sonoma County, a housing-stock shock plausibly reflected in subsequent PIT counts."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage in Contra Costa County is modest and mostly away from dense housing, limiting plausible impact on homelessness counts."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Despite very large acreages in some years, Monterey/San Benito fires are largely wildland/forest burns with limited direct housing destruction relative to their size."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Marin has only one recorded major fire (2020) with no evidence of significant structure loss, so little relationship is expected."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex burned into the Santa Cruz Mountains and destroyed roughly 900 homes, a plausible driver of a same-year homelessness increase."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mendocino County has repeated large fires including some that destroyed rural homes, but its small, already-volatile PIT counts make the relationship noisy."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Stanislaus County fires are large in acreage in some years but mostly burn agricultural or foothill land away from the urban core."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Joaquin County fire acreage is modest and mostly non-urban, so a limited relationship to homeless counts is expected."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Mateo's only notable fire activity (2020 CZU spillover) could have caused some displacement into the county's homeless count that year."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Tulare/Kings fires are overwhelmingly in Sierra Nevada forest and wilderness land far from the county's agricultural population centers, so acreage burned is a poor proxy for housing impact."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The catastrophic 2020 Creek Fire (about 410,000 acres) destroyed mountain communities near Shaver Lake, plausibly displacing residents into Fresno/Madera's homeless count that year."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Placer County fires are moderate and mostly in foothill/forest terrain, so the relationship to the largely suburban homeless population is likely weak."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Carr Fire burned directly into Redding and the 2021 Dixie Fire destroyed the town of Greenville, both real housing-stock losses in a region with limited rebuilding capacity."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Napa's 2017 and 2020 fires destroyed homes and wineries, a plausible but secondary driver next to the county's high cost of living."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Solano County's fire exposure is moderate, mostly the 2020 LNU Complex, with limited direct urban housing loss."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.55,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire essentially destroyed the town of Paradise and displaced roughly 20,000 residents, a housing-stock shock large enough to plausibly be visible in Butte County's PIT counts in following years."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Merced County has minimal fire acreage and little evidence of structural loss, so no meaningful relationship is expected."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yolo County's largest fire years (2018, 2020) are mostly rural/agricultural burns with some rural home loss but limited urban impact."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Humboldt's fires are large but remote and rural, with population centers largely outside the burn areas."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Colusa/Glenn/Trinity see enormous acreages from huge, sparsely populated wilderness fires, so acres burned is a weak proxy for housing displacement in these small counties."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yuba/Sutter fire acreage is small and mostly rural, implying a limited effect on the homeless count."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire destroyed most of the town of Grizzly Flats, a concrete housing-stock loss that could show up in El Dorado County's PIT counts."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires like the 2013 Rim Fire and 2015 Butte Fire caused some real home losses in these Sierra foothill counties, alongside mostly wildland acreage."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Tehama County fires (including a massive 2024 fire) are large but mostly rural, with a population too small and dispersed for a clean relationship to emerge."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Lake County was repeatedly devastated by the 2015 Valley Fire, 2018 Mendocino Complex, and other fires that destroyed large fractions of towns like Middletown in one of the state's poorest counties, plausibly pushing up homelessness."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Alpine/Inyo/Mono is vast, remote, sparsely populated Sierra wilderness, so huge fire acreages there are unlikely to translate into measurable homelessness effects."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Nevada County's fire history is comparatively modest with no major recorded town-destroying events in this window."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Los Angeles's homeless count of tens of thousands is dominated by housing-cost and economic factors that dwarf the proportional effect of any single fire, even a destructive one like the 2018 Woolsey Fire."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Diego's most severe in-window fire (the 2007 Witch Fire, about 335,000 acres) destroyed homes and triggered mass evacuations, but the county's overall homeless count is large and driven by other factors."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Orange County fires mostly burn wildland canyons on the urban edge with limited direct destruction of dense housing stock."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire and the subsequent Montecito debris flow destroyed over a thousand structures and killed dozens, a severe and direct housing shock to Santa Barbara County."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Kern County has several destructive fires, such as the 2016 Erskine Fire near Lake Isabella, alongside large wildland acreage, suggesting a modest positive relationship."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No recorded major fires within Long Beach's boundary means there is no wildfire signal to correlate with its homeless count."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Pasadena has negligible recorded fire acreage, implying essentially no relationship."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Riverside County has repeated large fires in mountain and foothill communities that could cause modest displacement into the homeless count."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Bernardino County's mountain communities have experienced real home losses from fires like the 2003 Old Fire that plausibly contribute to its homeless count."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire (about 238,000 acres) destroyed over 1,000 structures in Ventura, a direct and severe housing-stock shock."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Glendale has negligible recorded fire acreage in this window, implying little to no relationship."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Imperial County has no recorded major fires, so there is no wildfire signal to correlate with homelessness there."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Luis Obispo County's fires are moderate and mostly rural, suggesting a modest positive relationship at best."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "San Jose/Santa Clara is a huge, high-cost tech metro where homelessness is driven mainly by housing costs, and its large fire-years (e.g. 2020) were mostly wildland acreage in the hills rather than urban structure loss."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "San Francisco has no major recorded fires at all in this period, so there is no variance in the fire variable to correlate with the homeless count."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Oakland/Alameda's fire acreage is concentrated in East Bay regional parkland and hills rather than dense urban housing stock, so it should have little bearing on measured homelessness."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Sacramento's fire history is minor and peripheral to the urban core, so it's unlikely to meaningfully move a PIT count driven by regional housing costs."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Santa Rosa/Sonoma lost thousands of homes to the 2017 Tubbs Fire and later Kincade/Glass fires, a large enough share of local housing stock that some direct displacement into shelters or the street plausibly shows up in PIT counts despite FEMA/insurance housing and out-migration muting the effect."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Richmond/Contra Costa's fire exposure is small and mostly open-space, unlikely to materially affect local homelessness counts."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Monterey/San Benito's large fire years (Basin Complex, Dolan) burned mostly remote Big Sur wilderness rather than housing near Salinas, limiting any direct displacement effect."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Marin County has essentially one modest fire year in this window, too little exposure to expect a detectable relationship."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex destroyed roughly 1,500 homes in the Santa Cruz Mountains, a meaningful loss relative to this smaller CoC's housing stock, though California's 2021 unsheltered-count skip likely blunts the visible spike."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Mendocino County has suffered repeated large, structure-destroying fires (2008, 2012, 2018 Mendocino Complex, 2020 August Complex) in a small, housing-scarce rural county, making a modest positive link plausible."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Stanislaus County's fires are largely agricultural/wildland acreage away from the urban Modesto/Turlock housing stock."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "San Joaquin County's fire history is modest and peripheral to the Stockton urban core where most homelessness is concentrated."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "San Mateo County's only major fire year (2020, coastal CZU spillover) affected a limited coastal area relative to the whole county's housing market."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Visalia/Kings-Tulare has near-annual large fires, but they mostly burn Sierra/Sequoia forest land rather than the Central Valley urban centers where homelessness concentrates, so a direct housing-loss channel is weak."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fresno/Madera's enormous fire acreages are overwhelmingly Sierra Nevada forest and wilderness, leaving the urban Fresno housing stock largely untouched."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Placer County's fires include some WUI exposure near Auburn but are modest relative to this fast-growing suburban region's housing supply."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "This multi-county far-northern region has repeatedly seen catastrophic fires burn directly into towns (Redding in 2018, Greenville/Susanville-area in 2021), destroying substantial local housing stock in low-resource rural communities where rebuilding is slow."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Napa's 2017 Atlas/Tubbs-adjacent fires and the 2020 Glass Fire destroyed significant housing in and around the city of Napa and wine-country towns, plausibly displacing some residents into the sheltered/unsheltered count."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Solano County's fire exposure is moderate and mostly on the rural fringe of Vallejo/Fairfield, likely too limited to move the homeless count much."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.6,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire essentially destroyed the town of Paradise (about 19,000 structures), an extreme, sudden loss of housing stock in a small CoC that should register as a clear jump in the homeless count in subsequent years even with a lot of secondary out-migration."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Merced County's fire history is minor agricultural/wildland acreage with little bearing on housing stock or homelessness."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Yolo County's larger fire years (2018, 2020) mainly burned rural land near the Vacaville border rather than the Davis/Woodland urban core."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Humboldt County's frequent fires are largely in remote forestland away from Eureka and other population centers, limiting direct housing impact."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Colusa/Glenn/Trinity has enormous fire acreage but extremely low population and mostly wildland/forest burn area, so housing-stock impact and any homelessness signal should be weak despite the scale of the fires."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Yuba/Sutter's own fire history is fairly modest, so a within-CoC housing-loss channel to homelessness is unlikely to be strong."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "El Dorado County saw substantial home destruction from the 2014 King Fire and especially the 2021 Caldor Fire, which leveled much of Grizzly Flats, a plausible driver of some local displacement into the homeless count."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "This four-county Sierra foothill region lost many homes to the 2013 Rim Fire, 2015 Butte Fire, and 2017 Detwiler Fire, repeated structure loss in small rural communities that plausibly nudges local homelessness upward."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Tehama County has had several large, sometimes town-adjacent fires (including the massive 2024 Park Fire), giving some plausible but uncertain link to local housing loss and homelessness."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "Lake County is one of the most fire-battered small counties in the state, with the 2015 Valley Fire destroying over a thousand homes in Middletown, the 2016 Clayton Fire leveling downtown Lower Lake, and the 2018 Mendocino Complex burning further structures, repeated high per-capita housing loss that should be visible in the PIT count."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Alpine/Inyo/Mono's fires are almost entirely remote mountain and desert wildland with very little population or housing in the burn paths."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Nevada County's fire history is comparatively modest with no obvious large-scale town destruction in this record."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Los Angeles's homeless population is enormous and driven overwhelmingly by regional housing costs and economic factors, so even large fire-years affect too small a share of this huge, diverse county to show up clearly in the correlation."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "San Diego's biggest fires (2003 Cedar, 2007 Witch) destroyed homes mainly in exurban backcountry communities rather than the urban core where most of the region's homeless population is concentrated."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Orange County's fires have caused only modest and geographically limited housing loss relative to its large, wealthy urban housing market."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Santa Barbara County has seen repeated destructive fires (2008 Tea Fire, 2017 Thomas Fire and its Montecito debris-flow aftermath) that destroyed housing and caused prolonged local disruption, giving a plausible but uncertain positive link."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Kern County's large fire acreages are mostly mountain/wildland burns at the county's edges, leaving the Bakersfield urban core largely unaffected structurally."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Long Beach has no major recorded fires in this period, so there's no variance in the fire variable to drive a correlation."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Pasadena's fire acreage is negligible throughout the period, too small to plausibly affect its homeless count."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Riverside's notable fire years mostly burned exurban/wildland areas rather than destroying significant urban housing stock in this large, diverse county."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Bernardino County has repeatedly lost mountain-community housing to fire (e.g. the 2003 Old Fire near Lake Arrowhead/Crestline), which could plausibly contribute a small amount to local displacement and homelessness."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Ventura County suffered major structure loss in the 2003, 2006, and especially 2017 Thomas Fire (the largest CA fire at the time, over 1,000 structures destroyed), a plausible driver of some measurable local displacement."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Glendale's recorded fire acreage is negligible across the whole period, giving little basis for any relationship."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Imperial County has no major recorded fires at all, so there is no fire variance to correlate with homelessness."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "San Luis Obispo County's fire history in this window is moderate and mostly rural/wildland, with the county's largest fire (2025) falling outside the main analysis period."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The huge 2020 fire spike coincides with San Jose/Santa Clara's steep pandemic-era homelessness rise, though the region's chronic housing-cost crisis is the dominant driver."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires occurred in this dense urban CoC, so acreage burned cannot explain any variation in its homeless count."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are modest until a 2020 spike that overlaps a period of rising Bay Area homelessness, but the link is likely coincidental given the small burned acreage near urban housing."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fire years are recorded, far too little wildfire exposure to meaningfully move Sacramento's homeless count, which is driven by cost-of-living and policy factors."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2017 Tubbs Fire and 2019-2020 fires destroyed thousands of Santa Rosa-area homes, a direct and well-documented housing-stock shock that plausibly pushed up the local PIT count in following years."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage here is small and infrequent, unlikely to meaningfully affect Contra Costa's homeless count relative to broader regional housing pressures."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large fires in 2008, 2016, and 2020 likely disrupted some agricultural and rural housing in the Salinas/Monterey area, plausibly contributing modestly to homelessness upticks."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only one recorded fire year and a wealthy, low-homelessness-variance county make a meaningful correlation unlikely."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex fire destroyed many homes in the Santa Cruz mountains, a plausible direct contributor to displacement and subsequent homelessness."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Mendocino has suffered repeated large, destructive fires (2008, 2012, 2017, 2018, 2020) in a small rural county where housing loss would be a proportionally large shock to the homeless count."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Large fire acreage here is mostly agricultural/grassland rather than near dense housing, limiting plausible impact on Stanislaus County's homeless count."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fires are modest and largely rural/grassland, unlikely to be a major driver of San Joaquin County homelessness trends."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only one fire year recorded in this dense San Mateo County CoC, too little exposure to expect a real relationship."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Despite enormous fire acreage nearly every year, most of it is Sierra wilderness rather than housing near Visalia/Tulare population centers, so the plausible direct housing effect is muted."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Massive fire acreage including the 2020 Creek Fire is largely remote Sierra wilderness rather than urban Fresno/Madera housing stock, limiting plausible displacement effects."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Placer County's growing exurban footprint means moderate recurring fires could plausibly touch housing and contribute modestly to homelessness increases."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.55,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "This region includes the 2018 Carr Fire (which burned into Redding) and 2021 Dixie Fire (which destroyed Greenville), making it one of the most severe urban/community-destroying fire histories in the state, plausibly a strong driver of homelessness."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2017 Atlas/Tubbs fires and 2020 Glass Fire destroyed substantial housing in Napa County, a direct plausible contributor to displacement-driven homelessness."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Moderate recurring fires with a 2020 spike coincide with regional homelessness increases in Solano County, though the link is likely secondary to broader housing costs."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.6,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire destroyed the town of Paradise almost entirely and displaced tens of thousands into Chico and Butte County shelters, making this the clearest plausible case of a fire directly driving a homelessness surge."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage in Merced County is small and infrequent, unlikely to be a meaningful driver of its homeless count."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "The 2018 and 2020 fires are large in acreage but largely rural/wildland around Yolo County, limiting plausible direct housing displacement."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Humboldt has recurring large fires in a rural, economically fragile county where housing loss could plausibly nudge up homelessness counts."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Enormous fire acreage here is in sparsely populated, remote Trinity/Glenn/Colusa terrain, unlikely to translate into meaningful housing loss or homelessness change."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage in Yuba/Sutter is small and infrequent, unlikely to be a meaningful driver of homelessness there."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire threatened South Lake Tahoe and caused major evacuations and some housing loss in El Dorado County, plausibly contributing to displacement."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Recurring large fires including the 2015 Butte Fire (which destroyed homes) and 2013 Rim Fire affected rural mountain communities in this multi-county CoC, plausibly contributing to homelessness increases."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Tehama County has experienced several catastrophic fire years including a 376,000-acre fire in 2024, plausibly disrupting rural housing enough to affect its small homeless count."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Lake County suffered repeated catastrophic fires including the 2015 Valley Fire (destroyed Middletown) and 2018 Mendocino Complex, a severe and recurring housing-stock shock relative to the county's small, economically fragile population."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fires here are frequent but largely remote wildland in the Eastern Sierra, unlikely to directly affect housing stock in this sparsely populated CoC."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Moderate, recurring fires in a growing exurban Sierra foothill county could plausibly contribute modestly to housing instability and homelessness."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "LA has had large wildland-urban interface fires, but its enormous, cost-of-living-driven homeless population likely dilutes any fire-specific effect into a modest positive signal at most."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2003 Cedar Fire and 2007 firestorm destroyed thousands of San Diego County homes and caused mass displacement, a plausible contributor to subsequent homelessness increases."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Orange County's fires are moderate and the region is wealthy and heavily urbanized, limiting the plausible housing-stock impact on homelessness."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire caused significant destruction and the subsequent Montecito debris flow, a severe housing and displacement shock to Santa Barbara County plausibly linked to later homelessness increases."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Kern County has frequent large fires, mostly in desert/wildland terrain, giving a modest plausible link to its homeless count via periodic rural housing disruption."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires occurred in this dense urban CoC, ruling out any wildfire-driven effect on its homeless count."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Fire acreage in Pasadena is negligible over this period, making a meaningful correlation implausible."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Riverside has recurring large fires that periodically threaten wildland-urban interface communities, plausibly contributing modestly to displacement-driven homelessness."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "San Bernardino's mountain communities have been repeatedly hit by large, sometimes destructive fires (e.g., 2003, 2007), plausibly linked to periodic homelessness increases."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire and 2003/2006 fires caused significant structure loss in Ventura County, a plausible direct contributor to displacement-driven homelessness."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Fire acreage in Glendale is negligible, making a meaningful relationship to its homeless count implausible."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires occurred in Imperial County, so wildfire cannot explain variation in its homeless count."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Recurring moderate-to-large fires, including a large 2016 fire, could plausibly contribute modestly to housing instability in San Luis Obispo County."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "2020's massive regional fire coincided with a period of housing stress but Silicon Valley's homelessness is driven far more by cost-of-living than the mostly wildland fires here."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this dense urban CoC, so there is no wildfire signal to correlate with its economically-driven homeless count."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires here are mostly wildland/hills with limited housing loss, so acreage likely has only a weak link to the urban East Bay core's homelessness."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Minimal, small fire years in an inland capital-city CoC where homelessness is dominated by urban economic factors unrelated to wildfire."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2017 Tubbs Fire and 2020 fires destroyed thousands of homes in Santa Rosa, a well-documented direct housing-stock shock that plausibly pushed up local homelessness."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small, infrequent fire acreage in a mostly urban East Bay county suggests little relationship to homelessness counts."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Repeated large wildland fires (2008, 2016, 2020) likely caused periodic evacuation and economic disruption in agricultural Monterey/San Benito even without heavy urban structure loss."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only one fire year on record in affluent Marin County, too sparse to expect a real relationship."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Complex Fire destroyed roughly 1,500 homes in the Santa Cruz Mountains, a plausible direct driver of local displacement into the homeless count."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large rural wildfires in Mendocino likely cause some displacement, but low population density limits the effect on measured PIT counts."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fire years exist but are mostly agricultural/wildland in this Central Valley CoC, where homelessness is driven more by regional economic conditions."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fire acreage is moderate and homelessness in Stockton/San Joaquin is predominantly driven by urban poverty and housing costs, not wildfire."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only a single fire year in a dense, wealthy Peninsula county with little exposure to wildland-urban interface fire."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Near-annual, sometimes catastrophic fires (SQF Complex, Castle Fire) burn mountain communities in Tulare/Kings, plausibly displacing rural residents into the regional homeless count."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 Creek Fire (409k acres) destroyed mountain communities like Big Creek/Shaver Lake, a direct plausible driver of measured homelessness in Fresno/Madera."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fire years exist but mostly in less-populated forest, with Rocklin/Roseville's suburban core less exposed to structure loss."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "This sparsely populated far-northern CoC has suffered some of the state's largest fires including major community destruction (2018 Carr Fire), a strong plausible driver of homelessness against a small population base."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 fires and 2020 Glass Fire destroyed significant housing stock in Napa wine country, plausibly increasing local homelessness despite the area's wealth."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fire years including the 2020 LNU Complex likely caused some local disruption in Solano County."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.55,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire essentially destroyed the town of Paradise and displaced roughly 20,000 residents into Chico/Butte County, the clearest and most direct wildfire-to-homelessness causal channel among these regions."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage is small and infrequent in Merced, an agricultural Central Valley CoC where homelessness drivers are mostly economic."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional large fire years (2018, 2020) exist but Davis/Woodland's homelessness is driven mainly by regional housing costs, not wildfire."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated moderate-to-large rural fires in Humboldt could cause some displacement, tempered by low population density."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Colusa/Glenn/Trinity has experienced some enormous fires (600k+ acres) in a very sparsely populated rural region, where even modest displacement could show up in a small homeless count."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fire acreage is small and infrequent in Yuba/Sutter, suggesting little relationship to homelessness."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire destroyed much of Grizzly Flats and other El Dorado communities, a plausible direct contributor to local homelessness."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large recurring fires including the 2013 Rim Fire (258k acres) affect these rural Sierra foothill counties, plausibly displacing some residents."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Tehama has suffered severe fires including one exceeding 375k acres in 2024, likely causing real housing loss in this small rural county."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "Lake County has repeatedly suffered catastrophic community-destroying fires (2015 Valley Fire, 2018 Mendocino Complex), a well-documented direct driver of local displacement given its small population."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires here mostly burn remote wildland/forest with little housing stock at risk, limiting the plausible effect on homelessness."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fire years are moderate and infrequent in Nevada County, suggesting only a weak plausible relationship."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Despite large absolute fire acreage in some years, LA's enormous, economically-driven homeless population likely swamps any wildfire-specific signal."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Historic fires like the 2003 Cedar Fire and 2007 Witch Fire destroyed thousands of homes in San Diego County, a plausible but diluted contributor given the county's large population."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are moderate and Orange County's affluent, largely urban character limits the wildfire-to-homelessness pathway."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire and other large events destroyed housing and triggered evacuations in Santa Barbara County, plausibly nudging up local homelessness."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires occur, but Bakersfield/Kern's homelessness is driven mainly by agricultural-economy poverty rather than wildfire displacement."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this dense, small urban CoC, so no wildfire-driven relationship is plausible."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Essentially negligible recorded fire acreage in Pasadena makes any relationship implausible within this window."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Riverside has experienced large fires but its sprawling exurban housing stock limits the wildfire-to-homelessness pathway relative to broader regional economic drivers."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2003 Old Fire and other large San Bernardino Mountains fires destroyed substantial housing, a plausible direct contributor to homelessness in this CoC."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire (238k acres, over 1,000 structures destroyed) directly impacted Ventura County housing stock, plausibly increasing local homelessness."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Negligible fire acreage in small, dense Glendale makes a real relationship implausible."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in Imperial County, so no wildfire-driven relationship with homelessness is plausible."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate, occasionally large fires affect this coastal county, but San Luis Obispo's homelessness likely tracks broader regional housing costs more than wildfire."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Jose is a huge, high-cost urban core where PIT counts likely rose steadily from housing costs regardless of the mostly wildland-interface fires that touched the region."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "San Francisco has no major fires on record in this period, so there is no fire variance to correlate with homelessness."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Oakland/Alameda's fires were modest apart from 2020, so any relationship to the dense urban homeless count is likely weak and swamped by cost-of-living drivers."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sacramento saw only small fires within its boundary, so its large and rising homeless count is almost certainly driven by other factors."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs Fire destroyed roughly 5,000 homes directly in Santa Rosa, a plausible real driver of displacement and a subsequent homelessness bump."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Contra Costa's fire history within the boundary is minor, giving little reason to expect a measurable link to its homeless count."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Monterey/San Benito's large fires (e.g. 2008, 2016, 2020) were mostly in wildland/park areas with limited direct housing loss relative to the region's population."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Marin County had essentially one fire year (2020) of any size, too little variation to expect a real relationship."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex destroyed roughly 1,500 structures in the Santa Cruz mountains, a direct housing-stock shock that could plausibly show up in nearby-year PIT counts."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mendocino has had frequent large wildland fires and some rural home loss, but its small population makes PIT counts noisy relative to fire acreage."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Stanislaus's fires were largely wildland away from the urbanized Modesto/Turlock core, so a weak relationship is more plausible than a strong one."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Joaquin's fire acreage doesn't concentrate near Stockton's urban population, limiting plausible direct housing impact."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Mateo County had only one notable fire year (2020, spillover from CZU), too little variation for a strong relationship."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Tulare/Kings has had persistent large Sierra forest fires across nearly every year, and this rural, lower-income region's homeless count could track chronic fire-season disruption even without mass structure loss."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fresno/Madera's huge Sierra fires (including the 2020 Creek Fire) mostly burned forest rather than the urban core, but chronic smoke/economic disruption could contribute modestly to a rising homeless count."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Placer County's fires were mostly wildland in a fast-growing, relatively affluent suburban area, limiting plausible housing-loss-driven homelessness effects."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "This region includes Redding, hit directly by the destructive 2018 Carr Fire, plus some of the largest fire-years in the state, making a real displacement-driven relationship plausible."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Napa was struck by the 2017 Atlas Fire and 2020 Glass Fire, both of which destroyed homes in a relatively small CoC, so effects on the local homeless count are plausible."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Solano County's fire history is minor and unlikely to have caused significant direct housing loss."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.6,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire destroyed roughly 19,000 structures and nearly all of Paradise, the most catastrophic single housing-stock loss in modern CA fire history, making a strong subsequent homelessness increase highly plausible."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Merced's fire acreage is modest and mostly rural, giving little basis for a strong relationship."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yolo County's fires (e.g. 2018 County Fire) were largely rural/wildland with limited direct urban housing loss."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Humboldt has frequent, sizable fires and chronic rural poverty, so some contribution to a rising homeless count is plausible even without a clear single catastrophic event."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Colusa/Glenn/Trinity has enormous fire acreage but very sparse population, so its small homeless count is likely too noisy to track fire size tightly."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yuba/Sutter's fire history is minor relative to other Sierra-foothill counties."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire destroyed much of Grizzly Flats within El Dorado County, a direct housing-stock shock plausibly reflected in nearby PIT counts."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "This four-county rural region has seen large, repeated fires (2015 Butte Fire, 2017 Detwiler Fire) with some home loss, though the population is small and rural safety nets may buffer displacement into homelessness."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Tehama County has experienced some very large fire years, but as a small rural CoC its homeless counts are likely noisy relative to fire acreage."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Lake County has suffered repeated catastrophic fires destroying entire communities (2015 Valley Fire, 2018 Mendocino Complex/Ranch Fire) in an already low-income rural county, making a real displacement effect plausible."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Alpine/Inyo/Mono's fires are largely in remote wildland with limited housing stock at risk."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Nevada County's fire history in this window is comparatively minor."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Los Angeles's enormous, rising homeless population is overwhelmingly driven by housing costs and economic factors, likely swamping any signal from fires that, while large in acreage, affect a small fraction of this massive urban region's housing stock in this period."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Diego's large fires (2003 Cedar, 2007 Witch) were destructive but the region's homeless trend is more plausibly driven by the metro area's cost of living."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Orange County's fires mostly burned wildland/urban-interface open space rather than dense housing, limiting plausible direct impact."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire (one of the largest in CA history) and other major fires damaged housing in Santa Barbara County communities, making some real relationship plausible."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Kern County's fires are large but mostly rural/wildland relative to Bakersfield's urban core, and its rising homeless count likely reflects broader Central Valley economic conditions."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Long Beach has no major fires on record in this period, so no relationship is expected."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Pasadena's fire exposure in this dataset is negligible."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Riverside has substantial fire-prone wildland-urban interface acreage, but rapid population growth likely dominates its homelessness trend over any fire signal."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Bernardino has had large, repeated foothill fires with some home destruction (e.g. 2003 Old/Grand Prix fires), plausibly contributing modestly alongside persistent regional poverty."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Dec 2017 Thomas Fire destroyed over 1,000 structures in Ventura just before the Jan 2018 PIT count, a plausible direct link given the timing."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Glendale's fire exposure in this dataset is negligible."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Imperial County has no major fires on record in this period, so no relationship is expected."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Luis Obispo's fires (e.g. 2016 Chimney Fire) were moderate with limited direct urban housing loss."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A huge 2020 wildland-urban interface fire year could nudge displacement up, but San Jose's homeless count is dominated by Bay Area housing costs, diluting any fire signal."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this dense urban CoC, so there is no wildfire exposure to drive a correlation."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires here are modest except for a 2020 spike, and Oakland/Alameda homelessness is primarily cost-driven, so any wildfire effect should be small."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sacramento's fire acreage is small and infrequent relative to its large urban homeless population, implying little relationship."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Repeated destructive interface fires (2017 Tubbs, 2019 Kincade, 2020 Glass/Walbridge) burned thousands of Sonoma County homes, plausibly displacing residents into homelessness in those same years."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Contra Costa's fire history is minor and sporadic, so a meaningful link to homelessness counts is unlikely."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires occur here but mostly in less-populated wildland areas of Monterey/San Benito, limiting direct housing loss and homelessness impact."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Marin has almost no fire history besides 2020, giving little basis for a correlation with its homeless count."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex destroyed many homes in the Santa Cruz Mountains, plausibly pushing some residents into homelessness that same year."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Mendocino County has had large, recurrent fires nearly every few years against a small rural population, so housing loss could be a meaningful share of local stock and correlate with counts."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires in this Central Valley CoC are largely in foothill/wildland areas away from the urban core, so expected impact on homelessness is modest."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Stockton/San Joaquin fire acreage is inconsistent and mostly wildland, suggesting weak ties to the urban homeless population."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Mateo County has essentially one notable fire year (2020), too sparse a signal to expect a strong correlation."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Visalia/Kings/Tulare sees large fires almost annually in a largely rural, lower-income agricultural region where housing/economic disruption could plausibly track with homelessness."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Fresno/Madera has experienced some of the largest fires in the state (e.g. 2020 Creek Fire), which could displace mountain-community residents into the homeless count in the same years."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Placer County's foothill communities have faced growing large-fire years (e.g. 2022), plausibly linked to housing disruption as suburban growth pushes into fire-prone land."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.55,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "This rural far-northern multi-county region has enormous, near-annual fires (including the 1.4M-acre 2021 Dixie Fire) that could destroy a large share of the local housing stock relative to its small population, making a real correlation plausible."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Napa was directly hit by the destructive 2017 Tubbs/Atlas fires and 2020 Glass Fire, both of which destroyed significant housing stock in the same years."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Solano County's fire acreage is moderate and inconsistent, suggesting a weaker relationship than in more fire-ravaged neighboring counties."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.6,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire destroyed the town of Paradise almost entirely, a uniquely severe housing-stock loss for this CoC that should show up clearly in that year's and following years' homeless counts."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Merced's fire history is minor and scattered, giving little reason to expect a meaningful correlation."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yolo County saw larger fires in 2018 and 2020 (LNU Complex), which could have modestly increased displacement in those years."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Humboldt has recurring moderate-to-large fires in a rural coastal county, offering a plausible but not dominant link to homelessness."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Colusa/Glenn/Trinity has seen some of the largest fire years in the state (2020, 2021) relative to a very small, rural population, which could translate into a meaningful share of housing loss."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yuba/Sutter's fire acreage is consistently small, implying little expected effect on homelessness counts."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire destroyed the community of Grizzly Flats in El Dorado County, a concentrated housing loss that could show up in nearby-year homeless counts."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "This Sierra foothill region has had large, recurring fires including the 2013 Rim Fire, plausibly disrupting housing in a rural, lower-resource area."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Tehama County has faced repeated very large fires (including a 376,000-acre fire in 2024) in a small rural population base, raising the plausible housing-loss share."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Lake County was hit by the historically destructive 2015 Valley Fire and 2018 Mendocino Complex, both of which destroyed large numbers of homes relative to this small county's population."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Alpine/Inyo/Mono fires are frequent but occur mostly in sparsely populated wildland far from housing, limiting the expected homelessness link."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Nevada County's fire years are moderate and infrequent, suggesting only a weak plausible relationship."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Los Angeles has had large fire years, but its enormous homeless population is overwhelmingly driven by cost-of-housing dynamics, diluting any wildfire-specific signal."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Diego's largest fires (2003, 2007) hit early in the record and the region's huge urban population likely swamps any wildfire-driven homelessness effect."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Orange County fires are moderate, and this dense urban CoC's homelessness is likely driven far more by cost of living than fire displacement."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire caused severe destruction along the Santa Barbara/Ventura border, plausibly displacing residents in the following years' counts."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Kern County has frequent but mostly wildland fires away from dense housing, so a moderate-to-weak relationship seems most plausible."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires are recorded within this dense city CoC, so there is no wildfire pathway to homelessness here."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Pasadena's fire acreage is negligible over the whole period, giving no meaningful basis for a correlation."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Riverside has moderate recurring fires, but as a large and growing urban/suburban CoC its homelessness is likely driven mainly by cost of housing."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Bernardino has repeated large fires (2003, 2020, 2023) that could periodically displace mountain and foothill residents into the homeless count."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire (238,000 acres) and other large Ventura County fires destroyed substantial housing, plausibly elevating counts in nearby years."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "Glendale's fire acreage is negligible across the study period, leaving no plausible wildfire-driven effect."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires are recorded in Imperial County, so no correlation with homelessness would be expected."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Luis Obispo has moderate, intermittent large fires, suggesting only a modest plausible link to its homeless count."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Jose's homelessness is dominated by housing costs, so occasional large fires (2020) plausibly add only a small marginal push."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this dense urban CoC, so there is no fire signal to correlate with the count."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Modest, infrequent fire acreage in a large urban county suggests only a weak added effect on homelessness counts driven mainly by cost of living."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Very little fire acreage touches this urban capital-region CoC, so little basis for fire to move the homeless count."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Santa Rosa/Sonoma suffered repeated catastrophic fires (2017 Tubbs, 2019, 2020) that destroyed thousands of homes in populated wine-country neighborhoods, a plausible direct driver of displacement."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires here are modest and largely peripheral to the dense Contra Costa population centers, implying a weak relationship."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recurring fires (2008, 2016, 2020) near Big Sur/Monterey County could plausibly displace some rural households, though many burns are in low-density wildland."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single sizable 2020 fire year in an otherwise affluent, low-homelessness county gives limited but plausible upward pressure."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU Lightning Complex burned deep into populated Santa Cruz Mountains communities, destroying homes and plausibly displacing residents into the count."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Mendocino's fires are large relative to its small rural population, so housing loss there could meaningfully move a small homeless count."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2020 fire acreage is mostly foothill/wildland relative to the populous Central Valley core, so effect on the homeless count is likely modest."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Stockton's homelessness is driven mainly by regional economic factors, so intermittent fire years likely add only a small increment."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire reached into San Mateo County's populated areas, giving a plausible but single-year-driven positive relationship."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Despite enormous recurring Sierra foothill fire acreage, most burns are wildland far from the dense agricultural population centers that drive Tulare/Kings homelessness."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Massive fires like the 2020 Creek Fire reached foothill communities near Fresno/Madera, plausibly contributing some displacement on top of dominant economic drivers."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Placer County's fast-growing suburban/foothill communities face moderate recurring fire exposure that could add modest upward pressure."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "This region includes the 2018 Carr Fire which burned directly into the city of Redding, and consistently enormous acreage, making a real housing-loss effect plausible in a smaller rural population base."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Napa's 2017 and 2020 fires destroyed substantial housing stock in populated wine-country towns, a direct plausible driver of displacement into the PIT count."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Solano County sees moderate fire years including a large 2020 burn, giving some plausible but limited upward relationship."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.6,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire nearly destroyed the entire town of Paradise (~14,000 homes), an extreme, well-documented housing-stock shock that should dominate this CoC's fire-homelessness relationship."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Merced sees only small fire acreage, so little basis for a meaningful relationship beyond noise."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sizable 2018 and 2020 fires near Davis/Woodland could add modest displacement pressure on an otherwise economically-driven count."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Humboldt's consistent moderate-to-large fires in a rural, already housing-poor county could plausibly contribute incremental homelessness."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Enormous fire acreage here is mostly remote wildland with very sparse population, so the effect on the region's small homeless count is likely limited and noisy."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Yuba/Sutter has only modest fire years, implying a weak plausible relationship."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire threatened and partly forced evacuation of South Lake Tahoe communities, a plausible driver of a temporary homelessness spike."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires like the 2013 Rim Fire burned extensively in this rural mountain-county CoC, plausibly contributing to displacement in small mountain communities."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Tehama County has repeatedly seen massive fires including the 2024 Park Fire, large relative to its small population and housing stock."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Lake County was repeatedly devastated by the 2015 Valley Fire and 2018 Mendocino Complex (the largest fire in CA history), destroying a large share of housing stock in a small rural population."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Eastern Sierra fires are large but mostly remote wildland with very sparse population, limiting plausible impact on the homeless count."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Nevada County sees only modest fire years, suggesting a weak relationship."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Los Angeles's massive homeless population is overwhelmingly driven by housing cost and economic factors, so even large fires likely register as only a small marginal contributor."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Diego's historic mega-fires (2003 Cedar Fire, 2007 Witch Fire) destroyed thousands of homes, but the county's large diverse population likely dilutes the effect on the overall count."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Orange County's fires are moderate and its homelessness driven mainly by high housing costs, implying only a weak added effect."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Santa Barbara has suffered repeated destructive fires (2007 Zaca, 2017 Thomas) that damaged substantial local housing stock, a plausible meaningful contributor given the county's smaller population."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Kern County's large fires are mostly in desert/mountain wildland, while its homelessness is driven largely by agricultural-region poverty, implying a modest relationship."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in this dense coastal city, so there is no basis for a fire-driven relationship."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Pasadena has negligible recorded fire acreage in this window, so little basis for a relationship."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Riverside's recurring moderate-to-large fires in a fast-growing exurban region could add some incremental displacement."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "San Bernardino has repeatedly seen large fires (2003 Old Fire, 2007, 2020, 2023) reaching foothill communities, a plausible meaningful contributor to displacement."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Ventura County's fires, especially the 2017 Thomas Fire which destroyed over a thousand structures, plausibly drove real housing loss and displacement."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Glendale has negligible recorded fire acreage, so little basis for a meaningful relationship."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires recorded in Imperial County, so there is no fire signal to correlate with homelessness."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "San Luis Obispo County sees moderate fire years (2016, 2025) that could add some incremental displacement pressure on the homeless count."
+   }
+  ]
+ ]
+}

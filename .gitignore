@@ -3,8 +3,7 @@ data/_raw/
 __pycache__/
 
 # Private writing / agent notes -- keep off the public repo
-manuscript_draft.md
-manuscript_factsheet.md
+manuscript*.md
 AGENTS.md
 CLAUDE.md
 paper_response.md

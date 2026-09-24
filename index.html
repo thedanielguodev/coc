@@ -285,7 +285,7 @@
   <article>
     <h1>Do wildfires show up in California's homeless counts?</h1>
     <p class="dek">Eighteen years of federal homeless counts for California's 44 Continuums of Care, compared with state wildfire records, and with estimates from an AI model that never saw the counts.</p>
-    <p class="byline">Daniel Guo &middot; Working draft, updated September 23, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
+    <p class="byline">Daniel Guo &middot; Working draft, updated September 24, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
 
     <section id="findings" class="prose">
       <h2>Summary</h2>
@@ -295,8 +295,9 @@
         <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. None of these estimates reaches statistical significance.</li>
         <li>An AI model given only each region's fire history predicted a positive relationship in all <span data-fill="n_estimates">440</span> of its estimates. On average it overstated the observed correlation by <span data-fill="bias">0.23</span>.</li>
         <li>The model's errors were largest when it described itself as highly confident.</li>
+        <li>Told how the PIT count is collected, the model lowered its estimates but still overstated the correlation. A second model, Gemini, overstated it much less. Neither model ever predicted a negative relationship, and neither could tell which regions had a stronger one.</li>
       </ul>
-      <p>The PIT count misses many people displaced by fire, such as families staying with relatives or in hotels paid by insurance or FEMA. A weak result here does not show that wildfires have no effect on housing loss.</p>
+      <p>The PIT count misses many people displaced by fire, such as families staying with relatives or in hotels paid by insurance or FEMA. A weak result here does not show that wildfires have no effect on housing loss. A national study of all 50 states found that homes lost to climate disasters were associated with larger increases in homelessness (<a href="https://doi.org/10.1001/jamanetworkopen.2026.5187">Leifheit et al., 2026</a>). The AI's positive direction may be right. This page measures how well it estimates the size of the relationship that appears in HUD's CoC-level counts.</p>
     </section>
 
     <section id="map-section">
@@ -462,6 +463,27 @@
         <figcaption class="fig-note"><b>Source:</b> CAL FIRE fire perimeters. Author's calculations.</figcaption>
       </figure>
 
+      <div class="prose">
+        <h3>Does knowing how the data is collected change the estimates?</h3>
+        <p>Part of the gap could come from the model not knowing how the PIT count works. To test this, the experiment was repeated with one added paragraph describing what the count includes and leaves out. It was also run on a second model, Gemini 3.5 Flash-Lite, with both versions of the prompt. Each of the four combinations had 10 independent runs.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 7. Average AI estimate by model and prompt</p>
+          <p class="fig-sub">Mean estimated correlation across 41 CoCs, compared with the observed average.</p>
+        </div>
+        <div id="conditionChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Note:</b> The "PIT description" prompt adds a paragraph explaining that the count covers one night in January, includes only people in shelters or unsheltered locations, and skipped unsheltered people in 2021. Gemini 3.5 Flash-Lite is a smaller model than Claude Sonnet; larger Gemini models were not available within free-tier limits. <b>Source:</b> Author's calculations.</figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table class="data" id="conditionTable">
+          <caption>Table 4. AI estimates by model and prompt</caption>
+          <thead><tr><th>Model</th><th>Prompt</th><th class="n">Mean estimate</th><th class="n">Overstatement (SE)</th><th class="n">Rank agreement &rho;</th><th class="n">Negative estimates</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Overstatement is the mean of (AI estimate minus observed r) across CoCs, with its standard error. Each CoC's observed r rests on about 18 years of data and has a sampling error near &plusmn;0.26, so single-CoC comparisons are noisy; the averages are more reliable. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
+
       <details class="more" id="aiTableDetails">
         <summary>Show results for every CoC</summary>
         <div class="table-wrap">
@@ -487,7 +509,7 @@
       </div>
       <figure>
         <div class="fig-head">
-          <p class="fig-label">Figure 7. Homeless count, Chico, Paradise/Butte County CoC (CA-519)</p>
+          <p class="fig-label">Figure 8. Homeless count, Chico, Paradise/Butte County CoC (CA-519)</p>
           <p class="fig-sub">Overall PIT count by year.</p>
         </div>
         <div id="caseChart" class="chart"></div>
@@ -510,13 +532,14 @@
       <h3>Statistics</h3>
       <p>Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 18 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC.</p>
       <h3>AI experiment</h3>
-      <p>The model saw each CoC's name, number, and acres burned by year. It never saw homeless counts or any of the results on this page. It returned an estimated correlation, a direction, a confidence level, and a short explanation for each CoC. All 44 CoCs were sent together in each of 10 independent runs. The estimate shown for a CoC is the mean across runs.</p>
+      <p>The model saw each CoC's name, number, and acres burned by year. It never saw homeless counts or any of the results on this page. It returned an estimated correlation, a direction, a confidence level, and a short explanation for each CoC. All 44 CoCs were sent together in each of 10 independent runs. The estimate shown for a CoC is the mean across runs. The follow-up runs used the same prompt with one added paragraph describing the PIT count, and were repeated on Gemini 3.5 Flash-Lite through the Gemini API. The exact prompts and every raw answer are in the data files below.</p>
       <h3>Limitations</h3>
       <ul>
         <li>The analysis is correlational and cannot establish cause in either direction.</li>
         <li>PIT counts are a single-night snapshot, and counting methods differ across CoCs and years.</li>
         <li>Fires under 1,000 acres are excluded, and CoC boundaries are treated as fixed across all years.</li>
-        <li>Only one AI model family was tested, and all regions were estimated in the same session for each run.</li>
+        <li>Two AI models were tested, and all regions were estimated in the same request for each run.</li>
+        <li>The original prompt lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." This wording may push every estimate upward. A neutral prompt has not been tested yet.</li>
       </ul>
       <p>Claude Code was used to help write the data pipeline and this page.</p>
     </section>
@@ -533,6 +556,10 @@
         <li><a href="site/data/ground_truth_structures_influence.json">Correlations, structures destroyed</a></li>
         <li><a href="site/data/yearly_fire_influence.json">Correlations by year</a></li>
         <li><a href="site/data/panel_fe_influence.json">Fixed-effects results</a></li>
+        <li><a href="site/data/ai_estimates_claude_pit_informed.json">AI estimates, Claude with PIT description</a></li>
+        <li><a href="site/data/ai_estimates_gemini_baseline.json">AI estimates, Gemini, original prompt</a></li>
+        <li><a href="site/data/ai_estimates_gemini_pit_informed.json">AI estimates, Gemini with PIT description</a></li>
+        <li><a href="site/data/ai_condition_comparison.json">AI comparison across models and prompts</a></li>
         <li><a href="site/data/ai_fire_influence_estimates.json">AI estimates, all runs</a></li>
         <li><a href="site/data/ai_vs_ground_truth.json">AI vs. observed, by CoC</a></li>
         <li><a href="site/data/ca_coc_boundaries.min.geojson">CoC boundaries (GeoJSON)</a></li>
@@ -948,13 +975,13 @@ function drawSignedBars(containerId, bars, opts) {
 
 // Horizontal bars, one series, direct-labeled.
 function drawHBars(containerId, rows, opts) {
-  const { valueFormat = d3.format(".2f"), tooltip } = opts;
+  const { valueFormat = d3.format(".2f"), tooltip, labelWidth = 120, refLine = null } = opts;
   const rowH = 34;
-  const margin = { top: 4, right: 56, bottom: 24, left: 120 };
+  const margin = { top: refLine ? 22 : 4, right: 56, bottom: 24, left: labelWidth };
   const height = margin.top + margin.bottom + rowH * rows.length;
   const { g, innerW, innerH } = setupSvg(containerId, height, margin);
   const y = d3.scaleBand().domain(rows.map(r => r.label)).range([0, innerH]).padding(0.3);
-  const x = d3.scaleLinear().domain([0, d3.max(rows, r => r.value)]).nice().range([0, Math.min(innerW, 520)]);
+  const x = d3.scaleLinear().domain([0, d3.max([...rows.map(r => r.value), refLine ? refLine.value : 0])]).nice().range([0, Math.min(innerW, 520)]);
   g.append("g").selectAll("line").data(x.ticks(4)).join("line")
     .attr("class", "gridline").attr("y1", 0).attr("y2", innerH).attr("x1", d => x(d)).attr("x2", d => x(d));
   g.selectAll("rect.bar").data(rows).join("rect").attr("class", "bar")
@@ -968,6 +995,12 @@ function drawHBars(containerId, rows, opts) {
     .attr("x", -10).attr("y", r => y(r.label) + y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end")
     .text(r => r.label);
   g.append("g").attr("transform", `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(4).tickSize(4).tickFormat(d3.format(".1f")));
+  if (refLine) {
+    g.append("line").attr("x1", x(refLine.value)).attr("x2", x(refLine.value)).attr("y1", -6).attr("y2", innerH)
+      .attr("stroke", COLORS.orange).attr("stroke-width", 2);
+    g.append("text").attr("class", "direct-label").attr("x", x(refLine.value)).attr("y", -10)
+      .attr("text-anchor", "start").text(refLine.label);
+  }
   g.selectAll("rect.hit").data(rows).join("rect").attr("class", "hit")
     .attr("x", -margin.left).attr("width", innerW + margin.left).attr("y", r => y(r.label)).attr("height", y.bandwidth())
     .attr("fill", "transparent")
@@ -1158,6 +1191,7 @@ function renderAi() {
   }
 
   renderYearFactor(data.by_coc);
+  renderConditions();
   renderRankingTable();
 }
 
@@ -1181,6 +1215,31 @@ function renderYearFactor(byCoc) {
     color: COLORS.blue, opacity: 0.8, fit: linearFit(points), highlight: state.selectedCocNum,
     tooltip: d => `<div class="t">${d.name}</div>Largest fire year: ${d.x} (${fmt(d.acres)} acres)<br>AI error: ${d.y.toFixed(2)}`,
     onClick: d => selectCoc(d.id, { scroll: true }),
+  });
+}
+
+const CONDITION_ROWS = [
+  ["claude_baseline", "Claude Sonnet", "Original"],
+  ["claude_pit_informed", "Claude Sonnet", "PIT description"],
+  ["gemini_baseline", "Gemini Flash-Lite", "Original"],
+  ["gemini_pit_informed", "Gemini Flash-Lite", "PIT description"],
+];
+
+function renderConditions() {
+  const res = state.conditions?.results;
+  const tbody = document.querySelector("#conditionTable tbody");
+  if (!res) {
+    document.getElementById("conditionChart").textContent = "Results not available.";
+    tbody.innerHTML = `<tr><td colspan="6">Results not available.</td></tr>`;
+    return;
+  }
+  const rows = CONDITION_ROWS.filter(([k]) => res[k]).map(([k, model, prompt]) => ({ key: k, model, prompt, ...res[k] }));
+  tbody.innerHTML = rows.map(r => `<tr><td>${r.model}</td><td>${r.prompt}</td><td class="n">${r.mean_estimate.toFixed(2)}</td><td class="n">${fmtSigned(r.mean_signed_error)} (${r.mean_signed_error_se.toFixed(2)})</td><td class="n">${fmtR(r.agreement_spearman_rho, 2)}</td><td class="n">${r.n_negative_estimates} of ${fmt(r.n_estimates)}</td></tr>`).join("");
+  const observed = state.conditions.observed_mean_r;
+  drawHBars("conditionChart", rows.map(r => ({ ...r, label: `${r.model}, ${r.prompt === "Original" ? "original prompt" : "PIT description"}`, value: r.mean_estimate })), {
+    labelWidth: 230,
+    refLine: { value: observed, label: `Observed average, ${observed.toFixed(2)}` },
+    tooltip: r => `<div class="t">${r.label}</div>Mean estimate ${r.mean_estimate.toFixed(3)}<br>Overstatement ${fmtSigned(r.mean_signed_error, 3)} (SE ${r.mean_signed_error_se.toFixed(3)})<br>${r.n_negative_estimates} of ${r.n_estimates} estimates below zero`,
   });
 }
 
@@ -1424,15 +1483,16 @@ async function init() {
     loadJSON("site/data/ca_fire_perimeters.geojson"),
     loadJSON("site/data/ca_state_outline.geojson"),
   ]);
-  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe] = await Promise.all([
+  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions] = await Promise.all([
     loadOptional("site/data/ai_vs_ground_truth.json"),
     loadOptional("site/data/ai_fire_influence_estimates.json"),
     loadOptional("site/data/ground_truth_fire_influence.json"),
     loadOptional("site/data/ground_truth_structures_influence.json"),
     loadOptional("site/data/yearly_fire_influence.json"),
     loadOptional("site/data/panel_fe_influence.json"),
+    loadOptional("site/data/ai_condition_comparison.json"),
   ]);
-  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe });
+  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions });
   state.pitByCoc = indexByCoc(pit);
   state.hicByCoc = indexByCoc(hic);
   state.firesByYear = fireYear;

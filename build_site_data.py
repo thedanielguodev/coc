@@ -36,6 +36,10 @@ OPTIONAL_JSON_COPY = [
     "yearly_fire_influence.json",
     "ai_fire_influence_estimates.json",
     "ai_vs_ground_truth.json",
+    "ai_estimates_claude_pit_informed.json",
+    "ai_estimates_gemini_baseline.json",
+    "ai_estimates_gemini_pit_informed.json",
+    "ai_condition_comparison.json",
 ]
 
 
