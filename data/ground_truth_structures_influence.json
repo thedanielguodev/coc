@@ -1,0 +1,1130 @@
+{
+  "metric": "Overall Homeless",
+  "methodology": "Pearson r / Spearman rho / least-squares fit between CAL FIRE DINS structures destroyed (>50% damage) within a CoC's boundary and that CoC's HUD Point-in-Time homeless count, pooled across 2013-2024 (the years DINS coverage overlaps PIT data). lag0 pairs same-year structures destroyed with the PIT count; lag1 pairs a year's destroyed structures with next year's PIT count. This is the same statistical design as compute_fire_influence.py, substituting structures-destroyed for acres-burned as a more causally direct housing-loss proxy -- burned wildland doesn't display anyone, a destroyed home might.",
+  "statewide": {
+    "lag0": {
+      "n": 516,
+      "pearson_r": 0.0028,
+      "spearman_rho": 0.0054,
+      "p_value": 0.94922,
+      "slope": 0.024678,
+      "intercept": 3172.205,
+      "strength": "negligible",
+      "mean_structures_destroyed": 104.29,
+      "mean_homeless": 3174.8
+    },
+    "lag1": {
+      "n": 476,
+      "pearson_r": -0.0001,
+      "spearman_rho": -0.0737,
+      "p_value": 0.99856,
+      "slope": -0.000713,
+      "intercept": 3192.587,
+      "strength": "negligible",
+      "mean_structures_destroyed": 109.65,
+      "mean_homeless": 3192.5
+    }
+  },
+  "by_coc": {
+    "CA-500": {
+      "coc_name": "San Jose/Santa Clara City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.202,
+        "spearman_rho": -0.0367,
+        "p_value": 0.51416,
+        "slope": 10.975088,
+        "intercept": 7745.197,
+        "strength": "weak",
+        "mean_structures_destroyed": 14.58,
+        "mean_homeless": 7905.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.7967,
+        "spearman_rho": -0.3873,
+        "p_value": 8e-05,
+        "slope": -43.507214,
+        "intercept": 8622.342,
+        "strength": "strong",
+        "mean_structures_destroyed": 15.91,
+        "mean_homeless": 7930.2
+      }
+    },
+    "CA-501": {
+      "coc_name": "San Francisco CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 7060.0,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 7060.0
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 7064.727,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 7064.7
+      }
+    },
+    "CA-502": {
+      "coc_name": "Oakland, Berkeley/Alameda County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.225,
+        "spearman_rho": 0.2184,
+        "p_value": 0.46516,
+        "slope": 51.601399,
+        "intercept": 6124.545,
+        "strength": "weak",
+        "mean_structures_destroyed": 3.25,
+        "mean_homeless": 6292.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.4969,
+        "spearman_rho": -0.5,
+        "p_value": 0.0858,
+        "slope": -110.864103,
+        "intercept": 6869.7,
+        "strength": "moderate",
+        "mean_structures_destroyed": 3.55,
+        "mean_homeless": 6476.6
+      }
+    },
+    "CA-503": {
+      "coc_name": "Sacramento City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.5574,
+        "spearman_rho": 0.393,
+        "p_value": 0.03377,
+        "slope": 1690.090909,
+        "intercept": 4207.727,
+        "strength": "strong",
+        "mean_structures_destroyed": 0.25,
+        "mean_homeless": 4630.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.5549,
+        "spearman_rho": 0.5,
+        "p_value": 0.0454,
+        "slope": 1635.533333,
+        "intercept": 4374.4,
+        "strength": "strong",
+        "mean_structures_destroyed": 0.27,
+        "mean_homeless": 4820.5
+      }
+    },
+    "CA-504": {
+      "coc_name": "Santa Rosa, Petaluma/Sonoma County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.0207,
+        "spearman_rho": -0.3322,
+        "p_value": 0.94785,
+        "slope": -0.009647,
+        "intercept": 2885.109,
+        "strength": "negligible",
+        "mean_structures_destroyed": 667.83,
+        "mean_homeless": 2878.7
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.0091,
+        "spearman_rho": -0.1636,
+        "p_value": 0.97817,
+        "slope": -0.003726,
+        "intercept": 2753.984,
+        "strength": "negligible",
+        "mean_structures_destroyed": 727.64,
+        "mean_homeless": 2751.3
+      }
+    },
+    "CA-505": {
+      "coc_name": "Richmond/Contra Costa County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.0674,
+        "spearman_rho": 0.0437,
+        "p_value": 0.8309,
+        "slope": 68.045455,
+        "intercept": 2097.909,
+        "strength": "negligible",
+        "mean_structures_destroyed": 0.17,
+        "mean_homeless": 2109.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.0955,
+        "spearman_rho": 0.2,
+        "p_value": 0.77344,
+        "slope": 96.7,
+        "intercept": 2101.6,
+        "strength": "negligible",
+        "mean_structures_destroyed": 0.18,
+        "mean_homeless": 2119.2
+      }
+    },
+    "CA-506": {
+      "coc_name": "Salinas/Monterey, San Benito Counties CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.0872,
+        "spearman_rho": -0.2807,
+        "p_value": 0.78193,
+        "slope": 1.830532,
+        "intercept": 2661.074,
+        "strength": "negligible",
+        "mean_structures_destroyed": 16.67,
+        "mean_homeless": 2691.6
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.5831,
+        "spearman_rho": 0.0545,
+        "p_value": 0.03129,
+        "slope": -12.304825,
+        "intercept": 2891.36,
+        "strength": "strong",
+        "mean_structures_destroyed": 18.18,
+        "mean_homeless": 2667.6
+      }
+    },
+    "CA-507": {
+      "coc_name": "Marin County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 980.25,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 980.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 1007.909,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 1007.9
+      }
+    },
+    "CA-508": {
+      "coc_name": "Watsonville/Santa Cruz City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.0122,
+        "spearman_rho": 0.1344,
+        "p_value": 0.96931,
+        "slope": 0.021635,
+        "intercept": 2225.161,
+        "strength": "negligible",
+        "mean_structures_destroyed": 119.67,
+        "mean_homeless": 2227.8
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.6812,
+        "spearman_rho": -0.1348,
+        "p_value": 0.00525,
+        "slope": -1.006929,
+        "intercept": 2240.268,
+        "strength": "strong",
+        "mean_structures_destroyed": 130.55,
+        "mean_homeless": 2108.8
+      }
+    },
+    "CA-509": {
+      "coc_name": "Mendocino County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.2234,
+        "spearman_rho": -0.0821,
+        "p_value": 0.46864,
+        "slope": 0.472554,
+        "intercept": 905.622,
+        "strength": "weak",
+        "mean_structures_destroyed": 57.58,
+        "mean_homeless": 932.8
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.1025,
+        "spearman_rho": -0.2088,
+        "p_value": 0.7573,
+        "slope": -0.195909,
+        "intercept": 903.398,
+        "strength": "weak",
+        "mean_structures_destroyed": 62.82,
+        "mean_homeless": 891.1
+      }
+    },
+    "CA-510": {
+      "coc_name": "Turlock, Modesto/Stanislaus County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.2328,
+        "spearman_rho": 0.5214,
+        "p_value": 0.44906,
+        "slope": 17.742332,
+        "intercept": 1727.453,
+        "strength": "weak",
+        "mean_structures_destroyed": 2.08,
+        "mean_homeless": 1764.4
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.7627,
+        "spearman_rho": 0.5394,
+        "p_value": 0.0004,
+        "slope": 54.672585,
+        "intercept": 1691.38,
+        "strength": "strong",
+        "mean_structures_destroyed": 2.27,
+        "mean_homeless": 1815.6
+      }
+    },
+    "CA-511": {
+      "coc_name": "Stockton/San Joaquin County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.4669,
+        "spearman_rho": 0.6397,
+        "p_value": 0.09504,
+        "slope": 69.545455,
+        "intercept": 1954.636,
+        "strength": "moderate",
+        "mean_structures_destroyed": 2.5,
+        "mean_homeless": 2128.5
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.4276,
+        "spearman_rho": -0.5,
+        "p_value": 0.1559,
+        "slope": -64.845455,
+        "intercept": 2311.6,
+        "strength": "moderate",
+        "mean_structures_destroyed": 2.0,
+        "mean_homeless": 2181.9
+      }
+    },
+    "CA-512": {
+      "coc_name": "Daly/San Mateo County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.0005,
+        "spearman_rho": 0.0437,
+        "p_value": 0.99876,
+        "slope": 0.012121,
+        "intercept": 1571.273,
+        "strength": "negligible",
+        "mean_structures_destroyed": 5.0,
+        "mean_homeless": 1571.3
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.7107,
+        "spearman_rho": -0.5,
+        "p_value": 0.00244,
+        "slope": -16.716667,
+        "intercept": 1624.0,
+        "strength": "strong",
+        "mean_structures_destroyed": 5.45,
+        "mean_homeless": 1532.8
+      }
+    },
+    "CA-513": {
+      "coc_name": "Visalia/Kings, Tulare Counties CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.2185,
+        "spearman_rho": 0.0876,
+        "p_value": 0.47884,
+        "slope": 1.128096,
+        "intercept": 990.528,
+        "strength": "weak",
+        "mean_structures_destroyed": 21.25,
+        "mean_homeless": 1014.5
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.5123,
+        "spearman_rho": -0.2486,
+        "p_value": 0.07353,
+        "slope": -2.547879,
+        "intercept": 1101.469,
+        "strength": "strong",
+        "mean_structures_destroyed": 23.09,
+        "mean_homeless": 1042.6
+      }
+    },
+    "CA-514": {
+      "coc_name": "Fresno City & County/Madera County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.2479,
+        "spearman_rho": 0.1177,
+        "p_value": 0.41844,
+        "slope": 1.153243,
+        "intercept": 2713.06,
+        "strength": "weak",
+        "mean_structures_destroyed": 79.0,
+        "mean_homeless": 2804.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.469,
+        "spearman_rho": 0.07,
+        "p_value": 0.1111,
+        "slope": -2.182884,
+        "intercept": 2961.389,
+        "strength": "moderate",
+        "mean_structures_destroyed": 85.64,
+        "mean_homeless": 2774.5
+      }
+    },
+    "CA-515": {
+      "coc_name": "Rocklin/Roseville/Placer County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.2807,
+        "spearman_rho": -0.2742,
+        "p_value": 0.35511,
+        "slope": -1.781022,
+        "intercept": 818.824,
+        "strength": "weak",
+        "mean_structures_destroyed": 8.42,
+        "mean_homeless": 803.8
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.2214,
+        "spearman_rho": -0.1348,
+        "p_value": 0.49586,
+        "slope": -1.370037,
+        "intercept": 806.943,
+        "strength": "weak",
+        "mean_structures_destroyed": 9.18,
+        "mean_homeless": 794.4
+      }
+    },
+    "CA-516": {
+      "coc_name": "Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.2512,
+        "spearman_rho": -0.1119,
+        "p_value": 0.41174,
+        "slope": -0.252003,
+        "intercept": 1426.269,
+        "strength": "weak",
+        "mean_structures_destroyed": 415.42,
+        "mean_homeless": 1321.6
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.1001,
+        "spearman_rho": 0.0545,
+        "p_value": 0.76277,
+        "slope": 0.099735,
+        "intercept": 1319.238,
+        "strength": "weak",
+        "mean_structures_destroyed": 452.45,
+        "mean_homeless": 1364.4
+      }
+    },
+    "CA-517": {
+      "coc_name": "Napa City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.2315,
+        "spearman_rho": 0.0896,
+        "p_value": 0.45182,
+        "slope": 0.047411,
+        "intercept": 338.376,
+        "strength": "weak",
+        "mean_structures_destroyed": 206.5,
+        "mean_homeless": 348.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.5195,
+        "spearman_rho": -0.3535,
+        "p_value": 0.06817,
+        "slope": -0.101412,
+        "intercept": 380.391,
+        "strength": "strong",
+        "mean_structures_destroyed": 225.27,
+        "mean_homeless": 357.5
+      }
+    },
+    "CA-518": {
+      "coc_name": "Vallejo/Solano County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.0038,
+        "spearman_rho": 0.1129,
+        "p_value": 0.99038,
+        "slope": -0.005466,
+        "intercept": 1166.914,
+        "strength": "negligible",
+        "mean_structures_destroyed": 60.58,
+        "mean_homeless": 1166.6
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.8203,
+        "spearman_rho": -0.5394,
+        "p_value": 2e-05,
+        "slope": -1.163476,
+        "intercept": 1228.713,
+        "strength": "strong",
+        "mean_structures_destroyed": 66.09,
+        "mean_homeless": 1151.8
+      }
+    },
+    "CA-519": {
+      "coc_name": "Chico, Paradise/Butte County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.21,
+        "spearman_rho": 0.6867,
+        "p_value": 0.49699,
+        "slope": 0.012734,
+        "intercept": 938.13,
+        "strength": "weak",
+        "mean_structures_destroyed": 1822.17,
+        "mean_homeless": 961.3
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.2243,
+        "spearman_rho": 0.1289,
+        "p_value": 0.48981,
+        "slope": 0.013244,
+        "intercept": 958.27,
+        "strength": "weak",
+        "mean_structures_destroyed": 1942.73,
+        "mean_homeless": 984.0
+      }
+    },
+    "CA-520": {
+      "coc_name": "Merced City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 673.083,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 673.1
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 700.455,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 700.5
+      }
+    },
+    "CA-521": {
+      "coc_name": "Davis, Woodland/Yolo County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.096,
+        "spearman_rho": -0.0275,
+        "p_value": 0.76048,
+        "slope": -1.841621,
+        "intercept": 586.437,
+        "strength": "negligible",
+        "mean_structures_destroyed": 4.08,
+        "mean_homeless": 578.9
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.1753,
+        "spearman_rho": -0.1156,
+        "p_value": 0.59315,
+        "slope": -3.335193,
+        "intercept": 603.311,
+        "strength": "weak",
+        "mean_structures_destroyed": 4.45,
+        "mean_homeless": 588.5
+      }
+    },
+    "CA-522": {
+      "coc_name": "Humboldt County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.1535,
+        "spearman_rho": 0.0783,
+        "p_value": 0.62336,
+        "slope": -51.054545,
+        "intercept": 1206.782,
+        "strength": "weak",
+        "mean_structures_destroyed": 0.58,
+        "mean_homeless": 1177.0
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.4637,
+        "spearman_rho": -0.6607,
+        "p_value": 0.1164,
+        "slope": -151.612,
+        "intercept": 1288.152,
+        "strength": "moderate",
+        "mean_structures_destroyed": 0.55,
+        "mean_homeless": 1205.5
+      }
+    },
+    "CA-523": {
+      "coc_name": "Colusa, Glenn, Trinity Counties CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.2739,
+        "spearman_rho": -0.1248,
+        "p_value": 0.36776,
+        "slope": -1.235218,
+        "intercept": 315.464,
+        "strength": "weak",
+        "mean_structures_destroyed": 19.33,
+        "mean_homeless": 291.6
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.0654,
+        "spearman_rho": 0.0744,
+        "p_value": 0.84414,
+        "slope": -0.209388,
+        "intercept": 259.234,
+        "strength": "negligible",
+        "mean_structures_destroyed": 21.09,
+        "mean_homeless": 254.8
+      }
+    },
+    "CA-524": {
+      "coc_name": "Yuba City & County/Sutter County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.1651,
+        "spearman_rho": 0.1896,
+        "p_value": 0.59646,
+        "slope": -0.504272,
+        "intercept": 900.439,
+        "strength": "weak",
+        "mean_structures_destroyed": 24.83,
+        "mean_homeless": 887.9
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.1003,
+        "spearman_rho": 0.7282,
+        "p_value": 0.76225,
+        "slope": -0.187583,
+        "intercept": 838.718,
+        "strength": "weak",
+        "mean_structures_destroyed": 27.09,
+        "mean_homeless": 833.6
+      }
+    },
+    "CA-525": {
+      "coc_name": "El Dorado County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.4554,
+        "spearman_rho": 0.2692,
+        "p_value": 0.10577,
+        "slope": -0.322932,
+        "intercept": 430.276,
+        "strength": "moderate",
+        "mean_structures_destroyed": 88.33,
+        "mean_homeless": 401.8
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.1527,
+        "spearman_rho": 0.2882,
+        "p_value": 0.64307,
+        "slope": 0.102278,
+        "intercept": 412.063,
+        "strength": "weak",
+        "mean_structures_destroyed": 96.27,
+        "mean_homeless": 421.9
+      }
+    },
+    "CA-526": {
+      "coc_name": "Amador, Calaveras, Mariposa, Tuolumne Counties CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.1829,
+        "spearman_rho": -0.2567,
+        "p_value": 0.55635,
+        "slope": -0.150982,
+        "intercept": 557.529,
+        "strength": "weak",
+        "mean_structures_destroyed": 110.58,
+        "mean_homeless": 540.8
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.1434,
+        "spearman_rho": 0.5456,
+        "p_value": 0.66373,
+        "slope": 0.115722,
+        "intercept": 542.058,
+        "strength": "weak",
+        "mean_structures_destroyed": 118.91,
+        "mean_homeless": 555.8
+      }
+    },
+    "CA-527": {
+      "coc_name": "Tehama County CoC",
+      "lag0": {
+        "n": 10,
+        "pearson_r": 0.4196,
+        "spearman_rho": 0.3576,
+        "p_value": 0.19108,
+        "slope": 0.415117,
+        "intercept": 212.38,
+        "strength": "moderate",
+        "mean_structures_destroyed": 41.0,
+        "mean_homeless": 229.4
+      },
+      "lag1": {
+        "n": 10,
+        "pearson_r": 0.4039,
+        "spearman_rho": 0.4476,
+        "p_value": 0.21173,
+        "slope": 1.42526,
+        "intercept": 211.014,
+        "strength": "moderate",
+        "mean_structures_destroyed": 12.9,
+        "mean_homeless": 229.4
+      }
+    },
+    "CA-529": {
+      "coc_name": "Lake County CoC",
+      "lag0": {
+        "n": 10,
+        "pearson_r": -0.2748,
+        "spearman_rho": -0.3988,
+        "p_value": 0.41879,
+        "slope": -0.048871,
+        "intercept": 427.897,
+        "strength": "weak",
+        "mean_structures_destroyed": 290.5,
+        "mean_homeless": 413.7
+      },
+      "lag1": {
+        "n": 10,
+        "pearson_r": -0.2257,
+        "spearman_rho": -0.0675,
+        "p_value": 0.51233,
+        "slope": -0.040128,
+        "intercept": 425.357,
+        "strength": "weak",
+        "mean_structures_destroyed": 290.5,
+        "mean_homeless": 413.7
+      }
+    },
+    "CA-530": {
+      "coc_name": "Alpine, Inyo, Mono Counties CoC",
+      "lag0": {
+        "n": 10,
+        "pearson_r": -0.6511,
+        "spearman_rho": -0.7306,
+        "p_value": 0.01526,
+        "slope": -2.033399,
+        "intercept": 142.791,
+        "strength": "strong",
+        "mean_structures_destroyed": 8.7,
+        "mean_homeless": 125.1
+      },
+      "lag1": {
+        "n": 10,
+        "pearson_r": 0.0583,
+        "spearman_rho": 0.1268,
+        "p_value": 0.86876,
+        "slope": 0.180321,
+        "intercept": 123.748,
+        "strength": "negligible",
+        "mean_structures_destroyed": 7.5,
+        "mean_homeless": 125.1
+      }
+    },
+    "CA-531": {
+      "coc_name": "Nevada County CoC",
+      "lag0": {
+        "n": 6,
+        "pearson_r": -0.5413,
+        "spearman_rho": -0.5161,
+        "p_value": 0.19792,
+        "slope": -1.068362,
+        "intercept": 474.674,
+        "strength": "strong",
+        "mean_structures_destroyed": 17.17,
+        "mean_homeless": 456.3
+      },
+      "lag1": {
+        "n": 6,
+        "pearson_r": 0.4919,
+        "spearman_rho": 0.3947,
+        "p_value": 0.25851,
+        "slope": 0.970855,
+        "intercept": 439.667,
+        "strength": "moderate",
+        "mean_structures_destroyed": 17.17,
+        "mean_homeless": 456.3
+      }
+    },
+    "CA-600": {
+      "coc_name": "Los Angeles City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.0684,
+        "spearman_rho": 0.3509,
+        "p_value": 0.8283,
+        "slope": 2.72855,
+        "intercept": 49730.638,
+        "strength": "negligible",
+        "mean_structures_destroyed": 164.75,
+        "mean_homeless": 50180.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.0081,
+        "spearman_rho": -0.2106,
+        "p_value": 0.9806,
+        "slope": 0.310748,
+        "intercept": 51459.407,
+        "strength": "negligible",
+        "mean_structures_destroyed": 171.0,
+        "mean_homeless": 51512.5
+      }
+    },
+    "CA-601": {
+      "coc_name": "San Diego City and County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.0738,
+        "spearman_rho": -0.0749,
+        "p_value": 0.8149,
+        "slope": 2.525061,
+        "intercept": 8401.427,
+        "strength": "negligible",
+        "mean_structures_destroyed": 29.5,
+        "mean_homeless": 8475.9
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.2419,
+        "spearman_rho": -0.1772,
+        "p_value": 0.45443,
+        "slope": -8.373134,
+        "intercept": 8705.691,
+        "strength": "weak",
+        "mean_structures_destroyed": 31.82,
+        "mean_homeless": 8439.3
+      }
+    },
+    "CA-602": {
+      "coc_name": "Santa Ana, Anaheim/Orange County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.6037,
+        "spearman_rho": 0.6394,
+        "p_value": 0.01664,
+        "slope": 33.103983,
+        "intercept": 4648.38,
+        "strength": "strong",
+        "mean_structures_destroyed": 15.58,
+        "mean_homeless": 5164.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.3744,
+        "spearman_rho": -0.1369,
+        "p_value": 0.22577,
+        "slope": -40.884872,
+        "intercept": 5611.52,
+        "strength": "moderate",
+        "mean_structures_destroyed": 8.91,
+        "mean_homeless": 5247.3
+      }
+    },
+    "CA-603": {
+      "coc_name": "Santa Maria/Santa Barbara County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.0301,
+        "spearman_rho": -0.4681,
+        "p_value": 0.9241,
+        "slope": -0.398172,
+        "intercept": 1753.912,
+        "strength": "negligible",
+        "mean_structures_destroyed": 11.92,
+        "mean_homeless": 1749.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.007,
+        "spearman_rho": -0.2197,
+        "p_value": 0.98328,
+        "slope": 0.092532,
+        "intercept": 1735.888,
+        "strength": "negligible",
+        "mean_structures_destroyed": 13.0,
+        "mean_homeless": 1737.1
+      }
+    },
+    "CA-604": {
+      "coc_name": "Bakersfield/Kern County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.2239,
+        "spearman_rho": 0.3041,
+        "p_value": 0.46753,
+        "slope": 1.063701,
+        "intercept": 1366.195,
+        "strength": "weak",
+        "mean_structures_destroyed": 58.42,
+        "mean_homeless": 1428.3
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.3247,
+        "spearman_rho": -0.2001,
+        "p_value": 0.30308,
+        "slope": -1.689163,
+        "intercept": 1526.549,
+        "strength": "moderate",
+        "mean_structures_destroyed": 43.27,
+        "mean_homeless": 1453.5
+      }
+    },
+    "CA-606": {
+      "coc_name": "Long Beach CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 2380.5,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 2380.5
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 2338.091,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 2338.1
+      }
+    },
+    "CA-607": {
+      "coc_name": "Pasadena CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 559.667,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 559.7
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 540.364,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 540.4
+      }
+    },
+    "CA-608": {
+      "coc_name": "Riverside City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.6081,
+        "spearman_rho": 0.5856,
+        "p_value": 0.01542,
+        "slope": 14.147628,
+        "intercept": 2347.574,
+        "strength": "strong",
+        "mean_structures_destroyed": 29.42,
+        "mean_homeless": 2763.8
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": 0.3517,
+        "spearman_rho": 0.5839,
+        "p_value": 0.25968,
+        "slope": 11.831001,
+        "intercept": 2483.991,
+        "strength": "moderate",
+        "mean_structures_destroyed": 22.0,
+        "mean_homeless": 2744.3
+      }
+    },
+    "CA-609": {
+      "coc_name": "San Bernardino City & County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": 0.4523,
+        "spearman_rho": 0.4999,
+        "p_value": 0.10881,
+        "slope": 96.526655,
+        "intercept": 2404.657,
+        "strength": "moderate",
+        "mean_structures_destroyed": 1.92,
+        "mean_homeless": 2589.7
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.5524,
+        "spearman_rho": -0.5,
+        "p_value": 0.04682,
+        "slope": -134.285714,
+        "intercept": 2785.0,
+        "strength": "strong",
+        "mean_structures_destroyed": 1.27,
+        "mean_homeless": 2614.1
+      }
+    },
+    "CA-611": {
+      "coc_name": "Oxnard, San Buenaventura/Ventura County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.2458,
+        "spearman_rho": -0.1331,
+        "p_value": 0.42265,
+        "slope": -0.398696,
+        "intercept": 1690.674,
+        "strength": "weak",
+        "mean_structures_destroyed": 122.5,
+        "mean_homeless": 1641.8
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.2117,
+        "spearman_rho": 0.0173,
+        "p_value": 0.51585,
+        "slope": -0.346121,
+        "intercept": 1677.486,
+        "strength": "weak",
+        "mean_structures_destroyed": 111.45,
+        "mean_homeless": 1638.9
+      }
+    },
+    "CA-612": {
+      "coc_name": "Glendale CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 215.083,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 215.1
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 205.727,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 205.7
+      }
+    },
+    "CA-613": {
+      "coc_name": "Imperial County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 923.25,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 923.2
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": null,
+        "spearman_rho": null,
+        "p_value": null,
+        "slope": 0.0,
+        "intercept": 984.273,
+        "strength": "n/a",
+        "mean_structures_destroyed": 0.0,
+        "mean_homeless": 984.3
+      }
+    },
+    "CA-614": {
+      "coc_name": "San Luis Obispo County CoC",
+      "lag0": {
+        "n": 12,
+        "pearson_r": -0.0657,
+        "spearman_rho": -0.3908,
+        "p_value": 0.83508,
+        "slope": -1.802487,
+        "intercept": 1445.969,
+        "strength": "negligible",
+        "mean_structures_destroyed": 7.75,
+        "mean_homeless": 1432.0
+      },
+      "lag1": {
+        "n": 11,
+        "pearson_r": -0.2902,
+        "spearman_rho": -0.6859,
+        "p_value": 0.36302,
+        "slope": -6.79834,
+        "intercept": 1405.386,
+        "strength": "weak",
+        "mean_structures_destroyed": 8.45,
+        "mean_homeless": 1347.9
+      }
+    }
+  }
+}

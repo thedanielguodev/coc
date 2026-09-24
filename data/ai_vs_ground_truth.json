@@ -9,7 +9,8 @@
     "pct_underestimates": 12.2,
     "pct_sign_flip": 46.3,
     "pct_roughly_matches": 26.8,
-    "rank_agreement_r": 0.06758512435451212
+    "agreement_pearson_r": 0.06758512435451212,
+    "agreement_spearman_rho": -0.04008190836855199
   },
   "by_coc": [
     {

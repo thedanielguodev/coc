@@ -52,6 +52,20 @@ def pearson(points):
     return None if denom == 0 else num / denom
 
 
+def rank_of(values):
+    order = sorted(range(len(values)), key=lambda i: values[i])
+    ranks = [0.0] * len(values)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and values[order[j + 1]] == values[order[i]]:
+            j += 1
+        for k in range(i, j + 1):
+            ranks[order[k]] = (i + j) / 2 + 1
+        i = j + 1
+    return ranks
+
+
 def main():
     if not GROUND_TRUTH_SRC.exists():
         raise SystemExit(f"Missing {GROUND_TRUTH_SRC}. Run compute_fire_influence.py first.")
@@ -94,7 +108,12 @@ def main():
         for label in ("exaggerates", "underestimates", "sign_flip", "roughly_matches"):
             count = sum(1 for r in by_coc if r["classification"] == label)
             summary[f"pct_{label}"] = round(100 * count / n, 1)
-        summary["rank_agreement_r"] = pearson([(r["ground_truth_r"], r["ai_estimate"]) for r in by_coc])
+        summary["agreement_pearson_r"] = pearson([(r["ground_truth_r"], r["ai_estimate"]) for r in by_coc])
+        # Rank agreement proper: does the AI order CoCs the same way the data does?
+        summary["agreement_spearman_rho"] = pearson(list(zip(
+            rank_of([r["ground_truth_r"] for r in by_coc]),
+            rank_of([r["ai_estimate"] for r in by_coc]),
+        )))
 
     DEST.write_text(json.dumps({
         "methodology": (

@@ -1,0 +1,98 @@
+{
+  "metric": "Overall Homeless",
+  "methodology": "Two-way fixed-effects OLS: PIT homeless count on fire exposure within the CoC's boundary, with CoC and year fixed effects, standard errors clustered by CoC (CR1). 'log' uses log1p of both sides (coef ~ elasticity: % change in homeless count per % change in exposure); 'level' uses raw counts (coef = additional homeless per acre or per structure destroyed). lag1 pairs exposure in year t-1 with the PIT count in year t. Tests within-CoC variation over time rather than the pooled cross-section compute_fire_influence.py uses.",
+  "results": {
+    "acres_burned": {
+      "lag0_log": {
+        "n": 756,
+        "n_clusters": 44,
+        "years": [
+          2007,
+          2024
+        ],
+        "coef": 0.007175,
+        "se_clustered": 0.004385,
+        "p_value": 0.1018
+      },
+      "lag0_level": {
+        "n": 756,
+        "n_clusters": 44,
+        "years": [
+          2007,
+          2024
+        ],
+        "coef": 0.001069,
+        "se_clustered": 0.000658,
+        "p_value": 0.1041
+      },
+      "lag1_log": {
+        "n": 756,
+        "n_clusters": 44,
+        "years": [
+          2007,
+          2024
+        ],
+        "coef": 0.005182,
+        "se_clustered": 0.004965,
+        "p_value": 0.2966
+      },
+      "lag1_level": {
+        "n": 756,
+        "n_clusters": 44,
+        "years": [
+          2007,
+          2024
+        ],
+        "coef": -0.000672,
+        "se_clustered": 0.001475,
+        "p_value": 0.6489
+      }
+    },
+    "structures_destroyed": {
+      "lag0_log": {
+        "n": 516,
+        "n_clusters": 44,
+        "years": [
+          2013,
+          2024
+        ],
+        "coef": 0.019559,
+        "se_clustered": 0.010278,
+        "p_value": 0.057
+      },
+      "lag0_level": {
+        "n": 516,
+        "n_clusters": 44,
+        "years": [
+          2013,
+          2024
+        ],
+        "coef": 0.036148,
+        "se_clustered": 0.023961,
+        "p_value": 0.1314
+      },
+      "lag1_log": {
+        "n": 476,
+        "n_clusters": 44,
+        "years": [
+          2014,
+          2024
+        ],
+        "coef": 0.00674,
+        "se_clustered": 0.008204,
+        "p_value": 0.4113
+      },
+      "lag1_level": {
+        "n": 476,
+        "n_clusters": 44,
+        "years": [
+          2014,
+          2024
+        ],
+        "coef": 0.026691,
+        "se_clustered": 0.023648,
+        "p_value": 0.259
+      }
+    }
+  }
+}

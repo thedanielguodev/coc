@@ -3,600 +3,554 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>California CoC: Homelessness &amp; Wildfire Dashboard</title>
+<title>Wildfire and Homelessness in California</title>
+<meta name="description" content="California Continuum of Care homeless counts, 2007-2024, compared with CAL FIRE wildfire records, and with an AI model's estimates of the same relationship.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 <style>
   :root {
-    --page: #0d0d0d;
-    --bg: #0d0d0d;
-    --panel: #1a1a19;
-    --panel-2: #202020;
-    --border: rgba(255,255,255,0.10);
-    --hairline: #2c2c2a;
-    --text: #ffffff;
-    --text-dim: #c3c2b7;
-    --text-muted: #898781;
-    --accent: #e0692c;
-    --accent-soft: #e0692c33;
-    --accent-2: #3987e5;
-    --accent-2-soft: #3987e533;
-    --seq-100: #cde2fb;
-    --seq-400: #3987e5;
-    --seq-700: #0d366b;
-    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --bg: #ffffff;
+    --bg-alt: #f7f6f3;
+    --ink: #1b1b1a;
+    --ink-2: #4a4945;
+    --muted: #6c6a64;
+    --rule: #e1e0d9;
+    --grid: #ecebe6;
+    --axis: #b9b8b0;
+    --link: #1c5cab;
+    --blue: #2a78d6;
+    --orange: #eb6834;
+    --sig-weak: #f0a07c;
+    --sig-strong: #c2451a;
+    --neutral-bar: #c9c8c0;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; }
-  html, body { height: 100%; margin: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
   body {
-    font-family: var(--font);
-    background: var(--page);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  header {
-    padding: 16px 22px;
-    border-bottom: 1px solid var(--hairline);
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    flex-wrap: wrap;
-    background: var(--panel);
-    z-index: 20;
-  }
-  header h1 {
-    font-size: 18px;
     margin: 0;
-    font-weight: 700;
-    letter-spacing: -0.1px;
-  }
-  header .sub {
-    color: var(--text-muted);
-    font-size: 12.5px;
-  }
-  .layout {
-    flex: 1;
-    display: flex;
-    min-height: 0;
-  }
-  #map {
-    flex: 1;
-    min-width: 0;
-    background: #0a0a0a;
-  }
-  aside {
-    width: 392px;
-    flex-shrink: 0;
     background: var(--bg);
-    border-left: 1px solid var(--hairline);
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 8px 20px -12px rgba(0,0,0,0.6);
-  }
-  .card h2 {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--text-muted);
-    margin: 0 0 12px 0;
-    font-weight: 700;
-  }
-  .card h2 .count {
-    text-transform: none;
-    letter-spacing: 0;
-    font-weight: 500;
-    color: var(--text-muted);
-  }
-  .control-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .control-row:last-child { margin-bottom: 0; }
-  .control-row label {
-    font-size: 12.5px;
-    color: var(--text-dim);
-    min-width: 52px;
-  }
-  select {
-    -webkit-appearance: none;
-    appearance: none;
-    background: var(--panel-2) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="%23898781" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 10px center;
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 6px 28px 6px 10px;
-    font-size: 13px;
-    font-family: var(--font);
-    flex: 1;
-  }
-  select:focus-visible, input:focus-visible {
-    outline: 2px solid var(--accent-2);
-    outline-offset: 1px;
-  }
-  input[type="range"] {
-    flex: 1;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 4px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, var(--accent-2) 0%, var(--accent-2) var(--fill, 50%), var(--panel-2) var(--fill, 50%), var(--panel-2) 100%);
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: var(--accent-2);
-    border: 2px solid #0d0d0d;
-    box-shadow: 0 0 0 1px rgba(57,135,229,0.4);
-    cursor: pointer;
-  }
-  input[type="range"]::-moz-range-thumb {
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: var(--accent-2);
-    border: 2px solid #0d0d0d;
-    cursor: pointer;
-  }
-  input[type="range"]::-moz-range-track { background: var(--panel-2); height: 4px; border-radius: 2px; }
-  #yearLabel {
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--accent-2);
-    min-width: 40px;
-    text-align: right;
-  }
-  .toggle-row {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-size: 13px;
-    color: var(--text-dim);
-    cursor: pointer;
-    margin-bottom: 9px;
-  }
-  .toggle-row:last-child { margin-bottom: 0; }
-  .toggle-row input {
-    accent-color: var(--accent-2);
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-  }
-  .toggle-row .fire-accent { accent-color: var(--accent); }
-  .stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .stat {
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 11px 12px;
-  }
-  .stat .n {
-    font-size: 21px;
-    font-weight: 700;
-    letter-spacing: -0.2px;
-    line-height: 1.15;
-  }
-  .stat .l {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 3px;
-  }
-  .stat.fire .n { color: var(--accent); }
-  .stat.homeless .n { color: var(--accent-2); }
-  .chart { width: 100%; }
-  .chart svg { display: block; overflow: visible; }
-  .chart .tick text { fill: var(--text-muted); font-size: 9px; }
-  .chart .tick line { stroke: var(--hairline); }
-  .chart .domain { display: none; }
-  .chart .grid line { stroke: var(--hairline); }
-  .chart .axis-label { fill: var(--text-muted); font-size: 10px; }
-  .trend-stack { display: flex; flex-direction: column; gap: 10px; }
-  .trend-item .trend-label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11.5px;
-    color: var(--text-dim);
-    margin-bottom: 2px;
-  }
-  .trend-item .key {
-    display: inline-block;
-    width: 10px;
-    height: 2px;
-    border-radius: 1px;
-  }
-  .trend-item .key.blue { background: var(--accent-2); }
-  .trend-item .key.orange { background: var(--accent); }
-  #selectedCoc {
-    font-size: 13px;
-    color: var(--text-dim);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 18px;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
-  #selectedCoc strong { color: var(--text); }
-  .legend {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 13px 14px;
-    font-size: 12px;
-    color: var(--text-dim);
+  a { color: var(--link); text-underline-offset: 2px; }
+  a:hover { text-decoration-thickness: 2px; }
+
+  /* Site bar */
+  .site-bar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--sans);
   }
-  .legend-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
-  .legend-row:last-child { margin-bottom: 0; }
-  .legend-grad {
-    width: 90px;
-    height: 9px;
-    border-radius: 5px;
-    background: linear-gradient(90deg, var(--seq-100), var(--accent-2), var(--seq-700));
-    flex-shrink: 0;
+  .site-bar .inner {
+    max-width: 1240px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
   }
-  .legend-grad-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10.5px;
-    color: var(--text-muted);
-    width: 90px;
+  .site-name { font-weight: 600; font-size: 15px; color: var(--ink); text-decoration: none; }
+  .site-bar nav { display: flex; gap: 20px; font-size: 14px; }
+  .site-bar nav a { color: var(--ink-2); text-decoration: none; }
+  .site-bar nav a:hover { color: var(--ink); text-decoration: underline; }
+
+  /* Page grid: table of contents + article */
+  .page {
+    max-width: 1240px; margin: 0 auto; padding: 0 24px;
+    display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px;
   }
-  .legend .swatch {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    flex-shrink: 0;
+  .toc {
+    position: sticky; top: 72px; align-self: start;
+    padding-top: 56px;
+    font-family: var(--sans); font-size: 13.5px; line-height: 1.4;
   }
-  .maplibregl-popup-content {
-    background: var(--panel-2);
-    color: var(--text);
-    border-radius: 10px;
-    box-shadow: 0 12px 28px -8px rgba(0,0,0,0.55);
-    padding: 12px 14px;
+  .toc p { margin: 0 0 10px; color: var(--muted); font-size: 12.5px; }
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc li { margin: 0 0 9px; }
+  .toc a { color: var(--ink-2); text-decoration: none; }
+  .toc a:hover { color: var(--ink); text-decoration: underline; }
+  .toc a.current { color: var(--ink); font-weight: 600; }
+
+  article { min-width: 0; padding: 48px 0 80px; }
+  .prose { max-width: 700px; }
+  h1 {
+    font-size: 42px; line-height: 1.15; font-weight: 600;
+    margin: 0 0 16px; letter-spacing: -0.01em; max-width: 820px;
   }
-  .maplibregl-popup-tip { border-top-color: var(--panel-2) !important; border-bottom-color: var(--panel-2) !important; }
-  .maplibregl-popup-close-button { color: var(--text-muted); }
-  .popup h3 { margin: 0 0 6px 0; font-size: 14px; font-weight: 700; }
-  .popup .row { font-size: 12.5px; color: var(--text-dim); margin-top: 3px; }
-  .popup .row b { color: var(--text); font-weight: 600; }
-  .empty-hint {
-    font-size: 12.5px;
-    color: var(--text-muted);
-    font-style: italic;
+  .dek { font-size: 21px; line-height: 1.5; color: var(--ink-2); margin: 0 0 20px; max-width: 740px; }
+  .byline {
+    font-family: var(--sans); font-size: 14px; color: var(--muted);
+    padding-bottom: 28px; border-bottom: 1px solid var(--rule); margin: 0 0 8px;
   }
-  .card { transition: box-shadow .18s ease; }
-  .card:hover { box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 14px 30px -12px rgba(0,0,0,0.75); }
-  details.card summary {
-    list-style: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .byline a { color: var(--muted); }
+  section { padding-top: 40px; }
+  h2 { font-size: 28px; line-height: 1.25; font-weight: 600; margin: 0 0 14px; }
+  h3 { font-size: 20px; font-weight: 600; margin: 28px 0 8px; }
+  p { margin: 0 0 16px; }
+  ul.findings { padding-left: 22px; margin: 0 0 16px; }
+  ul.findings li { margin-bottom: 10px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Figures */
+  figure { margin: 32px 0 40px; }
+  .fig-head { font-family: var(--sans); margin-bottom: 12px; max-width: 760px; }
+  .fig-label { font-size: 15.5px; font-weight: 700; color: var(--ink); margin: 0 0 3px; line-height: 1.35; }
+  .fig-sub { font-size: 14px; color: var(--ink-2); margin: 0; line-height: 1.45; }
+  figcaption.fig-note {
+    font-family: var(--sans); font-size: 12.5px; line-height: 1.5; color: var(--muted);
+    margin-top: 10px; max-width: 760px;
   }
-  details.card summary::-webkit-details-marker { display: none; }
-  details.card summary::after {
-    content: "";
-    width: 8px; height: 8px;
-    border-right: 1.5px solid var(--text-muted);
-    border-bottom: 1.5px solid var(--text-muted);
-    transform: rotate(45deg);
-    transition: transform .15s ease;
-    flex-shrink: 0;
+  figcaption.fig-note b { color: var(--ink-2); font-weight: 600; }
+  .chart { width: 100%; position: relative; }
+  .chart svg { display: block; overflow: visible; font-family: var(--sans); }
+  .chart .tick text { fill: var(--muted); font-size: 11.5px; }
+  .chart .tick line { stroke: var(--axis); }
+  .chart .domain { display: none; }
+  .chart .gridline { stroke: var(--grid); stroke-width: 1; }
+  .chart .baseline { stroke: var(--axis); stroke-width: 1; }
+  .chart .axis-title { fill: var(--muted); font-size: 12px; }
+  .chart .direct-label { font-size: 12px; fill: var(--ink-2); }
+  .multiples { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .multiple-title { font-family: var(--sans); font-size: 13.5px; font-weight: 600; margin: 0 0 4px; }
+  .figure-controls {
+    font-family: var(--sans); font-size: 14px; color: var(--ink-2);
+    display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; margin: 0 0 14px;
   }
-  details.card[open] summary::after { transform: rotate(-135deg); }
-  details.card .details-body { margin-top: 12px; }
-  aside::-webkit-scrollbar { width: 8px; }
-  aside::-webkit-scrollbar-track { background: transparent; }
-  aside::-webkit-scrollbar-thumb { background: var(--panel-2); border-radius: 4px; }
-  .tabbar {
-    display: flex;
-    gap: 3px;
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 3px;
+  .figure-controls label { display: inline-flex; align-items: center; gap: 8px; }
+  .key { font-family: var(--sans); font-size: 12.5px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 8px; }
+  .key span { display: inline-flex; align-items: center; gap: 6px; }
+  .key i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; }
+  .key i.line { height: 2px; width: 16px; border-radius: 1px; }
+  .key i.dot { border-radius: 50%; width: 9px; height: 9px; }
+
+  select, input[type="text"] {
+    font-family: var(--sans); font-size: 14px; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--axis); border-radius: 4px; padding: 5px 8px;
   }
-  .tab-btn {
-    flex: 1;
-    text-align: center;
-    padding: 7px 4px;
-    border-radius: 7px;
-    font-size: 11px;
-    font-weight: 700;
-    font-family: var(--font);
-    color: var(--text-muted);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: background .15s ease, color .15s ease;
-    white-space: nowrap;
+  select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-visible, th:focus-visible {
+    outline: 2px solid var(--link); outline-offset: 2px;
   }
-  .tab-btn:hover:not(.active) { color: var(--text-dim); }
-  .tab-btn.active {
-    background: var(--panel);
-    color: var(--text);
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 4px 12px -6px rgba(0,0,0,0.6);
+  input[type="range"] { accent-color: var(--ink-2); width: 200px; }
+  input[type="checkbox"] { accent-color: var(--ink-2); width: 15px; height: 15px; margin: 0; }
+
+  /* Map block */
+  .map-controls {
+    font-family: var(--sans); font-size: 14px; color: var(--ink-2);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 28px;
+    padding: 12px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    margin-bottom: 16px;
   }
-  .tab-panel { display: flex; flex-direction: column; gap: 14px; }
-  .tab-panel[hidden] { display: none; }
-  .search-wrap { position: relative; margin-top: 10px; }
-  .search-input {
-    width: 100%;
-    background: var(--panel-2);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 7px 10px;
-    font-size: 12.5px;
-    font-family: var(--font);
-  }
-  .search-input::placeholder { color: var(--text-muted); }
+  .map-controls .field { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; }
+  .map-controls select { max-width: 100%; min-width: 0; }
+  .map-controls .year-value { font-weight: 700; color: var(--ink); min-width: 36px; font-variant-numeric: tabular-nums; }
+  .search-wrap { position: relative; }
+  .search-wrap input { width: 240px; }
   .search-results {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0; right: 0;
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    max-height: 240px;
-    overflow-y: auto;
-    z-index: 30;
-    box-shadow: 0 16px 32px -10px rgba(0,0,0,0.7);
+    position: absolute; top: calc(100% + 2px); left: 0; width: 320px; z-index: 40;
+    background: var(--bg); border: 1px solid var(--axis); border-radius: 4px;
+    max-height: 260px; overflow-y: auto; font-size: 13.5px;
   }
-  .search-result-item {
-    padding: 8px 10px;
-    font-size: 12px;
-    color: var(--text-dim);
-    cursor: pointer;
-    border-bottom: 1px solid var(--hairline);
+  .search-result-item { padding: 7px 10px; cursor: pointer; color: var(--ink-2); }
+  .search-result-item.hl, .search-result-item:hover { background: var(--bg-alt); color: var(--ink); }
+  .map-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; }
+  #map { height: 580px; border: 1px solid var(--rule); position: relative; }
+  .map-legend {
+    position: absolute; left: 10px; bottom: 10px; z-index: 5;
+    background: rgba(255,255,255,0.94); border: 1px solid var(--rule); border-radius: 3px;
+    padding: 8px 10px 6px; font-family: var(--sans); font-size: 12px; color: var(--ink-2);
   }
-  .search-result-item:last-child { border-bottom: none; }
-  .search-result-item:hover, .search-result-item.hl { background: var(--panel); color: var(--text); }
-  .search-result-item b { color: var(--text); }
-  .data-table-wrap {
-    max-height: 280px;
-    overflow-y: auto;
-    border: 1px solid var(--border);
-    border-radius: 8px;
+  .map-legend .title { font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .map-legend .fire-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .map-legend .fire-row i { display: inline-block; width: 14px; height: 10px; background: rgba(235,104,52,0.45); border: 1px solid var(--orange); }
+
+  .region-panel { font-family: var(--sans); font-size: 14px; color: var(--ink-2); }
+  .region-panel h3 { font-family: var(--serif); font-size: 21px; margin: 0 0 2px; color: var(--ink); line-height: 1.25; }
+  .region-panel .coc-id { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
+  .region-panel dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0 0 16px; }
+  .region-panel dt { color: var(--muted); }
+  .region-panel dd { margin: 0; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .region-panel .mini-title { font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin: 14px 0 2px; }
+  .region-panel .empty { color: var(--muted); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; }
+  table.data {
+    border-collapse: collapse; font-family: var(--sans); font-size: 14px; width: 100%; max-width: 820px;
   }
-  .data-table-wrap::-webkit-scrollbar { width: 7px; }
-  .data-table-wrap::-webkit-scrollbar-thumb { background: var(--panel-2); border-radius: 4px; }
-  table.data-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
-  table.data-table thead th {
-    position: sticky; top: 0;
-    text-align: left;
-    font-size: 9.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
-    background: var(--panel-2);
-    padding: 7px 8px;
-    cursor: pointer;
-    user-select: none;
-    border-bottom: 1px solid var(--hairline);
-    white-space: nowrap;
+  table.data caption {
+    caption-side: top; text-align: left; font-size: 15.5px; font-weight: 700; color: var(--ink);
+    padding-bottom: 8px;
   }
-  table.data-table thead th:hover { color: var(--text); }
-  table.data-table thead th .arrow { color: var(--accent-2); margin-left: 3px; }
-  table.data-table td {
-    padding: 6px 8px;
-    border-bottom: 1px solid var(--hairline);
-    color: var(--text-dim);
-    white-space: nowrap;
+  table.data th {
+    text-align: left; font-weight: 600; color: var(--ink-2); font-size: 13px;
+    border-bottom: 1px solid var(--ink-2); padding: 6px 12px 6px 0; vertical-align: bottom;
   }
-  table.data-table tbody tr { cursor: pointer; transition: background .1s ease; }
-  table.data-table tbody tr:hover td { background: var(--panel-2); color: var(--text); }
-  table.data-table tbody tr.selected td { background: var(--accent-2-soft); color: var(--text); }
-  table.data-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  footer {
-    padding: 8px 22px;
-    font-size: 11px;
-    color: var(--text-muted);
-    border-top: 1px solid var(--hairline);
-    background: var(--panel);
+  table.data td { border-bottom: 1px solid var(--rule); padding: 7px 12px 7px 0; color: var(--ink); }
+  table.data td.n, table.data th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  table.data tr.selected td { background: #eef4fc; }
+  table.sortable th { cursor: pointer; user-select: none; }
+  table.sortable th .dir { color: var(--muted); font-weight: 400; margin-left: 3px; }
+  table.sortable tbody tr { cursor: pointer; }
+  table.sortable tbody tr:hover td { background: var(--bg-alt); }
+  details.more { font-family: var(--sans); font-size: 14px; margin: 16px 0 0; }
+  details.more summary { cursor: pointer; color: var(--link); margin-bottom: 12px; }
+  details.more .table-wrap { max-height: 460px; overflow-y: auto; }
+  details.more thead th { position: sticky; top: 0; background: var(--bg); }
+
+  /* Methods, citation */
+  .methods ul { padding-left: 22px; }
+  .methods li { margin-bottom: 8px; }
+  .cite {
+    font-family: var(--sans); font-size: 14px; color: var(--ink-2);
+    background: var(--bg-alt); padding: 14px 16px; border-radius: 3px; max-width: 700px;
   }
-  a { color: var(--accent-2); }
+  .downloads { font-family: var(--sans); font-size: 14px; columns: 2; padding-left: 20px; }
+
+  footer.site-foot {
+    border-top: 1px solid var(--rule); font-family: var(--sans); font-size: 12.5px; color: var(--muted);
+  }
+  footer.site-foot .inner { max-width: 1240px; margin: 0 auto; padding: 20px 24px 40px; }
+  footer.site-foot a { color: var(--muted); }
+
+  /* Tooltip */
+  #tip {
+    position: fixed; z-index: 100; pointer-events: none;
+    background: var(--bg); border: 1px solid var(--axis); border-radius: 3px;
+    padding: 7px 9px; font-family: var(--sans); font-size: 12.5px; line-height: 1.45; color: var(--ink);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08); max-width: 300px;
+  }
+  #tip .t { font-weight: 600; margin-bottom: 2px; }
+  #tip .m { color: var(--muted); }
+
+  .maplibregl-popup-content { font-family: var(--sans); font-size: 13px; border-radius: 3px; padding: 10px 12px; }
+  .maplibregl-popup-content h4 { margin: 0 0 4px; font-size: 14px; }
+  .maplibregl-popup-content p { margin: 0; color: var(--ink-2); }
+
+  @media (max-width: 1000px) {
+    .page { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .toc { display: none; }
+    .map-grid { grid-template-columns: minmax(0, 1fr); }
+    #map { height: 460px; }
+  }
+  @media (max-width: 680px) {
+    body { font-size: 17px; }
+    h1 { font-size: 31px; }
+    .dek { font-size: 18.5px; }
+    h2 { font-size: 24px; }
+    .page, .site-bar .inner, footer.site-foot .inner { padding-left: 16px; padding-right: 16px; }
+    .site-bar nav { display: none; }
+    .multiples { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .search-wrap input { width: 100%; }
+    .search-wrap { width: 100%; }
+    input[type="range"] { width: 150px; }
+    .downloads { columns: 1; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>California CoC Dashboard</h1>
-  <span class="sub">Homelessness (HUD PIT/HIC, 2007&ndash;2024) &amp; major wildfires (CAL FIRE FRAP, &ge;1,000 acres, 2000&ndash;present)</span>
+<header class="site-bar">
+  <div class="inner">
+    <a class="site-name" href="#top">Wildfire and Homelessness in California</a>
+    <nav aria-label="Site">
+      <a href="#findings">Findings</a>
+      <a href="#map-section">Map</a>
+      <a href="#methods">Methods</a>
+      <a href="#data">Data</a>
+    </nav>
+  </div>
 </header>
 
-<div class="layout">
-  <div id="map"></div>
+<div class="page" id="top">
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ol>
+      <li><a href="#findings">Summary</a></li>
+      <li><a href="#map-section">Map</a></li>
+      <li><a href="#trends">Statewide trends</a></li>
+      <li><a href="#association">Fire and homeless counts</a></li>
+      <li><a href="#ai">AI estimates</a></li>
+      <li><a href="#butte">Butte County</a></li>
+      <li><a href="#methods">Data and methods</a></li>
+      <li><a href="#data">Downloads and citation</a></li>
+    </ol>
+  </nav>
 
-  <aside>
-    <details class="card" open>
-      <summary><h2 style="margin:0;">Research question</h2></summary>
-      <div class="details-body" style="font-size:12.5px; color:var(--text-dim); line-height:1.55;">
-        How accurately can AI estimate and interpret the relationship between wildfire-related destruction and homelessness across California CoCs, compared with the relationship observed in real HUD/CAL&nbsp;FIRE data? See the <strong>Correlation</strong> tab (the ground truth) and <strong>AI vs. Truth</strong> tab (whether an LLM shown only fire history infers the same weak relationship, or a stronger one).
-      </div>
-    </details>
+  <article>
+    <h1>Do wildfires show up in California's homeless counts?</h1>
+    <p class="dek">Eighteen years of federal homeless counts for California's 44 Continuums of Care, compared with state wildfire records, and with estimates from an AI model that never saw the counts.</p>
+    <p class="byline">Daniel Guo &middot; Working draft, updated September 23, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
 
-    <div class="card">
-      <h2>Controls</h2>
-      <div class="control-row">
-        <label for="yearSlider">Year</label>
-        <input type="range" id="yearSlider" min="2007" max="2024" step="1" value="2024">
-        <span id="yearLabel">2024</span>
+    <section id="findings" class="prose">
+      <h2>Summary</h2>
+      <p>A Continuum of Care (CoC) is the local body that runs HUD's annual Point-in-Time (PIT) count of people experiencing homelessness. This project matches each CoC's yearly count to the wildfires that burned inside its boundary, then asks whether regions with more fire damage count more homeless residents.</p>
+      <ul class="findings">
+        <li>Pooled across <span data-fill="n_cocyears">756</span> CoC-years, acres burned and the homeless count are essentially uncorrelated (Pearson r = <span data-fill="r_acres">0.011</span>). Counts of structures destroyed, available from 2013, give the same result (r = <span data-fill="r_struct">0.003</span>).</li>
+        <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. None of these estimates reaches statistical significance.</li>
+        <li>An AI model given only each region's fire history predicted a positive relationship in all <span data-fill="n_estimates">440</span> of its estimates. On average it overstated the observed correlation by <span data-fill="bias">0.23</span>.</li>
+        <li>The model's errors were largest when it described itself as highly confident.</li>
+      </ul>
+      <p>The PIT count misses many people displaced by fire, such as families staying with relatives or in hotels paid by insurance or FEMA. A weak result here does not show that wildfires have no effect on housing loss.</p>
+    </section>
+
+    <section id="map-section">
+      <div class="prose">
+        <h2>Map</h2>
+        <p>Choose a year and a measure to shade each CoC. The year and measure also apply to the statewide trend and scatter charts below. Click a region, or search for one, to see its history.</p>
       </div>
-      <div class="control-row">
-        <label for="metricSelect">Metric</label>
-        <select id="metricSelect"></select>
-      </div>
-      <div class="control-row" style="margin-top:2px; flex-direction:column; align-items:stretch; gap:0;">
-        <label class="toggle-row" style="min-width:0;">
-          <input type="checkbox" id="fireToggle" class="fire-accent" checked>
-          <span id="fireToggleLabel">Show wildfire perimeters</span>
+
+      <div class="map-controls" role="group" aria-label="Map settings">
+        <label class="field" for="yearSlider">Year
+          <input type="range" id="yearSlider" min="2007" max="2024" step="1" value="2024">
+          <span class="year-value" id="yearLabel">2024</span>
         </label>
-        <label class="toggle-row" style="min-width:0;">
-          <input type="checkbox" id="labelToggle" checked>
-          Show homeless counts on map
-        </label>
-      </div>
-      <div class="search-wrap">
-        <input type="text" id="cocSearch" class="search-input" placeholder="Jump to a CoC by name or number&hellip;" autocomplete="off">
-        <div id="cocSearchResults" class="search-results" hidden></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Statewide, selected year</h2>
-      <div class="stat-grid">
-        <div class="stat homeless">
-          <div class="n" id="statHomeless">&mdash;</div>
-          <div class="l">Homeless (selected metric)</div>
-        </div>
-        <div class="stat fire">
-          <div class="n" id="statAcres">&mdash;</div>
-          <div class="l">Acres burned (major fires)</div>
+        <label class="field" for="metricSelect">Measure <select id="metricSelect"></select></label>
+        <label class="field"><input type="checkbox" id="fireToggle" checked> <span id="fireToggleLabel">Fire perimeters</span></label>
+        <label class="field"><input type="checkbox" id="labelToggle" checked> Counts on map</label>
+        <div class="search-wrap">
+          <input type="text" id="cocSearch" placeholder="Find a region by name or number" autocomplete="off" aria-label="Find a region">
+          <div id="cocSearchResults" class="search-results" hidden></div>
         </div>
       </div>
-    </div>
 
-    <div class="tabbar">
-      <button class="tab-btn active" data-tab="trends">Trends</button>
-      <button class="tab-btn" data-tab="correlation">Correlation</button>
-      <button class="tab-btn" data-tab="ai">AI vs. Truth</button>
-      <button class="tab-btn" data-tab="cases">Case Study</button>
-    </div>
-
-    <div class="tab-panel" data-tab-panel="trends">
-      <div class="card">
-        <h2>Statewide trend, 2007&ndash;2024</h2>
-        <div class="trend-stack">
-          <div class="trend-item">
-            <div class="trend-label"><span class="key blue"></span>Homeless count</div>
-            <div id="trendChartHomeless" class="chart" style="height:78px;"></div>
+      <figure style="margin-top:0">
+        <div class="map-grid">
+          <div id="map" role="region" aria-label="Map of California Continuums of Care">
+            <div class="map-legend" id="mapLegend" aria-hidden="true"></div>
           </div>
-          <div class="trend-item">
-            <div class="trend-label"><span class="key orange"></span>Acres burned (major fires)</div>
-            <div id="trendChartFire" class="chart" style="height:90px;"></div>
+          <div class="region-panel" id="regionPanel" aria-live="polite">
+            <h3>No region selected</h3>
+            <p class="empty">Click a region on the map or use the search box.</p>
           </div>
         </div>
-      </div>
-    </div>
+        <figcaption class="fig-note"><b>Source:</b> HUD PIT counts and CoC boundaries; CAL FIRE fire perimeters, fires of 1,000 acres or more. Shading uses a square-root scale so smaller regions remain visible. Boundaries are simplified for display.</figcaption>
+      </figure>
+    </section>
 
-    <div class="tab-panel" data-tab-panel="correlation" hidden>
-      <div class="card">
-        <h2>Fire &rarr; homelessness correlation</h2>
-        <div class="control-row">
-          <label for="corrLag" style="min-width:110px;">Timing</label>
-          <select id="corrLag">
-            <option value="0">Same year</option>
-            <option value="1" selected>Fire year &rarr; next year's count</option>
-          </select>
+    <section id="trends">
+      <div class="prose">
+        <h2>Statewide trends</h2>
+        <p>California's total count rose during most of the period. Acres burned by large fires vary much more from year to year, with 2020 standing out.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 1. Homeless count and acres burned in California, 2007&ndash;2024</p>
+          <p class="fig-sub">Statewide totals by year. The marked year is the one selected above the map.</p>
         </div>
-        <label class="toggle-row" style="min-width:0; margin-top:2px;">
-          <input type="checkbox" id="corrExcludeZero">
-          Only CoC-years with a major fire on record
-        </label>
-        <div id="corrStat" style="font-size:12.5px; color:var(--text-dim); margin:10px 0;">&mdash;</div>
-        <div id="corrChart" class="chart" style="height:190px;"></div>
-        <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC in one year: acres burned within that CoC's boundary (x) vs. its homeless count (y). Points at x&nbsp;=&nbsp;0 are CoC-years with no major (&ge;1,000-acre) fire on record. Line is the least-squares fit. Default timing is fire-year &rarr; next year's count (t&nbsp;&rarr;&nbsp;t+1), on the theory that displacement shows up in the following PIT count rather than the same one; toggle to "Same year" to compare. Large urban CoCs dominate homeless totals but rarely burn heavily, while large rural CoCs burn heavily but have small populations &mdash; this population/geography mismatch pulls the raw correlation toward zero independent of any real relationship, so treat r as a starting point, not a verdict.</div>
-      </div>
-
-      <div class="card">
-        <h2>Fire &rarr; homelessness, year by year</h2>
-        <div id="yearlyCorrStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
-        <div id="yearlyCorrChart" class="chart" style="height:150px;"></div>
-        <div class="empty-hint" style="margin-top:8px; display:block;">The pooled chart above averages all 18 years together, which could hide a real effect that only shows up in specific catastrophic-fire years. This instead computes a separate cross-sectional correlation <em>within</em> each single year, across all 44 CoCs. Orange bars pass an uncorrected p&nbsp;&lt;&nbsp;0.05; solid orange survives correcting for testing 18 years at once. Hover any bar for its leave-one-out check (does the result survive dropping that year's single largest-acreage CoC?). Generated by compute_yearly_fire_influence.py.</div>
-      </div>
-    </div>
-
-    <div class="tab-panel" data-tab-panel="ai" hidden>
-      <div class="card">
-        <h2>AI vs. ground truth <span class="count" id="aiCompareCount"></span></h2>
-        <div id="aiCompareStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
-        <div id="aiCompareChart" class="chart" style="height:190px; display:none;"></div>
-        <div id="aiCompareLegend" style="display:none; gap:14px; font-size:11px; color:var(--text-muted); margin-top:6px; align-items:center; flex-wrap:wrap;">
-          <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#3987e566; width:9px; height:9px;"></span>low confidence</span>
-          <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#3987e5cc; width:9px; height:9px;"></span>medium</span>
-          <span style="display:inline-flex; align-items:center; gap:4px;"><span class="swatch" style="background:#e0692c; width:9px; height:9px;"></span>high</span>
-          <span style="display:inline-flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:2px; background:#898781;"></span>y&nbsp;=&nbsp;x (perfect)</span>
-          <span style="display:inline-flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:2px; background:#e0692c;"></span>AI's actual trend</span>
+        <div class="multiples">
+          <div><p class="multiple-title" id="trendHomelessTitle">Overall homeless</p><div id="trendHomeless" class="chart"></div></div>
+          <div><p class="multiple-title">Acres burned in fires of 1,000+ acres</p><div id="trendFire" class="chart"></div></div>
         </div>
-        <div class="empty-hint" style="margin-top:8px; display:block;">Each point is one CoC, colored by the AI's own stated confidence for that estimate &mdash; click a point (or a table row below) to select that CoC on the map. X is the real per-CoC Pearson r (same-year lag) between fire acreage and homeless count, computed directly from the joined data. Y is an LLM's estimate of that same figure, made from that CoC's wildfire history alone &mdash; it was never shown the actual homeless counts. The gray dashed line is y&nbsp;=&nbsp;x (what perfect agreement would look like); the solid orange line is the actual least-squares trend through the AI's own guesses &mdash; how flat it is versus the diagonal shows the AI's guesses barely track the real value at all, not just that they're shifted upward. Generated by ai_estimate_influence.py (needs an ANTHROPIC_API_KEY) or a blind Claude Code sub-agent given only fire histories, then compare_ai_vs_ground_truth.py; this panel is blank until those have been run. See CLAUDE.md for how these estimates were produced.</div>
+        <figcaption class="fig-note"><b>Note:</b> The 2021 drop reflects COVID-19. HUD allowed CoCs to skip the unsheltered count that year, and many California CoCs did. <b>Source:</b> HUD PIT counts; CAL FIRE fire perimeters. Author's calculations.</figcaption>
+      </figure>
+    </section>
+
+    <section id="association">
+      <div class="prose">
+        <h2>Fire and homeless counts</h2>
+        <p>Each dot in Figure 2 is one CoC in one year. If fires pushed people into homelessness in the same region, dots further right would tend to sit higher. They do not. Large urban CoCs have the highest counts and rarely burn, while rural CoCs burn the most and have small populations.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 2. Acres burned and homeless count, by CoC and year</p>
+          <p class="fig-sub" id="corrSub">&nbsp;</p>
+        </div>
+        <div class="figure-controls">
+          <label for="corrLag">Timing
+            <select id="corrLag">
+              <option value="0">Same year</option>
+              <option value="1" selected>Fire year, then next year's count</option>
+            </select>
+          </label>
+          <label><input type="checkbox" id="corrExcludeZero"> Only years with a large fire in the CoC</label>
+        </div>
+        <div id="corrChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Note:</b> The line is a least-squares fit. Dots at zero acres are CoC-years with no fire of 1,000 acres or more. <b>Source:</b> HUD PIT counts; CAL FIRE fire perimeters, split between CoCs by area of overlap. Author's calculations.</figcaption>
+      </figure>
+
+      <div class="prose">
+        <p>Pooling all years could hide an effect that appears only in years with severe fires. Figure 3 repeats the comparison one year at a time.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 3. Correlation between acres burned and homeless count, each year</p>
+          <p class="fig-sub">Pearson r across CoCs within a single year, same-year timing.</p>
+        </div>
+        <div class="key" aria-hidden="true">
+          <span><i style="background:var(--neutral-bar)"></i>Not significant</span>
+          <span><i style="background:var(--sig-weak)"></i>p &lt; 0.05, not after correction</span>
+          <span><i style="background:var(--sig-strong)"></i>Significant after Bonferroni correction</span>
+        </div>
+        <div id="yearlyChart" class="chart"></div>
+        <figcaption class="fig-note" id="yearlyNote"><b>Note:</b> With 18 tests at p &lt; 0.05, about one false positive is expected by chance. Hover over a bar to see the result with that year's largest-acreage CoC removed. <b>Source:</b> Author's calculations.</figcaption>
+      </figure>
+
+      <div class="prose">
+        <p>Acres burned measures wildland fire, which is only loosely related to lost housing. Table 1 repeats the test with the number of structures CAL FIRE recorded as destroyed. Table 2 uses a stricter design that compares each CoC with its own history and removes statewide changes from year to year.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data" id="pooledTable">
+          <caption>Table 1. Pooled correlations between fire exposure and the homeless count</caption>
+          <thead><tr><th>Fire measure</th><th>Years</th><th>Timing</th><th class="n">n</th><th class="n">Pearson r</th><th class="n">Spearman &rho;</th><th class="n">p</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="fig-note" style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Source:</b> HUD PIT counts; CAL FIRE fire perimeters and Damage Inspection (DINS) records. Author's calculations.</p>
+
+      <div class="table-wrap" style="margin-top:32px">
+        <table class="data" id="feTable">
+          <caption>Table 2. Fixed-effects estimates, CoC and year effects removed</caption>
+          <thead><tr><th>Fire measure</th><th>Timing</th><th>Form</th><th class="n">n</th><th class="n">Coefficient</th><th class="n">Std. error</th><th class="n">p</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Standard errors are clustered by CoC (44 clusters). In the log form, both variables are log(1 + x), so the coefficient is roughly the percent change in the count for a 1 percent change in fire exposure. In the level form it is additional people counted per acre or per structure. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
+    </section>
+
+    <section id="ai">
+      <div class="prose">
+        <h2>AI estimates</h2>
+        <p>An AI model (Claude) received each CoC's name and its year-by-year acres burned, with no homeless counts, and was asked to estimate the correlation between the two. The experiment was run 10 separate times with no memory between runs. Figure 4 compares the average estimate for each CoC with the value computed from the data.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 4. AI-estimated and observed correlation, by CoC</p>
+          <p class="fig-sub">Points on the diagonal would be perfect estimates. Click a point to show that region on the map.</p>
+        </div>
+        <div class="key" aria-hidden="true">
+          <span><i class="dot" style="background:#86b6ef"></i>Low stated confidence</span>
+          <span><i class="dot" style="background:#2a78d6"></i>Medium</span>
+          <span><i class="dot" style="background:#104281"></i>High</span>
+          <span><i class="line" style="background:var(--axis)"></i>Perfect agreement</span>
+          <span><i class="line" style="background:var(--orange)"></i>Fit through AI estimates</span>
+        </div>
+        <div id="aiChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Note:</b> Observed r is the same-year Pearson correlation between acres burned and the overall homeless count within each CoC. Three CoCs with too few fire years are excluded. <b>Source:</b> Author's calculations; estimates from claude-sonnet-5 run through Claude Code.</figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table class="data" id="aiSummaryTable">
+          <caption>Table 3. AI estimates compared with observed correlations</caption>
+          <tbody></tbody>
+        </table>
       </div>
 
-      <div class="card" id="aiRankingCard" style="display:none;">
-        <h2>Per-CoC ranking</h2>
-        <div class="data-table-wrap">
-          <table class="data-table" id="aiRankingTable">
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 5. Average estimation error by the model's stated confidence</p>
+          <p class="fig-sub">Mean absolute difference between each estimate and the observed r, all 10 runs.</p>
+        </div>
+        <div id="confChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Source:</b> Author's calculations.</figcaption>
+      </figure>
+
+      <div class="prose">
+        <p>One possible explanation is that the model leans on well-known recent fires. If so, CoCs whose worst fire was recent should have larger errors. Figure 6 shows no such pattern.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 6. Year of each CoC's largest fire and the size of the AI's error</p>
+          <p class="fig-sub" id="yearFactorSub">&nbsp;</p>
+        </div>
+        <div id="yearFactorChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Source:</b> CAL FIRE fire perimeters. Author's calculations.</figcaption>
+      </figure>
+
+      <details class="more" id="aiTableDetails">
+        <summary>Show results for every CoC</summary>
+        <div class="table-wrap">
+          <table class="data sortable" id="aiRankingTable">
             <thead><tr>
-              <th data-sort="coc_name">CoC</th>
-              <th data-sort="ground_truth_r">Real r</th>
-              <th data-sort="ai_estimate">AI r</th>
-              <th data-sort="abs_error">|Error|</th>
-              <th data-sort="ai_confidence">Conf.</th>
+              <th data-sort="coc_name" tabindex="0">CoC</th>
+              <th data-sort="ground_truth_r" class="n" tabindex="0">Observed r</th>
+              <th data-sort="ai_estimate" class="n" tabindex="0">AI estimate</th>
+              <th data-sort="abs_error" class="n" tabindex="0">Error</th>
+              <th data-sort="ai_confidence" tabindex="0">Confidence</th>
             </tr></thead>
             <tbody id="aiRankingBody"></tbody>
           </table>
         </div>
-        <div class="empty-hint" style="margin-top:8px; display:block;">Click any column header to sort, click a row to select that CoC on the map.</div>
-      </div>
+      </details>
+    </section>
 
-      <div class="card" id="yearFactorCard" style="display:none;">
-        <h2>Is year a factor in the AI's error?</h2>
-        <div id="yearFactorStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
-        <div id="yearFactorChart" class="chart" style="height:170px;"></div>
-        <div class="empty-hint" style="margin-top:8px; display:block;">Raised in class: does the AI's error track <em>when</em> a CoC's worst fire happened &mdash; e.g. more recent, more widely-covered fires producing bigger overestimates? Each point is one CoC: x is that CoC's peak (largest-acreage) fire year, y is the AI's absolute error for it. A flat trend line means no &mdash; recency doesn't predict how wrong the AI is. See paper_response.md for two other cuts on this same question (mean error by decade; ground truth split into 2007-2015 vs 2016-2024), both also null.</div>
+    <section id="butte">
+      <div class="prose">
+        <h2>Butte County and the Camp Fire</h2>
+        <p>The 2018 Camp Fire destroyed most of the town of Paradise in Butte County, roughly 14,000 to 19,000 structures. It is the largest loss of housing in this dataset.</p>
+        <p id="caseStat"></p>
       </div>
-    </div>
-
-    <div class="tab-panel" data-tab-panel="cases" hidden>
-      <div class="card">
-        <h2>Case study: Paradise, Butte County</h2>
-        <div id="caseStudyStat" style="font-size:12.5px; color:var(--text-dim); margin-bottom:10px;">&mdash;</div>
-        <div id="caseStudyChart" class="chart" style="height:150px;"></div>
-        <div class="empty-hint" style="margin-top:8px; display:block;">The 2018 Camp Fire destroyed the town of Paradise almost entirely &mdash; the single most catastrophic housing-loss wildfire event in this dataset. Even here, Butte County's official PIT homeless count barely moves relative to its own noisy year-to-year swings. This is why the pooled statewide null result above isn't a data artifact: it holds up even in the most extreme real case, because HUD's PIT count only captures people literally unsheltered or in emergency shelter on one specific night &mdash; it structurally excludes most disaster-displaced people (doubled up with family, in FEMA housing, or relocated out of county).</div>
-      </div>
-
-      <div class="card">
-        <h2>Selected CoC</h2>
-        <div id="selectedCoc"><span class="empty-hint">Click a region on the map, search above, or click an AI-comparison point/row to see its detail.</span></div>
-        <div id="cocChart" class="chart" style="height:150px; margin-top:10px; display:none;"></div>
-      </div>
-    </div>
-
-    <div class="legend">
-      <div class="legend-row">
-        <div>
-          <div class="legend-grad"></div>
-          <div class="legend-grad-labels"><span>Low</span><span>High</span></div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 7. Homeless count, Chico, Paradise/Butte County CoC (CA-519)</p>
+          <p class="fig-sub">Overall PIT count by year.</p>
         </div>
-        <span style="line-height:1.3;">Homeless count<br>by CoC region</span>
-      </div>
-      <div class="legend-row">
-        <span class="swatch" style="background:var(--accent); opacity:0.6"></span>
-        <span>Wildfire perimeter, selected year</span>
-      </div>
-    </div>
-  </aside>
+        <div id="caseChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Note:</b> HUD counts only people in shelters or unsheltered on the night of the count. People staying with family, in FEMA housing, or outside the county are not included. The 2021 count excludes unsheltered people because of COVID-19. <b>Source:</b> HUD PIT counts.</figcaption>
+      </figure>
+    </section>
+
+    <section id="methods" class="prose methods">
+      <h2>Data and methods</h2>
+      <h3>Data</h3>
+      <ul>
+        <li>Homeless counts: HUD Point-in-Time counts by CoC, 2007&ndash;2024, from <a href="https://www.huduser.gov/portal/datasets/ahar.html">HUD User</a>.</li>
+        <li>CoC boundaries: <a href="https://hudgis-hud.opendata.arcgis.com/">HUD eGIS Open Data</a>.</li>
+        <li>Fire perimeters: <a href="https://data.ca.gov/dataset/california-fire-perimeters-all">CAL FIRE historical fire perimeters</a>, limited to fires of at least 1,000 acres from 2000 on.</li>
+        <li>Structures destroyed: <a href="https://data.ca.gov/dataset/cal-fire-damage-inspection-dins-data">CAL FIRE Damage Inspection (DINS)</a>, 2013 on.</li>
+        <li>State outline, used to clip fires and boundaries to California: <a href="https://tigerweb.geo.census.gov/">Census TIGERweb</a>.</li>
+      </ul>
+      <h3>Matching fires to regions</h3>
+      <p>Each fire perimeter is intersected with every CoC boundary. When a fire crosses a boundary, its acres are divided in proportion to the area on each side. Each destroyed structure is assigned to the CoC that contains it.</p>
+      <h3>Statistics</h3>
+      <p>Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 18 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC.</p>
+      <h3>AI experiment</h3>
+      <p>The model saw each CoC's name, number, and acres burned by year. It never saw homeless counts or any of the results on this page. It returned an estimated correlation, a direction, a confidence level, and a short explanation for each CoC. All 44 CoCs were sent together in each of 10 independent runs. The estimate shown for a CoC is the mean across runs.</p>
+      <h3>Limitations</h3>
+      <ul>
+        <li>The analysis is correlational and cannot establish cause in either direction.</li>
+        <li>PIT counts are a single-night snapshot, and counting methods differ across CoCs and years.</li>
+        <li>Fires under 1,000 acres are excluded, and CoC boundaries are treated as fixed across all years.</li>
+        <li>Only one AI model family was tested, and all regions were estimated in the same session for each run.</li>
+      </ul>
+      <p>Claude Code was used to help write the data pipeline and this page.</p>
+    </section>
+
+    <section id="data" class="prose">
+      <h2>Downloads and citation</h2>
+      <p>All data files used on this page:</p>
+      <ul class="downloads">
+        <li><a href="site/data/ca_coc_pit_by_year.json">PIT counts by CoC</a></li>
+        <li><a href="site/data/ca_coc_hic_by_year.json">Housing inventory by CoC</a></li>
+        <li><a href="site/data/ca_fires_by_coc_year.json">Acres burned by CoC</a></li>
+        <li><a href="site/data/ca_fires_by_year.json">Acres burned statewide</a></li>
+        <li><a href="site/data/ground_truth_fire_influence.json">Correlations, acres burned</a></li>
+        <li><a href="site/data/ground_truth_structures_influence.json">Correlations, structures destroyed</a></li>
+        <li><a href="site/data/yearly_fire_influence.json">Correlations by year</a></li>
+        <li><a href="site/data/panel_fe_influence.json">Fixed-effects results</a></li>
+        <li><a href="site/data/ai_fire_influence_estimates.json">AI estimates, all runs</a></li>
+        <li><a href="site/data/ai_vs_ground_truth.json">AI vs. observed, by CoC</a></li>
+        <li><a href="site/data/ca_coc_boundaries.min.geojson">CoC boundaries (GeoJSON)</a></li>
+        <li><a href="site/data/ca_fire_perimeters.geojson">Fire perimeters (GeoJSON)</a></li>
+      </ul>
+      <h3>Suggested citation</h3>
+      <p class="cite">Guo, D. (2026). <i>Do wildfires show up in California's homeless counts?</i> [Working draft and data]. https://thedanielguodev.github.io/coc/</p>
+    </section>
+  </article>
 </div>
 
-<footer>
-  Sources: HUD PIT/HIC CoC data &amp; CoC boundaries (HUD-eGIS, huduser.gov) &middot; CAL FIRE FRAP historical fire perimeters (fire.ca.gov) &middot; basemap &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>, &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors. Boundaries and fire geometry simplified for display.
+<footer class="site-foot">
+  <div class="inner">
+    Basemap &copy; <a href="https://carto.com/attributions">CARTO</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Charts made with D3, map with MapLibre GL JS. Source code: <a href="https://github.com/thedanielguodev/coc">github.com/thedanielguodev/coc</a>.
+  </div>
 </footer>
+
+<div id="tip" hidden></div>
 
 <script>
 const METRICS = [
@@ -610,342 +564,162 @@ const METRICS = [
   "Overall Homeless Unaccompanied Youth (Under 25)",
 ];
 
+const COLORS = {
+  blue: "#2a78d6",
+  orange: "#eb6834",
+  ink2: "#4a4945",
+  muted: "#6c6a64",
+  axis: "#b9b8b0",
+  grid: "#ecebe6",
+  empty: "#e6e5df",
+  sigWeak: "#f0a07c",
+  sigStrong: "#c2451a",
+  neutralBar: "#c9c8c0",
+  conf: { low: "#86b6ef", medium: "#2a78d6", high: "#104281" },
+};
+
+// Sequential blue ramp for the choropleth, light to dark.
+const SEQ_STOPS = [
+  [205, 226, 251],
+  [134, 182, 239],
+  [57, 135, 229],
+  [28, 92, 171],
+  [13, 54, 107],
+];
+
+const CASE_COC = "CA-519";
+const CASE_FIRE_YEAR = 2018;
+
 const state = {
   year: 2024,
   metric: "Overall Homeless",
-  pitByCoc: new Map(),   // "CA-500" -> [{year, ...metrics}]
-  vetByCoc: new Map(),
+  corrLag: 1,
+  pitByCoc: new Map(),
   hicByCoc: new Map(),
   firesByYear: [],
-  firesByCoc: new Map(), // "CA-500" -> [{year, fire_count, acres_burned}]
-  corrLag: 1,
-  selectedCocNum: null,
+  firesByCoc: new Map(),
   geoFeaturesById: new Map(),
-  cocBoundsById: new Map(), // "CA-500" -> [minLng,minLat,maxLng,maxLat]
-  fireGeoRaw: null,
+  cocBoundsById: new Map(),
   cocGeo: null,
+  fireGeo: null,
   aiCompare: null,
   aiEstimates: null,
-  yearlyFireInfluence: null,
-  mapLoaded: false,
+  groundTruth: null,
+  structures: null,
+  yearly: null,
+  panelFe: null,
+  selectedCocNum: null,
   hoveredCocId: null,
+  mapLoaded: false,
 };
 
-const metricSelect = document.getElementById("metricSelect");
-METRICS.forEach(m => {
-  const opt = document.createElement("option");
-  opt.value = m;
-  opt.textContent = m;
-  metricSelect.appendChild(opt);
-});
-metricSelect.value = state.metric;
+// ---------------------------------------------------------------------------
+// Small helpers
+// ---------------------------------------------------------------------------
 
-// CARTO's Dark Matter is a free, no-API-key gray-scale MapLibre vector-tile
-// style (no color hues except our own data layers) -- matches the assignment's
-// basemap requirement while keeping the dashboard's existing dark theme.
-const map = new maplibregl.Map({
-  container: "map",
-  style: "https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json",
-  center: [-119.5, 37.2],
-  zoom: 5.4,
-  attributionControl: false,
-});
-map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+function fmt(n) {
+  if (n == null || isNaN(n)) return "n/a";
+  return Math.round(n).toLocaleString("en-US");
+}
+function fmtSigned(v, digits = 2) {
+  if (v == null || isNaN(v)) return "n/a";
+  const s = v.toFixed(digits);
+  return v > 0 ? "+" + s : s.replace("-", "−");
+}
+function fmtR(v, digits = 3) {
+  if (v == null || isNaN(v)) return "n/a";
+  return v.toFixed(digits).replace("-", "−");
+}
+function fmtP(p) {
+  if (p == null || isNaN(p)) return "n/a";
+  if (p < 0.001) return "<0.001";
+  if (p > 0.99) return p.toFixed(3);
+  return p < 0.1 ? p.toFixed(3) : p.toFixed(2);
+}
+function metricLabel(m) {
+  return m.replace("Overall Homeless", "Overall homeless")
+    .replace("Sheltered Total Homeless", "Sheltered homeless")
+    .replace("Unsheltered Homeless", "Unsheltered homeless")
+    .replace("Overall homeless Individuals", "Homeless individuals")
+    .replace("Overall homeless People in Families", "Homeless people in families")
+    .replace("Overall Chronically Homeless Individuals", "Chronically homeless individuals")
+    .replace("Overall homeless Veterans", "Homeless veterans")
+    .replace("Overall homeless Unaccompanied Youth (Under 25)", "Unaccompanied homeless youth (under 25)");
+}
 
-// Sequential blue ramp (magnitude of homelessness), light -> dark. Fire stays
-// exclusively orange/red so the two encodings never compete for the same hue.
-const SEQ_STOPS = [
-  [205, 226, 251], // #cde2fb
-  [134, 182, 239], // #86b6ef
-  [87, 135, 229],  // ~#5787e5
-  [28, 92, 171],   // #1c5cab
-  [13, 54, 107],   // #0d366b
-];
+async function loadJSON(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`Could not load ${path} (${res.status})`);
+  return res.json();
+}
+async function loadOptional(path) {
+  try { return await loadJSON(path); } catch (e) { return null; }
+}
 
+function indexByCoc(records) {
+  const out = new Map();
+  for (const rec of records) {
+    if (!out.has(rec.coc_number)) out.set(rec.coc_number, []);
+    out.get(rec.coc_number).push(rec);
+  }
+  for (const rows of out.values()) rows.sort((a, b) => a.year - b.year);
+  return out;
+}
+
+function getMetricValue(cocNum, year, metric) {
+  const row = (state.pitByCoc.get(cocNum) || []).find(r => r.year === year);
+  return row && row[metric] != null ? row[metric] : null;
+}
+function getFireAcres(cocNum, year) {
+  const row = (state.firesByCoc.get(cocNum) || []).find(r => r.year === year);
+  return row ? row.acres_burned : 0;
+}
+function currentMax() {
+  let max = 0;
+  for (const cocNum of state.pitByCoc.keys()) {
+    const v = getMetricValue(cocNum, state.year, state.metric);
+    if (v != null) max = Math.max(max, v);
+  }
+  return max || 1;
+}
 function colorScale(value, max) {
-  if (value == null || max <= 0) return "#3a3a38";
+  if (value == null || max <= 0) return COLORS.empty;
   const t = Math.sqrt(Math.max(0, Math.min(1, value / max)));
   const scaled = t * (SEQ_STOPS.length - 1);
   const i = Math.min(SEQ_STOPS.length - 2, Math.floor(scaled));
   const f = scaled - i;
   const a = SEQ_STOPS[i], b = SEQ_STOPS[i + 1];
-  const rgb = [0, 1, 2].map(k => Math.round(a[k] + (b[k] - a[k]) * f));
-  return `rgb(${rgb.join(",")})`;
-}
-
-function fmt(n) {
-  if (n == null || isNaN(n)) return "—";
-  return Math.round(n).toLocaleString();
-}
-
-async function loadJSON(path) {
-  const res = await fetch(path);
-  if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
-  return res.json();
-}
-
-function indexByCoc(records) {
-  const map = new Map();
-  for (const rec of records) {
-    const key = rec.coc_number;
-    if (!map.has(key)) map.set(key, []);
-    map.get(key).push(rec);
-  }
-  return map;
-}
-
-function getMetricValue(cocNum, year, metric) {
-  const rows = state.pitByCoc.get(cocNum);
-  if (!rows) return null;
-  const row = rows.find(r => r.year === year);
-  return row ? row[metric] : null;
-}
-
-function currentMax() {
-  let max = 0;
-  for (const rows of state.pitByCoc.values()) {
-    const row = rows.find(r => r.year === state.year);
-    if (row && row[state.metric] != null) max = Math.max(max, row[state.metric]);
-  }
-  return max || 1;
+  return `rgb(${[0, 1, 2].map(k => Math.round(a[k] + (b[k] - a[k]) * f)).join(",")})`;
 }
 
 // ---------------------------------------------------------------------------
-// D3 chart helpers. Charts use <title> elements on marks (native browser
-// tooltips) rather than custom hover-tracking divs -- simpler and adequate
-// for a first-version dashboard with a handful of series and a few dozen points.
+// Statistics (mirrors the Python pipeline so on-page numbers match)
 // ---------------------------------------------------------------------------
-
-const CHART_W = 328;
-
-// A light fade-in on every redraw (year/metric/tab changes trigger a full
-// clear-and-rebuild of the SVG, not a data-join transition) gives charts a
-// "live" feel without the complexity of enter/update/exit transitions on
-// three different mark types.
-function fadeInChart(container) {
-  container.style("opacity", 0).transition().duration(220).style("opacity", 1);
-}
-
-function drawLineChart(containerId, years, values, { color, fillColor, showXAxis, unit }) {
-  const el = document.getElementById(containerId);
-  const height = el.clientHeight || parseInt(el.style.height, 10) || 100;
-  const margin = { top: 4, right: 4, bottom: showXAxis ? 16 : 2, left: 30 };
-  const innerW = CHART_W - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-
-  const container = d3.select(el);
-  container.selectAll("*").remove();
-  fadeInChart(container);
-  const svg = container.append("svg").attr("width", CHART_W).attr("height", height);
-  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const x = d3.scaleLinear().domain(d3.extent(years)).range([0, innerW]);
-  const valid = values.filter(v => v != null);
-  const y = d3.scaleLinear().domain([0, d3.max(valid) || 1]).nice(4).range([innerH, 0]);
-  const data = years.map((yr, i) => [yr, values[i]]);
-
-  g.append("g").attr("class", "grid")
-    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(""));
-
-  const lineGen = d3.line().defined(d => d[1] != null).x(d => x(d[0])).y(d => y(d[1])).curve(d3.curveMonotoneX);
-  const areaGen = d3.area().defined(d => d[1] != null).x(d => x(d[0])).y0(innerH).y1(d => y(d[1])).curve(d3.curveMonotoneX);
-
-  g.append("path").datum(data).attr("fill", fillColor).attr("d", areaGen);
-  g.append("path").datum(data).attr("fill", "none").attr("stroke", color).attr("stroke-width", 2).attr("d", lineGen);
-
-  g.selectAll(".pt").data(data.filter(d => d[1] != null)).enter().append("circle")
-    .attr("class", "pt")
-    .attr("cx", d => x(d[0])).attr("cy", d => y(d[1]))
-    .attr("r", 8).attr("fill", "transparent")
-    .append("title").text(d => `${d[0]}: ${fmt(d[1])}${unit ? " " + unit : ""}`);
-
-  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(d3.format("~s")));
-
-  if (showXAxis) {
-    g.append("g").attr("transform", `translate(0,${innerH})`)
-      .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format("d")));
-  }
-}
-
-// Bars can go negative (a year's r can be below zero), so bars grow up or
-// down from a zero baseline rather than from the bottom of the chart.
-function drawBarChart(containerId, bars, opts) {
-  const { height, yDomain, yLabel, barColor, tooltipFn } = opts;
-  const width = CHART_W;
-  const margin = { top: 8, right: 8, bottom: 16, left: 34 };
-  const innerW = width - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-
-  const el = document.getElementById(containerId);
-  const container = d3.select(el);
-  container.selectAll("*").remove();
-  fadeInChart(container);
-  const svg = container.append("svg").attr("width", width).attr("height", height);
-  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const x = d3.scaleBand().domain(bars.map(b => b.x)).range([0, innerW]).padding(0.18);
-  const y = d3.scaleLinear().domain(yDomain).nice().range([innerH, 0]);
-
-  g.append("g").attr("class", "grid")
-    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(""));
-
-  g.append("line")
-    .attr("x1", 0).attr("x2", innerW).attr("y1", y(0)).attr("y2", y(0))
-    .attr("stroke", "#898781").attr("stroke-width", 1);
-
-  g.selectAll(".bar").data(bars).enter().append("rect")
-    .attr("class", "bar")
-    .attr("x", b => x(b.x))
-    .attr("width", x.bandwidth())
-    .attr("y", b => Math.min(y(0), y(b.y)))
-    .attr("height", b => Math.abs(y(b.y) - y(0)))
-    .attr("fill", b => (typeof barColor === "function" ? barColor(b) : (barColor || "#3987e5cc")))
-    .append("title").text(tooltipFn);
-
-  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(d3.format(".2f")));
-  g.append("g").attr("transform", `translate(0,${innerH})`)
-    .call(d3.axisBottom(x).tickValues(bars.filter((b, i) => i % 3 === 0).map(b => b.x)).tickSize(4));
-
-  if (yLabel) {
-    svg.append("text").attr("class", "axis-label")
-      .attr("transform", `translate(11,${margin.top + innerH / 2}) rotate(-90)`).attr("text-anchor", "middle")
-      .text(yLabel);
-  }
-}
-
-function drawScatterChart(containerId, points, opts) {
-  const { height, xDomain, yDomain, xLabel, yLabel, fitLine, diagLine, pointColor, tooltipFn, tickFormat, xTickFormat, yTickFormat, onClick } = opts;
-  const fmtTick = tickFormat || d3.format("~s");
-  const fmtXTick = xTickFormat || fmtTick;
-  const fmtYTick = yTickFormat || fmtTick;
-  const el = document.getElementById(containerId);
-  const margin = { top: 8, right: 10, bottom: 30, left: 42 };
-  const innerW = CHART_W - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-
-  const container = d3.select(el);
-  container.selectAll("*").remove();
-  fadeInChart(container);
-  const svg = container.append("svg").attr("width", CHART_W).attr("height", height);
-  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const x = d3.scaleLinear().domain(xDomain).nice().range([0, innerW]);
-  const y = d3.scaleLinear().domain(yDomain).nice().range([innerH, 0]);
-
-  g.append("g").attr("class", "grid")
-    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(""));
-
-  if (diagLine) {
-    g.append("line")
-      .attr("x1", x(xDomain[0])).attr("y1", y(xDomain[0]))
-      .attr("x2", x(xDomain[1])).attr("y2", y(xDomain[1]))
-      .attr("stroke", "#898781").attr("stroke-width", 1).attr("stroke-dasharray", "4,4");
-  }
-
-  if (fitLine) {
-    g.append("line")
-      .attr("x1", x(fitLine.x1)).attr("y1", y(fitLine.y1))
-      .attr("x2", x(fitLine.x2)).attr("y2", y(fitLine.y2))
-      .attr("stroke", "#e0692c").attr("stroke-width", 2);
-  }
-
-  g.selectAll(".dot").data(points).enter().append("circle")
-    .attr("class", "dot")
-    .attr("cx", d => x(d.x)).attr("cy", d => y(d.y))
-    .attr("r", 4).attr("fill", d => typeof pointColor === "function" ? pointColor(d) : (pointColor || "#3987e5cc"))
-    .attr("stroke", "#0d0d0d").attr("stroke-width", 1)
-    .style("cursor", onClick ? "pointer" : "default")
-    .on("mouseover", function () { d3.select(this).attr("r", 6); })
-    .on("mouseout", function () { d3.select(this).attr("r", 4); })
-    .on("click", (event, d) => { if (onClick) onClick(d); })
-    .append("title").text(tooltipFn);
-
-  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(fmtYTick));
-  g.append("g").attr("transform", `translate(0,${innerH})`)
-    .call(d3.axisBottom(x).ticks(5).tickFormat(fmtXTick));
-
-  svg.append("text").attr("class", "axis-label")
-    .attr("x", margin.left + innerW / 2).attr("y", height - 2).attr("text-anchor", "middle")
-    .text(xLabel);
-  svg.append("text").attr("class", "axis-label")
-    .attr("transform", `translate(11,${margin.top + innerH / 2}) rotate(-90)`).attr("text-anchor", "middle")
-    .text(yLabel);
-}
-
-// Two single-axis small multiples sharing the same year domain, rather than one
-// dual-axis chart: two independently-scaled series on one plot invite the reader
-// to see a visual "alignment" between the lines that the arbitrary axis scaling
-// manufactures, not the data. See buildCorrelationPoints() for the real (spatial,
-// same-units) comparison between fire and homelessness.
-function renderTrendCharts() {
-  const years = [];
-  for (let y = 2007; y <= 2024; y++) years.push(y);
-
-  const homelessTotals = years.map(y => {
-    let sum = 0, any = false;
-    for (const rows of state.pitByCoc.values()) {
-      const row = rows.find(r => r.year === y);
-      if (row && row[state.metric] != null) { sum += row[state.metric]; any = true; }
-    }
-    return any ? sum : null;
-  });
-
-  const acresByYear = new Map(state.firesByYear.map(r => [r.year, r.total_acres]));
-  const fireAcres = years.map(y => acresByYear.get(y) ?? null);
-
-  drawLineChart("trendChartHomeless", years, homelessTotals, {
-    color: "#3987e5", fillColor: "#3987e51a", showXAxis: false, unit: state.metric.toLowerCase(),
-  });
-  drawLineChart("trendChartFire", years, fireAcres, {
-    color: "#e0692c", fillColor: "#e0692c1a", showXAxis: true, unit: "acres burned",
-  });
-}
-
-function getFireAcres(cocNum, year) {
-  const rows = state.firesByCoc.get(cocNum);
-  if (!rows) return 0;
-  const row = rows.find(r => r.year === year);
-  return row ? row.acres_burned : 0;
-}
 
 function pearson(points) {
   const n = points.length;
   if (n < 2) return null;
-  const mx = points.reduce((s, p) => s + p.x, 0) / n;
-  const my = points.reduce((s, p) => s + p.y, 0) / n;
+  const mx = d3.mean(points, p => p.x), my = d3.mean(points, p => p.y);
   let num = 0, dx2 = 0, dy2 = 0;
   for (const p of points) {
     const dx = p.x - mx, dy = p.y - my;
-    num += dx * dy;
-    dx2 += dx * dx;
-    dy2 += dy * dy;
+    num += dx * dy; dx2 += dx * dx; dy2 += dy * dy;
   }
   const denom = Math.sqrt(dx2 * dy2);
   return denom === 0 ? null : num / denom;
 }
-
-// Abramowitz & Stegun 7.1.26 approximation, |error| < 1.5e-7.
 function erf(x) {
   const sign = x < 0 ? -1 : 1;
   x = Math.abs(x);
   const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
   const t = 1 / (1 + p * x);
-  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
-  return sign * y;
+  return sign * (1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x));
 }
-function normalCDF(z) { return 0.5 * (1 + erf(z / Math.SQRT2)); }
-
-// Two-tailed significance test for r, via the normal approximation to the t
-// distribution (t = r*sqrt((n-2)/(1-r^2))). Accurate for the sample sizes this
-// chart typically has (n well over 30); reported as approximate for smaller,
-// filtered subsets.
 function pearsonPValue(r, n) {
   if (r == null || n < 3 || Math.abs(r) >= 1) return null;
   const t = r * Math.sqrt((n - 2) / (1 - r * r));
-  return 2 * (1 - normalCDF(Math.abs(t)));
+  return 2 * (1 - 0.5 * (1 + erf(Math.abs(t) / Math.SQRT2)));
 }
-
-// Average-rank transform (ties share the mean rank), for Spearman's rho.
 function rankOf(values) {
   const order = values.map((v, i) => i).sort((a, b) => values[a] - values[b]);
   const ranks = new Array(values.length);
@@ -953,469 +727,581 @@ function rankOf(values) {
   while (i < order.length) {
     let j = i;
     while (j + 1 < order.length && values[order[j + 1]] === values[order[i]]) j++;
-    const avgRank = (i + j) / 2 + 1;
-    for (let k = i; k <= j; k++) ranks[order[k]] = avgRank;
+    for (let k = i; k <= j; k++) ranks[order[k]] = (i + j) / 2 + 1;
     i = j + 1;
   }
   return ranks;
 }
-
-// Spearman's rho: Pearson correlation on ranks instead of raw values. More
-// robust than Pearson r here because acres-burned is extremely right-skewed
-// (a handful of huge fires dominate) and only cares about monotonic
-// relationships, not strictly linear ones.
 function spearman(points) {
   if (points.length < 2) return null;
-  const rx = rankOf(points.map(p => p.x));
-  const ry = rankOf(points.map(p => p.y));
+  const rx = rankOf(points.map(p => p.x)), ry = rankOf(points.map(p => p.y));
   return pearson(rx.map((v, i) => ({ x: v, y: ry[i] })));
 }
-
 function linearFit(points) {
-  const n = points.length;
-  const mx = points.reduce((s, p) => s + p.x, 0) / n;
-  const my = points.reduce((s, p) => s + p.y, 0) / n;
+  const mx = d3.mean(points, p => p.x), my = d3.mean(points, p => p.y);
   let num = 0, den = 0;
-  for (const p of points) {
-    num += (p.x - mx) * (p.y - my);
-    den += (p.x - mx) * (p.x - mx);
-  }
+  for (const p of points) { num += (p.x - mx) * (p.y - my); den += (p.x - mx) ** 2; }
   const slope = den === 0 ? 0 : num / den;
-  const intercept = my - slope * mx;
-  return { slope, intercept };
+  return { slope, intercept: my - slope * mx };
 }
 
-function correlationStrength(r) {
-  const a = Math.abs(r);
-  if (a >= 0.5) return "strong";
-  if (a >= 0.3) return "moderate";
-  if (a >= 0.1) return "weak";
-  return "negligible";
+// ---------------------------------------------------------------------------
+// Tooltip
+// ---------------------------------------------------------------------------
+
+const tip = document.getElementById("tip");
+function showTip(html, event) {
+  tip.innerHTML = html;
+  tip.hidden = false;
+  const pad = 14;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = event.clientX + pad, y = event.clientY + pad;
+  if (x + w > window.innerWidth - 8) x = event.clientX - w - pad;
+  if (y + h > window.innerHeight - 8) y = event.clientY - h - pad;
+  tip.style.left = `${Math.max(8, x)}px`;
+  tip.style.top = `${Math.max(8, y)}px`;
+}
+function hideTip() { tip.hidden = true; }
+
+// ---------------------------------------------------------------------------
+// Chart helpers. Each clears and redraws at the container's current width.
+// ---------------------------------------------------------------------------
+
+function setupSvg(containerId, height, margin) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+  const width = Math.max(260, el.clientWidth);
+  const svg = d3.select(el).append("svg").attr("width", width).attr("height", height);
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+  return { el, svg, g, width, innerW: width - margin.left - margin.right, innerH: height - margin.top - margin.bottom };
+}
+
+function gridY(g, y, innerW, ticks = 4) {
+  g.append("g").selectAll("line").data(y.ticks(ticks)).join("line")
+    .attr("class", "gridline").attr("x1", 0).attr("x2", innerW)
+    .attr("y1", d => y(d)).attr("y2", d => y(d));
+}
+
+// Line chart with a hover crosshair. data: [{x: year, y: value}]
+function drawLine(containerId, data, opts = {}) {
+  const { height = 200, color = COLORS.blue, yFormat = d3.format("~s"), unit = "", markX = null, markLabel = null, bars = false } = opts;
+  const margin = { top: markLabel ? 20 : 10, right: 14, bottom: 26, left: 44 };
+  const { svg, g, innerW, innerH } = setupSvg(containerId, height, margin);
+  const valid = data.filter(d => d.y != null);
+  if (!valid.length) return;
+
+  const x = bars
+    ? d3.scaleBand().domain(data.map(d => d.x)).range([0, innerW]).padding(0.2)
+    : d3.scaleLinear().domain(d3.extent(data, d => d.x)).range([0, innerW]);
+  const xPos = d => bars ? x(d) + x.bandwidth() / 2 : x(d);
+  const y = d3.scaleLinear().domain([0, d3.max(valid, d => d.y) || 1]).nice(4).range([innerH, 0]);
+
+  gridY(g, y, innerW);
+  g.append("line").attr("class", "baseline").attr("x1", 0).attr("x2", innerW).attr("y1", innerH).attr("y2", innerH);
+
+  if (markX != null && data.some(d => d.x === markX)) {
+    g.append("line").attr("x1", xPos(markX)).attr("x2", xPos(markX)).attr("y1", 0).attr("y2", innerH)
+      .attr("stroke", COLORS.muted).attr("stroke-width", 1);
+    if (markLabel) {
+      g.append("text").attr("class", "direct-label").attr("x", xPos(markX)).attr("y", -6)
+        .attr("text-anchor", "middle").text(markLabel);
+    }
+  }
+
+  if (bars) {
+    g.selectAll("rect.bar").data(valid).join("rect").attr("class", "bar")
+      .attr("x", d => x(d.x)).attr("width", x.bandwidth())
+      .attr("y", d => y(d.y)).attr("height", d => innerH - y(d.y))
+      .attr("rx", Math.min(2, x.bandwidth() / 4))
+      .attr("fill", d => d.x === markX ? color : d3.color(color).copy({ opacity: 0.55 }));
+  } else {
+    g.append("path").datum(data)
+      .attr("fill", "none").attr("stroke", color).attr("stroke-width", 2)
+      .attr("d", d3.line().defined(d => d.y != null).x(d => x(d.x)).y(d => y(d.y)));
+    const last = valid[valid.length - 1];
+    g.append("circle").attr("cx", x(last.x)).attr("cy", y(last.y)).attr("r", 3.5).attr("fill", color);
+  }
+
+  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(yFormat).tickSize(0).tickPadding(8));
+  const years = data.map(d => d.x);
+  const tickVals = years.filter(yr => (yr - years[0]) % (innerW < 380 ? 5 : 3) === 0);
+  g.append("g").attr("transform", `translate(0,${innerH})`)
+    .call(bars
+      ? d3.axisBottom(x).tickValues(tickVals).tickSize(4).tickFormat(d3.format("d"))
+      : d3.axisBottom(x).tickValues(tickVals).tickSize(4).tickFormat(d3.format("d")));
+
+  // Hover: nearest year
+  const guide = g.append("line").attr("stroke", COLORS.axis).attr("y1", 0).attr("y2", innerH).style("display", "none");
+  const dot = g.append("circle").attr("r", 4.5).attr("fill", color).attr("stroke", "#fff").attr("stroke-width", 2).style("display", "none");
+  g.append("rect").attr("width", innerW).attr("height", innerH).attr("fill", "transparent")
+    .on("mousemove", event => {
+      const [mx] = d3.pointer(event);
+      const nearest = d3.least(valid, d => Math.abs(xPos(d.x) - mx));
+      if (!nearest) return;
+      guide.style("display", null).attr("x1", xPos(nearest.x)).attr("x2", xPos(nearest.x));
+      dot.style("display", bars ? "none" : null).attr("cx", xPos(nearest.x)).attr("cy", y(nearest.y));
+      showTip(`<div class="t">${nearest.x}</div>${fmt(nearest.y)} ${unit}`, event);
+    })
+    .on("mouseleave", () => { guide.style("display", "none"); dot.style("display", "none"); hideTip(); });
+}
+
+// Scatter with nearest-point hover (Delaunay) so small dots are easy to hit.
+function drawScatter(containerId, points, opts) {
+  const {
+    height = 360, xDomain, yDomain, xLabel, yLabel, xFormat = d3.format("~s"), yFormat = d3.format("~s"),
+    color = COLORS.blue, opacity = 0.75, fit = null, diagonal = false, tooltip, onClick, highlight = null, zeroLine = false,
+  } = opts;
+  const margin = { top: 10, right: 16, bottom: 44, left: 56 };
+  const { svg, g, innerW, innerH } = setupSvg(containerId, height, margin);
+
+  const x = d3.scaleLinear().domain(xDomain).nice().range([0, innerW]);
+  const y = d3.scaleLinear().domain(yDomain).nice().range([innerH, 0]);
+
+  gridY(g, y, innerW, 5);
+  g.append("g").selectAll("line").data(x.ticks(5)).join("line")
+    .attr("class", "gridline").attr("y1", 0).attr("y2", innerH).attr("x1", d => x(d)).attr("x2", d => x(d));
+  if (zeroLine) {
+    g.append("line").attr("class", "baseline").attr("x1", 0).attr("x2", innerW).attr("y1", y(0)).attr("y2", y(0));
+    g.append("line").attr("class", "baseline").attr("y1", 0).attr("y2", innerH).attr("x1", x(0)).attr("x2", x(0));
+  } else {
+    g.append("line").attr("class", "baseline").attr("x1", 0).attr("x2", innerW).attr("y1", innerH).attr("y2", innerH);
+  }
+
+  if (diagonal) {
+    const lo = Math.max(x.domain()[0], y.domain()[0]), hi = Math.min(x.domain()[1], y.domain()[1]);
+    g.append("line").attr("x1", x(lo)).attr("y1", y(lo)).attr("x2", x(hi)).attr("y2", y(hi))
+      .attr("stroke", COLORS.axis).attr("stroke-width", 1.5);
+  }
+
+  const fillOf = d => typeof color === "function" ? color(d) : color;
+  g.append("g").selectAll("circle").data(points).join("circle")
+    .attr("cx", d => x(d.x)).attr("cy", d => y(d.y)).attr("r", 4)
+    .attr("fill", fillOf).attr("fill-opacity", opacity)
+    .attr("stroke", "#fff").attr("stroke-width", 1);
+
+  if (fit) {
+    const [x0, x1] = x.domain();
+    const clampY = v => Math.max(y.domain()[0], Math.min(y.domain()[1], v));
+    g.append("line")
+      .attr("x1", x(x0)).attr("y1", y(clampY(fit.intercept + fit.slope * x0)))
+      .attr("x2", x(x1)).attr("y2", y(clampY(fit.intercept + fit.slope * x1)))
+      .attr("stroke", COLORS.orange).attr("stroke-width", 2);
+  }
+
+  if (highlight) {
+    const h = points.find(p => p.id === highlight);
+    if (h) {
+      g.append("circle").attr("cx", x(h.x)).attr("cy", y(h.y)).attr("r", 7)
+        .attr("fill", "none").attr("stroke", "#1b1b1a").attr("stroke-width", 2);
+    }
+  }
+
+  g.append("g").call(d3.axisLeft(y).ticks(5).tickFormat(yFormat).tickSize(0).tickPadding(8));
+  g.append("g").attr("transform", `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(innerW < 400 ? 4 : 6).tickFormat(xFormat).tickSize(4));
+  svg.append("text").attr("class", "axis-title").attr("x", margin.left + innerW / 2).attr("y", height - 6).attr("text-anchor", "middle").text(xLabel);
+  svg.append("text").attr("class", "axis-title").attr("transform", `translate(14,${margin.top + innerH / 2}) rotate(-90)`).attr("text-anchor", "middle").text(yLabel);
+
+  const delaunay = d3.Delaunay.from(points, d => x(d.x), d => y(d.y));
+  const ring = g.append("circle").attr("r", 6.5).attr("fill", "none").attr("stroke", COLORS.ink2).attr("stroke-width", 1.5).style("display", "none");
+  let current = null;
+  g.append("rect").attr("width", innerW).attr("height", innerH).attr("fill", "transparent")
+    .style("cursor", onClick ? "pointer" : "default")
+    .on("mousemove", event => {
+      const [mx, my] = d3.pointer(event);
+      const i = delaunay.find(mx, my);
+      const d = points[i];
+      if (!d || Math.hypot(x(d.x) - mx, y(d.y) - my) > 24) { current = null; ring.style("display", "none"); hideTip(); return; }
+      current = d;
+      ring.style("display", null).attr("cx", x(d.x)).attr("cy", y(d.y));
+      showTip(tooltip(d), event);
+    })
+    .on("mouseleave", () => { current = null; ring.style("display", "none"); hideTip(); })
+    .on("click", () => { if (current && onClick) onClick(current); });
+}
+
+// Vertical bars around a zero baseline (values can be negative).
+function drawSignedBars(containerId, bars, opts) {
+  const { height = 220, yFormat = d3.format(".1f"), color, tooltip, yLabel } = opts;
+  const margin = { top: 10, right: 12, bottom: 28, left: 50 };
+  const { svg, g, innerW, innerH } = setupSvg(containerId, height, margin);
+  const x = d3.scaleBand().domain(bars.map(b => b.x)).range([0, innerW]).padding(0.22);
+  const lo = Math.min(-0.2, d3.min(bars, b => b.y)), hi = Math.max(0.2, d3.max(bars, b => b.y));
+  const y = d3.scaleLinear().domain([lo, hi]).nice().range([innerH, 0]);
+  gridY(g, y, innerW, 5);
+  g.selectAll("rect.bar").data(bars).join("rect").attr("class", "bar")
+    .attr("x", b => x(b.x)).attr("width", x.bandwidth())
+    .attr("y", b => Math.min(y(0), y(b.y))).attr("height", b => Math.max(1, Math.abs(y(b.y) - y(0))))
+    .attr("rx", Math.min(2, x.bandwidth() / 4))
+    .attr("fill", color);
+  g.append("line").attr("class", "baseline").attr("x1", 0).attr("x2", innerW).attr("y1", y(0)).attr("y2", y(0)).attr("stroke", COLORS.ink2);
+  g.append("g").call(d3.axisLeft(y).ticks(5).tickFormat(yFormat).tickSize(0).tickPadding(8));
+  const every = innerW < 420 ? 4 : 2;
+  g.append("g").attr("transform", `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).tickValues(bars.filter((b, i) => i % every === 0).map(b => b.x)).tickSize(4));
+  if (yLabel) svg.append("text").attr("class", "axis-title").attr("transform", `translate(14,${margin.top + innerH / 2}) rotate(-90)`).attr("text-anchor", "middle").text(yLabel);
+  g.selectAll("rect.hit").data(bars).join("rect").attr("class", "hit")
+    .attr("x", b => x(b.x) - x.step() * x.paddingInner() / 2).attr("width", x.step())
+    .attr("y", 0).attr("height", innerH).attr("fill", "transparent")
+    .on("mousemove", (event, b) => showTip(tooltip(b), event))
+    .on("mouseleave", hideTip);
+}
+
+// Horizontal bars, one series, direct-labeled.
+function drawHBars(containerId, rows, opts) {
+  const { valueFormat = d3.format(".2f"), tooltip } = opts;
+  const rowH = 34;
+  const margin = { top: 4, right: 56, bottom: 24, left: 120 };
+  const height = margin.top + margin.bottom + rowH * rows.length;
+  const { g, innerW, innerH } = setupSvg(containerId, height, margin);
+  const y = d3.scaleBand().domain(rows.map(r => r.label)).range([0, innerH]).padding(0.3);
+  const x = d3.scaleLinear().domain([0, d3.max(rows, r => r.value)]).nice().range([0, Math.min(innerW, 520)]);
+  g.append("g").selectAll("line").data(x.ticks(4)).join("line")
+    .attr("class", "gridline").attr("y1", 0).attr("y2", innerH).attr("x1", d => x(d)).attr("x2", d => x(d));
+  g.selectAll("rect.bar").data(rows).join("rect").attr("class", "bar")
+    .attr("x", 0).attr("y", r => y(r.label)).attr("height", y.bandwidth()).attr("width", r => x(r.value))
+    .attr("rx", 2).attr("fill", COLORS.blue);
+  g.append("line").attr("class", "baseline").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", innerH).attr("stroke", COLORS.ink2);
+  g.selectAll("text.val").data(rows).join("text").attr("class", "direct-label")
+    .attr("x", r => x(r.value) + 6).attr("y", r => y(r.label) + y.bandwidth() / 2).attr("dy", "0.35em")
+    .text(r => valueFormat(r.value));
+  g.selectAll("text.lab").data(rows).join("text").attr("class", "direct-label")
+    .attr("x", -10).attr("y", r => y(r.label) + y.bandwidth() / 2).attr("dy", "0.35em").attr("text-anchor", "end")
+    .text(r => r.label);
+  g.append("g").attr("transform", `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(4).tickSize(4).tickFormat(d3.format(".1f")));
+  g.selectAll("rect.hit").data(rows).join("rect").attr("class", "hit")
+    .attr("x", -margin.left).attr("width", innerW + margin.left).attr("y", r => y(r.label)).attr("height", y.bandwidth())
+    .attr("fill", "transparent")
+    .on("mousemove", (event, r) => showTip(tooltip(r), event)).on("mouseleave", hideTip);
+}
+
+// ---------------------------------------------------------------------------
+// Page sections
+// ---------------------------------------------------------------------------
+
+function renderSummaryNumbers() {
+  const fill = (key, text) => document.querySelectorAll(`[data-fill="${key}"]`).forEach(el => { el.textContent = text; });
+  const gt = state.groundTruth?.statewide?.lag0;
+  if (gt) { fill("n_cocyears", fmt(gt.n)); fill("r_acres", fmtR(gt.pearson_r)); }
+  const st = state.structures?.statewide?.lag0;
+  if (st) fill("r_struct", fmtR(st.pearson_r));
+  const ests = state.aiEstimates?.estimates;
+  if (ests) fill("n_estimates", fmt(d3.sum(ests, e => (e.estimated_correlation_trials || [e.estimated_correlation]).length)));
+  const s = state.aiCompare?.summary;
+  if (s) fill("bias", s.mean_signed_error.toFixed(2));
+}
+
+function renderTrends() {
+  const years = d3.range(2007, 2025);
+  const totals = years.map(yr => {
+    let sum = 0, any = false;
+    for (const cocNum of state.pitByCoc.keys()) {
+      const v = getMetricValue(cocNum, yr, state.metric);
+      if (v != null) { sum += v; any = true; }
+    }
+    return { x: yr, y: any ? sum : null };
+  });
+  const acres = new Map(state.firesByYear.map(r => [r.year, r.total_acres]));
+  document.getElementById("trendHomelessTitle").textContent = metricLabel(state.metric);
+  drawLine("trendHomeless", totals, { color: COLORS.blue, unit: "people", markX: state.year, height: 210 });
+  drawLine("trendFire", years.map(yr => ({ x: yr, y: acres.get(yr) ?? 0 })), { color: COLORS.orange, unit: "acres", markX: state.year, bars: true, height: 210 });
 }
 
 function buildCorrelationPoints(lag, excludeZero) {
   const points = [];
   for (const [cocNum, rows] of state.pitByCoc.entries()) {
     for (const row of rows) {
-      const year = row.year;
-      const metricVal = row[state.metric];
-      if (metricVal == null) continue;
-      const fireYear = year - lag;
+      const val = row[state.metric];
+      if (val == null) continue;
+      const fireYear = row.year - lag;
       if (fireYear < 2000) continue;
       const acres = getFireAcres(cocNum, fireYear);
       if (excludeZero && acres <= 0) continue;
-      points.push({ x: acres, y: metricVal, coc: cocNum, year });
+      points.push({ x: acres, y: val, id: `${cocNum}-${row.year}`, coc: cocNum, year: row.year });
     }
   }
   return points;
 }
 
-function renderCorrelationChart() {
+function renderCorrelation() {
   const excludeZero = document.getElementById("corrExcludeZero").checked;
   const points = buildCorrelationPoints(state.corrLag, excludeZero);
-  const r = pearson(points);
-  const rho = spearman(points);
-  const p = pearsonPValue(r, points.length);
-  const statBox = document.getElementById("corrStat");
-  if (r == null) {
-    statBox.innerHTML = "Not enough data.";
-  } else {
-    const sig = p == null ? "" : (p < 0.05
-      ? `, <strong style="color:#0ca30c">statistically significant</strong> (p = ${p < 0.001 ? "&lt;0.001" : p.toFixed(3)})`
-      : `, <strong style="color:#898781">not statistically significant</strong> (p = ${p.toFixed(3)})`);
-    statBox.innerHTML = `Pearson r = <strong style="color:${r >= 0 ? '#3987e5' : '#e0692c'}">${r.toFixed(3)}</strong> (${correlationStrength(r)}${r >= 0 ? ", positive" : ", negative"}) across ${points.length} CoC-year pairs${sig}<br>
-    Spearman &rho; (rank-based, less sensitive to fire-acreage outliers) = <strong>${rho == null ? "n/a" : rho.toFixed(3)}</strong>`;
-  }
-
-  const fit = points.length >= 2 ? linearFit(points) : null;
-  const maxX = Math.max(1, ...points.map(p => p.x));
-  const maxY = Math.max(1, ...points.map(p => p.y));
-
-  drawScatterChart("corrChart", points, {
-    height: 190,
-    xDomain: [0, maxX],
-    yDomain: [0, maxY],
-    xLabel: "Acres burned in CoC",
-    yLabel: state.metric,
-    fitLine: fit ? { x1: 0, y1: fit.intercept, x2: maxX, y2: fit.intercept + fit.slope * maxX } : null,
-    tooltipFn: d => `${d.coc}, ${d.year}: ${fmt(d.x)} acres, ${fmt(d.y)} homeless`,
+  const r = pearson(points), rho = spearman(points), p = pearsonPValue(r, points.length);
+  const timing = state.corrLag === 1 ? "fire year paired with the next year's count" : "same year";
+  document.getElementById("corrSub").textContent = r == null
+    ? "Not enough data."
+    : `${metricLabel(state.metric)}, ${timing}. Pearson r = ${fmtR(r)} (p = ${fmtP(p)}), Spearman ρ = ${fmtR(rho)}, n = ${fmt(points.length)}.`;
+  if (points.length < 2) { document.getElementById("corrChart").innerHTML = ""; return; }
+  const nameOf = c => state.geoFeaturesById.get(c)?.properties.COCNAME || c;
+  drawScatter("corrChart", points, {
+    height: 380,
+    xDomain: [0, d3.max(points, d => d.x) || 1],
+    yDomain: [0, d3.max(points, d => d.y) || 1],
+    xLabel: state.corrLag === 1 ? "Acres burned in the CoC, previous year" : "Acres burned in the CoC",
+    yLabel: metricLabel(state.metric),
+    opacity: 0.45,
+    fit: linearFit(points),
+    tooltip: d => `<div class="t">${nameOf(d.coc)}</div><div class="m">${d.coc}, ${d.year} count</div>${fmt(d.x)} acres burned<br>${fmt(d.y)} people counted`,
+    onClick: d => selectCoc(d.coc, { scroll: true }),
   });
 }
 
-// Static (doesn't depend on year/metric/lag controls), so rendered once at
-// init. Instead of one pooled 18-year regression, this is 18 separate
-// single-year cross-sectional correlations (see compute_yearly_fire_influence.py)
-// -- testing whether the pooled null is hiding a real effect in specific
-// catastrophic-fire years, or whether it's null year after year too.
-function renderYearlyCorrelationChart() {
-  const statBox = document.getElementById("yearlyCorrStat");
-  const chartEl = document.getElementById("yearlyCorrChart");
-  if (!state.yearlyFireInfluence || !state.yearlyFireInfluence.years || !state.yearlyFireInfluence.years.length) {
-    statBox.textContent = "Not generated yet — run compute_yearly_fire_influence.py.";
-    chartEl.style.display = "none";
-    return;
-  }
-  chartEl.style.display = "block";
-  const years = state.yearlyFireInfluence.years;
-  const nSigUncorrected = years.filter(y => y.significant_p05).length;
-  const nSigCorrected = years.filter(y => y.significant_bonferroni).length;
-  statBox.innerHTML = `${nSigUncorrected} of ${years.length} years show p&nbsp;&lt;&nbsp;0.05 on their own &mdash; but only <strong>${nSigCorrected}</strong> survives correcting for testing ${years.length} years at once (expected by chance alone even if nothing is real). The one that does (hover the highlighted bar) collapses from r&nbsp;=&nbsp;${years.find(y=>y.significant_bonferroni)?.pearson_r?.toFixed(2) ?? "—"} to ${years.find(y=>y.significant_bonferroni)?.leave_one_out_r?.toFixed(2) ?? "—"} once its single largest-acreage CoC (Los Angeles) is excluded &mdash; one outlier county, not a real year effect.`;
-
-  const bars = years.map(y => ({
-    x: String(y.year),
-    y: y.pearson_r ?? 0,
-    significant_bonferroni: y.significant_bonferroni,
-    significant_p05: y.significant_p05,
-    p: y.p_value,
-    n: y.n,
-    looR: y.leave_one_out_r,
-    looDropped: y.leave_one_out_dropped_coc,
-  }));
-
-  drawBarChart("yearlyCorrChart", bars, {
-    height: 150,
-    yDomain: [Math.min(-0.1, d3.min(bars, b => b.y)), Math.max(0.1, d3.max(bars, b => b.y))],
+function renderYearly() {
+  const years = state.yearly?.years;
+  if (!years || !years.length) { document.getElementById("yearlyChart").textContent = "Results not available."; return; }
+  const nameOf = c => state.geoFeaturesById.get(c)?.properties.COCNAME || c;
+  const bars = years.map(y => ({ x: String(y.year), y: y.pearson_r ?? 0, ...y }));
+  drawSignedBars("yearlyChart", bars, {
+    height: 240,
     yLabel: "Pearson r",
-    barColor: b => b.significant_bonferroni ? "#e0692c" : (b.significant_p05 ? "#e0692c99" : "#3987e5cc"),
-    tooltipFn: b => {
-      const sig = b.significant_bonferroni ? "significant even after correcting for 18 years tested"
-        : b.significant_p05 ? "significant uncorrected, but not after correction" : "not significant";
-      const loo = b.looDropped ? ` If ${b.looDropped} (this year's largest-acreage CoC) is excluded, r becomes ${b.looR?.toFixed(3)}.` : "";
-      return `${b.x}: r = ${b.y.toFixed(3)} (n=${b.n}, p=${b.p?.toFixed(3) ?? "n/a"}) — ${sig}.${loo}`;
+    color: b => b.significant_bonferroni ? COLORS.sigStrong : b.significant_p05 ? COLORS.sigWeak : COLORS.neutralBar,
+    tooltip: b => {
+      const sig = b.significant_bonferroni ? "Significant after correction" : b.significant_p05 ? "p < 0.05 before correction only" : "Not significant";
+      const loo = b.leave_one_out_dropped_coc
+        ? `<br><span class="m">Without ${nameOf(b.leave_one_out_dropped_coc)}: r = ${fmtR(b.leave_one_out_r)}</span>` : "";
+      return `<div class="t">${b.x}</div>r = ${fmtR(b.pearson_r)}, p = ${fmtP(b.p_value)}, n = ${b.n}<br>${sig}${loo}`;
     },
   });
 }
 
-// Fixed case study (doesn't depend on controls): the single most destructive
-// wildfire event in this dataset (2018 Camp Fire, which destroyed the town of
-// Paradise) against Butte County's own PIT trend, to make concrete why the
-// pooled null result isn't a data artifact -- even the most extreme real case
-// barely moves this count. See CLAUDE.md for the reasoning behind featuring
-// this specific CoC/year.
-const CASE_STUDY_COC = "CA-519";
-const CASE_STUDY_FIRE_YEAR = 2018;
+function renderTables() {
+  const pooled = document.querySelector("#pooledTable tbody");
+  const rows = [];
+  const add = (label, years, src) => {
+    if (!src) return;
+    for (const [lag, timing] of [["lag0", "Same year"], ["lag1", "Next year"]]) {
+      const s = src.statewide[lag];
+      rows.push(`<tr><td>${label}</td><td>${years}</td><td>${timing}</td><td class="n">${fmt(s.n)}</td><td class="n">${fmtR(s.pearson_r)}</td><td class="n">${fmtR(s.spearman_rho)}</td><td class="n">${fmtP(s.p_value)}</td></tr>`);
+    }
+  };
+  add("Acres burned", "2007&ndash;2024", state.groundTruth);
+  add("Structures destroyed", "2013&ndash;2024", state.structures);
+  pooled.innerHTML = rows.join("") || `<tr><td colspan="7">Results not available.</td></tr>`;
 
-function renderCaseStudy() {
-  const rows = (state.pitByCoc.get(CASE_STUDY_COC) || []).slice().sort((a, b) => a.year - b.year);
-  const chartEl = document.getElementById("caseStudyChart");
-  const statBox = document.getElementById("caseStudyStat");
-  if (!rows.length) {
-    chartEl.style.display = "none";
-    statBox.textContent = "Data not loaded.";
-    return;
-  }
-  chartEl.style.display = "block";
-
-  const before = rows.find(r => r.year === CASE_STUDY_FIRE_YEAR - 1);
-  const after = rows.find(r => r.year === CASE_STUDY_FIRE_YEAR + 1);
-  if (before && after) {
-    const pctChange = ((after["Overall Homeless"] - before["Overall Homeless"]) / before["Overall Homeless"]) * 100;
-    statBox.innerHTML = `Homeless count went from <strong>${fmt(before["Overall Homeless"])}</strong> (${before.year}) to <strong>${fmt(after["Overall Homeless"])}</strong> (${after.year}) &mdash; a ${pctChange >= 0 ? "+" : ""}${pctChange.toFixed(0)}% change following a fire that destroyed roughly 14,000&ndash;19,000 structures.`;
-  }
-
-  const el = document.getElementById("caseStudyChart");
-  const width = CHART_W, height = 150;
-  const margin = { top: 8, right: 8, bottom: 16, left: 34 };
-  const innerW = width - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-  const container = d3.select(el);
-  container.selectAll("*").remove();
-  const svg = container.append("svg").attr("width", width).attr("height", height);
-  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const years = rows.map(r => r.year);
-  const x = d3.scaleLinear().domain(d3.extent(years)).range([0, innerW]);
-  const y = d3.scaleLinear().domain([0, d3.max(rows, r => r["Overall Homeless"])]).nice(4).range([innerH, 0]);
-
-  g.append("g").attr("class", "grid")
-    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(""));
-
-  // Shade the fire year itself so it reads as an event marker, not just another data point.
-  const fireX = x(CASE_STUDY_FIRE_YEAR);
-  g.append("rect")
-    .attr("x", fireX - 6).attr("width", 12).attr("y", 0).attr("height", innerH)
-    .attr("fill", "#e0692c22");
-  g.append("text")
-    .attr("x", fireX).attr("y", -1).attr("text-anchor", "middle")
-    .attr("fill", "#e0692c").style("font-size", "9px").text("Camp Fire");
-
-  const lineGen = d3.line().x(d => x(d.year)).y(d => y(d["Overall Homeless"])).curve(d3.curveMonotoneX);
-  g.append("path").datum(rows).attr("fill", "none").attr("stroke", "#3987e5").attr("stroke-width", 2).attr("d", lineGen);
-
-  g.selectAll(".pt").data(rows).enter().append("circle")
-    .attr("class", "pt")
-    .attr("cx", d => x(d.year)).attr("cy", d => y(d["Overall Homeless"]))
-    .attr("r", d => d.year === CASE_STUDY_FIRE_YEAR ? 5 : 3)
-    .attr("fill", d => d.year === CASE_STUDY_FIRE_YEAR ? "#e0692c" : "#3987e5")
-    .append("title").text(d => `${d.year}: ${fmt(d["Overall Homeless"])} homeless`);
-
-  g.append("g").call(d3.axisLeft(y).ticks(4).tickFormat(d3.format("~s")));
-  g.append("g").attr("transform", `translate(0,${innerH})`)
-    .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format("d")));
-}
-
-// Static per-CoC comparison (doesn't depend on year/metric/lag controls), so
-// it's rendered once at init rather than from update(). See "AI-vs-ground-truth
-// experiment" in CLAUDE.md for how ai_vs_ground_truth.json is produced.
-function renderAiCompareChart() {
-  const statBox = document.getElementById("aiCompareStat");
-  const countEl = document.getElementById("aiCompareCount");
-  const chartEl = document.getElementById("aiCompareChart");
-  const legendEl = document.getElementById("aiCompareLegend");
-  if (!state.aiCompare || !state.aiCompare.by_coc || !state.aiCompare.by_coc.length) {
-    statBox.textContent = "Not generated yet — run ai_estimate_influence.py then compare_ai_vs_ground_truth.py.";
-    countEl.textContent = "";
-    chartEl.style.display = "none";
-    legendEl.style.display = "none";
-    return;
-  }
-  chartEl.style.display = "block";
-  legendEl.style.display = "flex";
-  const { summary, by_coc } = state.aiCompare;
-  countEl.textContent = `(${summary.n_compared} CoCs)`;
-  const biasWord = summary.mean_signed_error > 0.03 ? "overstates" : summary.mean_signed_error < -0.03 ? "understates" : "roughly tracks";
-  let html = `Model <strong>${biasWord}</strong> the real fire&rarr;homelessness relationship on average (mean signed error <strong>${summary.mean_signed_error >= 0 ? "+" : ""}${summary.mean_signed_error.toFixed(3)}</strong>, mean |error| <strong>${summary.mean_abs_error.toFixed(3)}</strong>)<br>
-  ${summary.pct_exaggerates}% exaggerate &middot; ${summary.pct_underestimates}% underestimate &middot; ${summary.pct_sign_flip}% sign flip &middot; ${summary.pct_roughly_matches}% roughly match`;
-
-  const gtByCoc = new Map(by_coc.map(r => [r.coc_number, r.ground_truth_r]));
-
-  // Confidence calibration, computed at trial granularity: every one of the
-  // ~10 independent trials for a CoC gets its own (confidence, |error|) pair
-  // against that CoC's real r, rather than collapsing 10 trials down to one
-  // majority-vote confidence per CoC first. That turns a ~41-point breakdown
-  // (some buckets down to n=4) into a ~400-point one, so the pattern isn't
-  // resting on a handful of CoCs.
-  const errByConf = { low: [], medium: [], high: [] };
-  if (state.aiEstimates && state.aiEstimates.estimates) {
-    for (const e of state.aiEstimates.estimates) {
-      const gt = gtByCoc.get(e.coc_number);
-      if (gt == null || !e.estimated_correlation_trials || !e.confidence_trials) continue;
-      e.estimated_correlation_trials.forEach((est, i) => {
-        const conf = e.confidence_trials[i];
-        if (errByConf[conf]) errByConf[conf].push(Math.abs(est - gt));
-      });
+  const fe = document.querySelector("#feTable tbody");
+  const res = state.panelFe?.results;
+  if (!res) { fe.innerHTML = `<tr><td colspan="7">Results not available.</td></tr>`; return; }
+  const feRows = [];
+  for (const [key, label] of [["acres_burned", "Acres burned"], ["structures_destroyed", "Structures destroyed"]]) {
+    for (const lag of ["lag0", "lag1"]) {
+      for (const form of ["log", "level"]) {
+        const m = res[key]?.[`${lag}_${form}`];
+        if (!m) continue;
+        const digits = Math.abs(m.coef) < 0.01 ? 4 : 3;
+        feRows.push(`<tr><td>${label}</td><td>${lag === "lag0" ? "Same year" : "Next year"}</td><td>${form === "log" ? "Log" : "Level"}</td><td class="n">${fmt(m.n)}</td><td class="n">${fmtSigned(m.coef, digits)}</td><td class="n">${m.se_clustered.toFixed(digits)}</td><td class="n">${fmtP(m.p_value)}</td></tr>`);
+      }
     }
   }
-  const confLine = ["low", "medium", "high"]
-    .filter(c => errByConf[c].length)
-    .map(c => {
-      const errs = errByConf[c];
-      const mean = errs.reduce((s, v) => s + v, 0) / errs.length;
-      return `${c} (n=${errs.length}): |error| ${mean.toFixed(3)}`;
-    })
-    .join(" &middot; ");
-  if (confLine) {
-    html += `<br><span style="color:var(--text-muted);">By stated confidence, per trial &mdash; ${confLine}</span>`;
-  }
-
-  // Trial-to-trial stability: each estimate is the mean of N independently
-  // spawned blind sub-agent runs, not a single noisy sample. See
-  // ai_fire_influence_estimates.json / CLAUDE.md for the aggregation method.
-  if (state.aiEstimates && state.aiEstimates.estimates && state.aiEstimates.estimates.length) {
-    const ests = state.aiEstimates.estimates;
-    const nTrials = ests[0].estimated_correlation_trials ? ests[0].estimated_correlation_trials.length : 1;
-    if (nTrials > 1) {
-      const nNeverNegative = ests.filter(e => e.estimated_correlation_trials.every(v => v >= 0)).length;
-      const meanStd = ests.reduce((s, e) => s + (e.estimated_correlation_std || 0), 0) / ests.length;
-      html += `<br><span style="color:var(--text-muted);">Stability across ${nTrials} independent blind trials &mdash; ${nNeverNegative}/${ests.length} CoCs never got a single negative estimate across ${nTrials * ests.length} total guesses; mean trial-to-trial std dev ${meanStd.toFixed(3)}</span>`;
-    }
-  }
-
-  statBox.innerHTML = html;
-
-  renderYearFactorChart(by_coc);
-
-  const CONF_COLOR = { low: "#3987e566", medium: "#3987e5cc", high: "#e0692c" };
-  const points = by_coc.map(r => ({
-    x: r.ground_truth_r, y: r.ai_estimate, coc: r.coc_number, name: r.coc_name, cls: r.classification,
-    conf: r.ai_confidence,
-  }));
-
-  const aiFit = points.length >= 2 ? linearFit(points) : null;
-
-  drawScatterChart("aiCompareChart", points, {
-    height: 190,
-    xDomain: [-1, 1],
-    yDomain: [-1, 1],
-    xLabel: "Ground-truth Pearson r",
-    yLabel: "AI estimated r",
-    diagLine: true,
-    fitLine: aiFit ? { x1: -1, y1: aiFit.intercept - aiFit.slope, x2: 1, y2: aiFit.intercept + aiFit.slope } : null,
-    tickFormat: d3.format(".1f"),
-    pointColor: d => CONF_COLOR[d.conf] || "#3987e5cc",
-    tooltipFn: d => `${d.name} (${d.coc}): ground truth r = ${d.x.toFixed(2)}, AI estimate = ${d.y.toFixed(2)} (${d.conf} confidence) — ${d.cls.replace(/_/g, " ")}`,
-    onClick: d => selectCoc(d.coc),
-  });
-
-  renderAiRankingTable(by_coc);
+  fe.innerHTML = feRows.join("");
 }
 
-let rankingSort = { key: "abs_error", dir: -1 };
-
-function renderAiRankingTable(byCoc) {
-  const card = document.getElementById("aiRankingCard");
-  const tbody = document.getElementById("aiRankingBody");
-  if (!byCoc || !byCoc.length) {
-    card.style.display = "none";
-    return;
+function trialErrorsByConfidence() {
+  const gtByCoc = new Map((state.aiCompare?.by_coc || []).map(r => [r.coc_number, r.ground_truth_r]));
+  const out = { low: [], medium: [], high: [] };
+  for (const e of state.aiEstimates?.estimates || []) {
+    const gt = gtByCoc.get(e.coc_number);
+    if (gt == null || !e.estimated_correlation_trials || !e.confidence_trials) continue;
+    e.estimated_correlation_trials.forEach((est, i) => {
+      const c = e.confidence_trials[i];
+      if (out[c]) out[c].push(Math.abs(est - gt));
+    });
   }
-  card.style.display = "block";
-
-  const rows = byCoc.slice().sort((a, b) => {
-    const av = a[rankingSort.key], bv = b[rankingSort.key];
-    const cmp = typeof av === "string" ? av.localeCompare(bv) : av - bv;
-    return cmp * rankingSort.dir;
-  });
-
-  tbody.innerHTML = "";
-  for (const r of rows) {
-    const tr = document.createElement("tr");
-    tr.dataset.coc = r.coc_number;
-    if (r.coc_number === state.selectedCocNum) tr.classList.add("selected");
-    tr.innerHTML = `
-      <td>${r.coc_name.length > 26 ? r.coc_name.slice(0, 24) + "…" : r.coc_name} <span style="color:var(--text-muted);">(${r.coc_number})</span></td>
-      <td class="num">${r.ground_truth_r >= 0 ? "+" : ""}${r.ground_truth_r.toFixed(2)}</td>
-      <td class="num">${r.ai_estimate >= 0 ? "+" : ""}${r.ai_estimate.toFixed(2)}</td>
-      <td class="num">${r.abs_error.toFixed(2)}</td>
-      <td>${r.ai_confidence}</td>
-    `;
-    tr.addEventListener("click", () => selectCoc(r.coc_number));
-    tbody.appendChild(tr);
-  }
-
-  document.querySelectorAll("#aiRankingTable thead th").forEach(th => {
-    th.querySelector(".arrow")?.remove();
-    if (th.dataset.sort === rankingSort.key) {
-      const arrow = document.createElement("span");
-      arrow.className = "arrow";
-      arrow.textContent = rankingSort.dir === 1 ? "▲" : "▼";
-      th.appendChild(arrow);
-    }
-  });
+  return out;
 }
 
-// Raised in class: does the AI's error track *when* a CoC's worst fire
-// happened -- e.g. more recent, more widely-covered fires producing bigger
-// overestimates? Computed live from data already loaded (state.firesByCoc +
-// the AI-compare summary), no separate pipeline step. See paper_response.md
-// for two other cuts on this same question (mean error by decade; ground
-// truth split into 2007-2015 vs 2016-2024) -- all three come back null.
-function renderYearFactorChart(byCoc) {
-  const card = document.getElementById("yearFactorCard");
-  const statBox = document.getElementById("yearFactorStat");
-  if (!byCoc || !byCoc.length || !state.firesByCoc || !state.firesByCoc.size) {
-    card.style.display = "none";
+function renderAi() {
+  const data = state.aiCompare;
+  if (!data || !data.by_coc?.length) {
+    document.getElementById("aiChart").textContent = "AI results not available.";
     return;
   }
+  const s = data.summary;
+  const ests = state.aiEstimates?.estimates || [];
+  const allTrials = ests.flatMap(e => e.estimated_correlation_trials || []);
+  const nNeg = allTrials.filter(v => v < 0).length;
+  const nRuns = ests[0]?.estimated_correlation_trials?.length || 1;
+  const summaryRows = [
+    ["CoCs compared", `${s.n_compared} (${s.n_skipped_insufficient_data} excluded)`],
+    ["Independent runs", nRuns],
+    ["Estimates below zero", `${nNeg} of ${fmt(allTrials.length)}`],
+    ["Mean signed error (AI minus observed)", fmtSigned(s.mean_signed_error, 3)],
+    ["Mean absolute error", s.mean_abs_error.toFixed(3)],
+    ["Agreement with observed, Pearson r", fmtR(s.agreement_pearson_r ?? s.rank_agreement_r)],
+    ["Agreement with observed, Spearman ρ", s.agreement_spearman_rho != null ? fmtR(s.agreement_spearman_rho) : "n/a"],
+    ["Opposite sign from observed", `${s.pct_sign_flip}%`],
+    ["Within 0.1 of observed", `${s.pct_roughly_matches}%`],
+    ["Same sign, too large", `${s.pct_exaggerates}%`],
+    ["Same sign, too small", `${s.pct_underestimates}%`],
+  ];
+  document.querySelector("#aiSummaryTable tbody").innerHTML = summaryRows
+    .map(([k, v]) => `<tr><td>${k}</td><td class="n">${v}</td></tr>`).join("");
 
+  const points = data.by_coc.map(r => ({ x: r.ground_truth_r, y: r.ai_estimate, id: r.coc_number, name: r.coc_name, conf: r.ai_confidence }));
+  drawScatter("aiChart", points, {
+    height: 400,
+    xDomain: [-1, 1], yDomain: [-1, 1],
+    xLabel: "Observed correlation (r)", yLabel: "AI estimate (mean of runs)",
+    xFormat: d3.format(".1f"), yFormat: d3.format(".1f"),
+    color: d => COLORS.conf[d.conf] || COLORS.blue, opacity: 0.9,
+    diagonal: true, zeroLine: true, fit: linearFit(points),
+    highlight: state.selectedCocNum,
+    tooltip: d => `<div class="t">${d.name}</div><div class="m">${d.id}</div>Observed r = ${fmtR(d.x, 2)}<br>AI estimate = ${fmtR(d.y, 2)}<br>Stated confidence: ${d.conf}`,
+    onClick: d => selectCoc(d.id, { scroll: true }),
+  });
+
+  const byConf = trialErrorsByConfidence();
+  const confRows = ["low", "medium", "high"].filter(c => byConf[c].length)
+    .map(c => ({ label: `${c[0].toUpperCase()}${c.slice(1)} (n = ${byConf[c].length})`, value: d3.mean(byConf[c]), n: byConf[c].length, c }));
+  if (confRows.length) {
+    drawHBars("confChart", confRows, {
+      tooltip: r => `<div class="t">${r.c} confidence</div>${r.n} estimates<br>Mean absolute error ${r.value.toFixed(3)}`,
+    });
+  }
+
+  renderYearFactor(data.by_coc);
+  renderRankingTable();
+}
+
+function renderYearFactor(byCoc) {
   const points = [];
   for (const r of byCoc) {
     const rows = state.firesByCoc.get(r.coc_number);
     if (!rows || !rows.length) continue;
-    const peakYear = rows.reduce((best, row) => (row.acres_burned > (best?.acres_burned ?? -1) ? row : best), null)?.year;
-    if (peakYear != null) points.push({ x: peakYear, y: r.abs_error, coc: r.coc_number, name: r.coc_name });
+    const peak = d3.greatest(rows, row => row.acres_burned);
+    if (peak) points.push({ x: peak.year, y: r.abs_error, id: r.coc_number, name: r.coc_name, acres: peak.acres_burned });
   }
-  if (points.length < 2) {
-    card.style.display = "none";
-    return;
-  }
-  card.style.display = "block";
-
+  if (points.length < 3) return;
   const r = pearson(points);
-  statBox.innerHTML = `Peak-fire-year (recency) vs. AI |error|: r&nbsp;=&nbsp;<strong>${r.toFixed(3)}</strong> &mdash; <strong>no</strong>, more recent/famous fires don't predict bigger AI errors. (Flat line below = no relationship.)`;
-
-  const fit = linearFit(points);
-  const minYear = Math.min(...points.map(p => p.x));
-  const maxYear = Math.max(...points.map(p => p.x));
-
-  drawScatterChart("yearFactorChart", points, {
-    height: 170,
-    xDomain: [minYear, maxYear],
-    yDomain: [0, Math.max(0.1, ...points.map(p => p.y))],
-    xLabel: "CoC's peak fire year",
-    yLabel: "AI |error|",
-    fitLine: { x1: minYear, y1: fit.intercept + fit.slope * minYear, x2: maxYear, y2: fit.intercept + fit.slope * maxYear },
-    xTickFormat: d3.format("d"),
-    yTickFormat: d3.format(".2f"),
-    onClick: d => selectCoc(d.coc),
-    tooltipFn: d => `${d.name} (${d.coc}): peak fire year ${d.x}, AI |error| = ${d.y.toFixed(2)}`,
+  document.getElementById("yearFactorSub").textContent =
+    `Each dot is one CoC. Correlation between year and error: r = ${fmtR(r)}, n = ${points.length}.`;
+  drawScatter("yearFactorChart", points, {
+    height: 320,
+    xDomain: d3.extent(points, d => d.x), yDomain: [0, d3.max(points, d => d.y)],
+    xLabel: "Year of the CoC's largest fire (by acres)", yLabel: "AI absolute error",
+    xFormat: d3.format("d"), yFormat: d3.format(".1f"),
+    color: COLORS.blue, opacity: 0.8, fit: linearFit(points), highlight: state.selectedCocNum,
+    tooltip: d => `<div class="t">${d.name}</div>Largest fire year: ${d.x} (${fmt(d.acres)} acres)<br>AI error: ${d.y.toFixed(2)}`,
+    onClick: d => selectCoc(d.id, { scroll: true }),
   });
 }
 
-function renderCocDetail(feature) {
-  const p = feature.properties;
-  state.selectedCocNum = p.COCNUM;
-  const rows = (state.pitByCoc.get(p.COCNUM) || []).slice().sort((a, b) => a.year - b.year);
-  const hicRows = state.hicByCoc.get(p.COCNUM) || [];
-  const latestHic = hicRows.find(r => r.year === state.year) ||
-    hicRows.reduce((latest, r) => (!latest || r.year > latest.year) ? r : latest, null);
+let rankingSort = { key: "abs_error", dir: -1 };
+function renderRankingTable() {
+  const byCoc = state.aiCompare?.by_coc;
+  if (!byCoc) return;
+  const tbody = document.getElementById("aiRankingBody");
+  const rows = byCoc.slice().sort((a, b) => {
+    const av = a[rankingSort.key], bv = b[rankingSort.key];
+    return (typeof av === "string" ? av.localeCompare(bv) : av - bv) * rankingSort.dir;
+  });
+  tbody.innerHTML = rows.map(r => `
+    <tr data-coc="${r.coc_number}" class="${r.coc_number === state.selectedCocNum ? "selected" : ""}">
+      <td>${r.coc_name} <span style="color:var(--muted)">${r.coc_number}</span></td>
+      <td class="n">${fmtSigned(r.ground_truth_r)}</td>
+      <td class="n">${fmtSigned(r.ai_estimate)}</td>
+      <td class="n">${r.abs_error.toFixed(2)}</td>
+      <td>${r.ai_confidence}</td>
+    </tr>`).join("");
+  document.querySelectorAll("#aiRankingTable thead th").forEach(th => {
+    th.querySelector(".dir")?.remove();
+    th.setAttribute("aria-sort", th.dataset.sort === rankingSort.key ? (rankingSort.dir === 1 ? "ascending" : "descending") : "none");
+    if (th.dataset.sort === rankingSort.key) th.insertAdjacentHTML("beforeend", `<span class="dir">${rankingSort.dir === 1 ? "▲" : "▼"}</span>`);
+  });
+}
 
-  const box = document.getElementById("selectedCoc");
-  box.innerHTML = `
-    <strong>${p.COCNAME || p.COCNUM}</strong> (${p.COCNUM})<br>
-    ${state.metric} in ${state.year}: <strong>${fmt(getMetricValue(p.COCNUM, state.year, state.metric))}</strong><br>
-    ${latestHic ? `Year-round beds (${latestHic.year}): <strong>${fmt(latestHic["Total Year-Round Beds (ES, TH, SH)"])}</strong>` : ""}
-  `;
-
-  const chartEl = document.getElementById("cocChart");
-  chartEl.style.display = rows.length ? "block" : "none";
+function renderCaseStudy() {
+  const rows = state.pitByCoc.get(CASE_COC) || [];
   if (!rows.length) return;
-
-  drawLineChart("cocChart", rows.map(r => r.year), rows.map(r => r[state.metric]), {
-    color: "#3987e5", fillColor: "#3987e51a", showXAxis: true, unit: state.metric.toLowerCase(),
+  const before = rows.find(r => r.year === CASE_FIRE_YEAR - 1), after = rows.find(r => r.year === CASE_FIRE_YEAR + 1);
+  if (before && after) {
+    const b = before["Overall Homeless"], a = after["Overall Homeless"];
+    const pct = (a - b) / b * 100;
+    document.getElementById("caseStat").textContent =
+      `Butte County's count was ${fmt(b)} in ${before.year} and ${fmt(a)} in ${after.year}, a change of ${pct >= 0 ? "+" : "−"}${Math.abs(pct).toFixed(0)} percent. Several years without a major fire show larger swings, such as the jump from 2016 to 2017.`;
+  }
+  drawLine("caseChart", rows.map(r => ({ x: r.year, y: r["Overall Homeless"] })), {
+    height: 240, color: COLORS.blue, unit: "people", markX: CASE_FIRE_YEAR, markLabel: "Camp Fire, Nov. 2018",
   });
 }
 
 // ---------------------------------------------------------------------------
-// Tabs + cross-linked selection: clicking a region on the map, a point on the
-// AI-comparison scatter, a row in the ranking table, or a search result all
-// funnel through the same selectCoc() so every entry point stays in sync
-// (map highlight, "Selected CoC" detail, ranking-table row highlight).
+// Region panel and cross-linked selection
 // ---------------------------------------------------------------------------
 
-function setActiveTab(tabName) {
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabName));
-  document.querySelectorAll("[data-tab-panel]").forEach(p => { p.hidden = p.dataset.tabPanel !== tabName; });
+function renderRegionPanel() {
+  const panel = document.getElementById("regionPanel");
+  const cocNum = state.selectedCocNum;
+  const feature = cocNum && state.geoFeaturesById.get(cocNum);
+  if (!feature) return;
+  const name = feature.properties.COCNAME || cocNum;
+  const hic = (state.hicByCoc.get(cocNum) || []);
+  const hicRow = hic.find(r => r.year === state.year) || hic[hic.length - 1];
+  const ai = state.aiCompare?.by_coc?.find(r => r.coc_number === cocNum);
+  const acres = getFireAcres(cocNum, state.year);
+  panel.innerHTML = `
+    <h3>${name}</h3>
+    <p class="coc-id">${cocNum}</p>
+    <dl>
+      <dt>${metricLabel(state.metric)}, ${state.year}</dt><dd>${fmt(getMetricValue(cocNum, state.year, state.metric))}</dd>
+      <dt>Acres burned, ${state.year}</dt><dd>${fmt(acres)}</dd>
+      ${hicRow ? `<dt>Year-round shelter beds, ${hicRow.year}</dt><dd>${fmt(hicRow["Total Year-Round Beds (ES, TH, SH)"])}</dd>` : ""}
+      ${ai ? `<dt>Observed r, fire and count</dt><dd>${fmtSigned(ai.ground_truth_r)}</dd><dt>AI estimate</dt><dd>${fmtSigned(ai.ai_estimate)}</dd>` : ""}
+    </dl>
+    <p class="mini-title">${metricLabel(state.metric)} by year</p>
+    <div id="regionTrend" class="chart"></div>
+    <p class="mini-title">Acres burned by year</p>
+    <div id="regionFire" class="chart"></div>`;
+  const years = d3.range(2007, 2025);
+  drawLine("regionTrend", years.map(yr => ({ x: yr, y: getMetricValue(cocNum, yr, state.metric) })), { height: 130, color: COLORS.blue, unit: "people", markX: state.year });
+  drawLine("regionFire", years.map(yr => ({ x: yr, y: getFireAcres(cocNum, yr) })), { height: 110, color: COLORS.orange, unit: "acres", markX: state.year, bars: true });
 }
 
 function selectCoc(cocNum, opts = {}) {
-  const feature = state.geoFeaturesById.get(cocNum);
-  if (!feature) return;
-  renderCocDetail(feature);
+  if (!state.geoFeaturesById.has(cocNum)) return;
+  state.selectedCocNum = cocNum;
+  renderRegionPanel();
   refreshMapStyle();
-  highlightRankingRow(cocNum);
-  if (opts.flyTo !== false) {
-    const bounds = state.cocBoundsById.get(cocNum);
-    if (bounds) {
-      map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], { padding: 70, maxZoom: 9, duration: 700 });
-    }
+  document.querySelectorAll("#aiRankingBody tr").forEach(tr => tr.classList.toggle("selected", tr.dataset.coc === cocNum));
+  if (state.aiCompare) { renderAi(); }
+  if (opts.scroll) document.getElementById("map-section").scrollIntoView({ behavior: "smooth" });
+  if (map && opts.fly !== false) {
+    const b = state.cocBoundsById.get(cocNum);
+    if (b) map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 60, maxZoom: 9, duration: 700 });
   }
-  if (opts.switchTab !== false) setActiveTab("cases");
-}
-
-function highlightRankingRow(cocNum) {
-  const tbody = document.getElementById("aiRankingBody");
-  if (!tbody) return;
-  tbody.querySelectorAll("tr").forEach(tr => tr.classList.toggle("selected", tr.dataset.coc === cocNum));
 }
 
 // ---------------------------------------------------------------------------
-// Map: CoC choropleth + fire perimeters + permanent count labels, via
-// MapLibre feature-state (set per feature id, no source re-parsing per redraw).
+// Map
 // ---------------------------------------------------------------------------
+
+// The map is created up front so its style and tiles load while the data
+// downloads. If WebGL is unavailable, the charts and tables still work.
+let map = null;
+let mapReady = Promise.resolve(false);
+try {
+  map = new maplibregl.Map({
+    container: "map",
+    style: "https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json",
+    center: [-119.4, 37.3],
+    zoom: 5.1,
+    attributionControl: false,
+    cooperativeGestures: true,
+  });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+  map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+  mapReady = new Promise(resolve => map.once("load", () => resolve(true)));
+} catch (err) {
+  console.error(err);
+  document.getElementById("map").insertAdjacentHTML("beforeend",
+    `<p style="padding:16px;font-family:var(--sans);font-size:14px;">The map needs WebGL, which this browser does not provide. The charts and tables below still work.</p>`);
+}
 
 function geometryBounds(geometry) {
   let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
-  const visit = coords => {
-    if (typeof coords[0] === "number") {
-      const [lng, lat] = coords;
-      if (lng < minLng) minLng = lng;
-      if (lng > maxLng) maxLng = lng;
-      if (lat < minLat) minLat = lat;
-      if (lat > maxLat) maxLat = lat;
-    } else {
-      coords.forEach(visit);
-    }
+  const visit = c => {
+    if (typeof c[0] === "number") {
+      minLng = Math.min(minLng, c[0]); maxLng = Math.max(maxLng, c[0]);
+      minLat = Math.min(minLat, c[1]); maxLat = Math.max(maxLat, c[1]);
+    } else c.forEach(visit);
   };
   visit(geometry.coordinates);
   return [minLng, minLat, maxLng, maxLat];
@@ -1424,381 +1310,296 @@ function geometryBounds(geometry) {
 function refreshMapStyle() {
   if (!state.mapLoaded) return;
   const max = currentMax();
-  for (const [cocNum, feature] of state.geoFeaturesById.entries()) {
+  for (const cocNum of state.geoFeaturesById.keys()) {
     const val = getMetricValue(cocNum, state.year, state.metric);
-    const selected = cocNum === state.selectedCocNum;
+    const sel = cocNum === state.selectedCocNum;
     map.setFeatureState({ source: "coc", id: cocNum }, {
       fillColor: colorScale(val, max),
-      fillOpacity: val == null ? 0.15 : 0.82,
-      outlineColor: selected ? "#3987e5" : "#0d0d0d",
-      outlineWidth: selected ? 2.5 : 1,
+      outlineColor: sel ? "#1b1b1a" : "#ffffff",
+      outlineWidth: sel ? 2.5 : 1,
     });
   }
+  renderLegend(max);
 }
 
-const LABEL_MIN_PX = 46; // hide a CoC's label until its polygon is at least this wide/tall on screen
+function legendTick(v) {
+  if (v < 1000) return String(Math.round(v / 10) * 10);
+  if (v < 10000) return d3.format(".1~f")(v / 1000) + "k";
+  return Math.round(v / 1000) + "k";
+}
 
-// text-field is a *layout* property, which MapLibre does not allow to read from
-// feature-state (only paint properties can) -- so the label text has to live on
-// the GeoJSON feature itself, updated via source.setData() rather than
-// setFeatureState(). Visibility (text-opacity) is a paint property and can stay
-// feature-state driven, avoiding a setData() call on every pan/zoom.
+function renderLegend(max) {
+  const el = document.getElementById("mapLegend");
+  const w = 170;
+  const stops = SEQ_STOPS.map((c, i) => `rgb(${c.join(",")}) ${(i / (SEQ_STOPS.length - 1)) * 100}%`).join(",");
+  const ticks = [0, 0.25, 0.5, 1].map(t => ({ pos: t * w, val: max * t * t }));
+  el.innerHTML = `
+    <div class="title">${metricLabel(state.metric)}, ${state.year}</div>
+    <div style="width:${w}px;height:10px;background:linear-gradient(90deg,${stops})"></div>
+    <div style="position:relative;width:${w}px;height:16px;">
+      ${ticks.map((t, i) => `<span style="position:absolute;left:${t.pos}px;transform:translateX(${i === 0 ? "0" : i === ticks.length - 1 ? "-100%" : "-50%"});top:2px;">${legendTick(t.val)}</span>`).join("")}
+    </div>
+    <div class="fire-row" id="legendFire"><i></i>Fire perimeters, ${state.year}</div>`;
+  document.getElementById("legendFire").style.display = document.getElementById("fireToggle").checked ? "flex" : "none";
+}
+
+const LABEL_MIN_PX = 46;
+// One label point per CoC, at the centroid of its largest polygon, so regions
+// with islands (Los Angeles, Santa Barbara) are labeled once.
+function labelPoints(cocGeo) {
+  return {
+    type: "FeatureCollection",
+    features: cocGeo.features.map(f => {
+      const polys = f.geometry.type === "MultiPolygon" ? f.geometry.coordinates : [f.geometry.coordinates];
+      const outer = d3.greatest(polys.map(p => p[0]), ring => Math.abs(d3.polygonArea(ring)));
+      return { type: "Feature", properties: { COCNUM: f.properties.COCNUM, label: "" }, geometry: { type: "Point", coordinates: d3.polygonCentroid(outer) } };
+    }),
+  };
+}
+
 function refreshLabels() {
   if (!state.mapLoaded) return;
-  for (const feature of state.cocGeo.features) {
-    const cocNum = feature.properties.COCNUM;
-    const val = getMetricValue(cocNum, state.year, state.metric);
-    feature.properties.label = val == null ? "—" : fmt(val);
+  for (const f of state.labelGeo.features) {
+    const v = getMetricValue(f.properties.COCNUM, state.year, state.metric);
+    f.properties.label = v == null ? "" : fmt(v);
   }
-  map.getSource("coc").setData(state.cocGeo);
+  map.getSource("coc-label-pts").setData(state.labelGeo);
   updateLabelVisibility();
 }
-
 function updateLabelVisibility() {
   if (!state.mapLoaded) return;
-  const masterShow = document.getElementById("labelToggle").checked;
-  for (const [cocNum, bounds] of state.cocBoundsById.entries()) {
-    if (!masterShow) {
-      map.setFeatureState({ source: "coc", id: cocNum }, { labelOpacity: 0 });
-      continue;
+  const show = document.getElementById("labelToggle").checked;
+  for (const [cocNum, [a, b, c, d]] of state.cocBoundsById.entries()) {
+    let visible = false;
+    if (show) {
+      const p1 = map.project([a, b]), p2 = map.project([c, d]);
+      visible = Math.abs(p2.x - p1.x) >= LABEL_MIN_PX && Math.abs(p2.y - p1.y) >= LABEL_MIN_PX;
     }
-    const [minLng, minLat, maxLng, maxLat] = bounds;
-    const p1 = map.project([minLng, minLat]);
-    const p2 = map.project([maxLng, maxLat]);
-    const widthPx = Math.abs(p2.x - p1.x);
-    const heightPx = Math.abs(p2.y - p1.y);
-    const visible = widthPx >= LABEL_MIN_PX && heightPx >= LABEL_MIN_PX;
-    map.setFeatureState({ source: "coc", id: cocNum }, { labelOpacity: visible ? 1 : 0 });
+    map.setFeatureState({ source: "coc-label-pts", id: cocNum }, { labelOpacity: visible ? 1 : 0 });
   }
 }
-
-function refreshStats() {
-  let homelessSum = 0;
-  for (const rows of state.pitByCoc.values()) {
-    const row = rows.find(r => r.year === state.year);
-    if (row && row[state.metric] != null) homelessSum += row[state.metric];
-  }
-  document.getElementById("statHomeless").textContent = fmt(homelessSum);
-
-  const fireRow = state.firesByYear.find(r => r.year === state.year);
-  document.getElementById("statAcres").textContent = fireRow ? fmt(fireRow.total_acres) : "0";
-}
-
-// Fires are filtered per selected year (rather than showing all 2000-2024 fires
-// at once) so the map layer actually reflects the year control, matching the
-// choropleth and stat tiles instead of showing 24 years of fires unconditionally.
-function rebuildFireLayer() {
+function refreshFires() {
   if (!state.mapLoaded) return;
-  map.setFilter("fire-fill", ["==", ["get", "YEAR_"], state.year]);
-  map.setFilter("fire-line", ["==", ["get", "YEAR_"], state.year]);
-  const yearFeatures = state.fireGeoRaw.features.filter(f => f.properties.YEAR_ === state.year);
-  const label = document.getElementById("fireToggleLabel");
-  label.textContent = `Show ${state.year} wildfire perimeters (${yearFeatures.length})`;
-  const visible = document.getElementById("fireToggle").checked ? "visible" : "none";
-  map.setLayoutProperty("fire-fill", "visibility", visible);
-  map.setLayoutProperty("fire-line", "visibility", visible);
-}
-
-function popupHtml(feature) {
-  const p = feature.properties;
-  const val = getMetricValue(p.COCNUM, state.year, state.metric);
-  return `<div class="popup">
-    <h3>${p.COCNAME || p.COCNUM}</h3>
-    <div class="row">${p.COCNUM}</div>
-    <div class="row">${state.metric} (${state.year}): <b>${fmt(val)}</b></div>
-  </div>`;
+  const filter = ["==", ["get", "YEAR_"], state.year];
+  map.setFilter("fire-fill", filter);
+  map.setFilter("fire-line", filter);
+  const n = state.fireGeo.features.filter(f => f.properties.YEAR_ === state.year).length;
+  document.getElementById("fireToggleLabel").textContent = `Fire perimeters (${n} in ${state.year})`;
+  const vis = document.getElementById("fireToggle").checked ? "visible" : "none";
+  map.setLayoutProperty("fire-fill", "visibility", vis);
+  map.setLayoutProperty("fire-line", "visibility", vis);
+  const lf = document.getElementById("legendFire");
+  if (lf) lf.style.display = vis === "visible" ? "flex" : "none";
 }
 
 function update() {
   refreshMapStyle();
   refreshLabels();
-  refreshStats();
-  rebuildFireLayer();
-  renderTrendCharts();
-  renderCorrelationChart();
-  if (state.selectedCocNum) {
-    const feature = state.geoFeaturesById.get(state.selectedCocNum);
-    if (feature) renderCocDetail(feature);
-  }
+  refreshFires();
+  renderTrends();
+  renderCorrelation();
+  if (state.selectedCocNum) renderRegionPanel();
 }
 
+function renderAllCharts() {
+  renderTrends();
+  renderCorrelation();
+  renderYearly();
+  renderAi();
+  renderCaseStudy();
+  if (state.selectedCocNum) renderRegionPanel();
+}
+
+// ---------------------------------------------------------------------------
+// Init
+// ---------------------------------------------------------------------------
+
 async function init() {
-  const [pitRows, hicRows, vetRows, fireYearRows, fireCocRows, cocGeo, fireGeo, caOutline] = await Promise.all([
+  const [pit, hic, fireYear, fireCoc, cocGeo, fireGeo, caOutline] = await Promise.all([
     loadJSON("site/data/ca_coc_pit_by_year.json"),
     loadJSON("site/data/ca_coc_hic_by_year.json"),
-    loadJSON("site/data/ca_coc_pit_veterans_by_year.json"),
     loadJSON("site/data/ca_fires_by_year.json"),
     loadJSON("site/data/ca_fires_by_coc_year.json"),
     loadJSON("site/data/ca_coc_boundaries.min.geojson"),
     loadJSON("site/data/ca_fire_perimeters.geojson"),
     loadJSON("site/data/ca_state_outline.geojson"),
   ]);
-
-  state.pitByCoc = indexByCoc(pitRows);
-  state.hicByCoc = indexByCoc(hicRows);
-  state.vetByCoc = indexByCoc(vetRows);
-  state.firesByYear = fireYearRows;
-  state.firesByCoc = indexByCoc(fireCocRows);
-  state.fireGeoRaw = fireGeo;
+  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe] = await Promise.all([
+    loadOptional("site/data/ai_vs_ground_truth.json"),
+    loadOptional("site/data/ai_fire_influence_estimates.json"),
+    loadOptional("site/data/ground_truth_fire_influence.json"),
+    loadOptional("site/data/ground_truth_structures_influence.json"),
+    loadOptional("site/data/yearly_fire_influence.json"),
+    loadOptional("site/data/panel_fe_influence.json"),
+  ]);
+  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe });
+  state.pitByCoc = indexByCoc(pit);
+  state.hicByCoc = indexByCoc(hic);
+  state.firesByYear = fireYear;
+  state.firesByCoc = indexByCoc(fireCoc);
   state.cocGeo = cocGeo;
-
-  for (const feature of cocGeo.features) {
-    const cocNum = feature.properties.COCNUM;
-    state.geoFeaturesById.set(cocNum, feature);
-    state.cocBoundsById.set(cocNum, geometryBounds(feature.geometry));
+  state.fireGeo = fireGeo;
+  for (const f of cocGeo.features) {
+    state.geoFeaturesById.set(f.properties.COCNUM, f);
+    state.cocBoundsById.set(f.properties.COCNUM, geometryBounds(f.geometry));
   }
 
-  await new Promise(resolve => {
-    if (map.loaded()) resolve();
-    else map.on("load", resolve);
-  });
+  const metricSelect = document.getElementById("metricSelect");
+  metricSelect.innerHTML = METRICS.map(m => `<option value="${m}">${metricLabel(m)}</option>`).join("");
+  metricSelect.value = state.metric;
 
-  // "Spotlight" mask: dim everything outside California (rather than leaving the
-  // basemap's bare ocean/out-of-state rendering, which reads as broken/empty) by
-  // filling a world-sized ring with a California-shaped hole punched out of it.
-  const worldRing = [[-170, -60], [170, -60], [170, 75], [-170, 75], [-170, -60]];
-  const caHoleRings = caOutline.features.flatMap(f => {
-    const g = f.geometry;
-    const polys = g.type === "MultiPolygon" ? g.coordinates : [g.coordinates];
-    return polys.map(poly => poly[0]); // outer ring of each CA polygon/island
-  });
-  map.addSource("mask", {
-    type: "geojson",
-    data: { type: "Feature", geometry: { type: "Polygon", coordinates: [worldRing, ...caHoleRings] } },
-  });
-  map.addLayer({
-    id: "mask-fill", type: "fill", source: "mask",
-    paint: { "fill-color": "#0d0d0d", "fill-opacity": 0.72 },
-  });
+  renderSummaryNumbers();
+  renderTables();
+  renderAllCharts();
+  wireControls();
+
+  if (!(await mapReady)) return;
+
+  const caBounds = caOutline.features.map(f => geometryBounds(f.geometry))
+    .reduce((acc, b) => [Math.min(acc[0], b[0]), Math.min(acc[1], b[1]), Math.max(acc[2], b[2]), Math.max(acc[3], b[3])]);
+  map.fitBounds([[caBounds[0], caBounds[1]], [caBounds[2], caBounds[3]]], { padding: 16, duration: 0 });
+
+  // Lighten everything outside California so the state reads as the subject.
+  const world = [[-179, -80], [179, -80], [179, 84], [-179, 84], [-179, -80]];
+  const holes = caOutline.features.flatMap(f => (f.geometry.type === "MultiPolygon" ? f.geometry.coordinates : [f.geometry.coordinates]).map(p => p[0]));
+  map.addSource("mask", { type: "geojson", data: { type: "Feature", geometry: { type: "Polygon", coordinates: [world, ...holes] } } });
+  map.addLayer({ id: "mask", type: "fill", source: "mask", paint: { "fill-color": "#ffffff", "fill-opacity": 0.6 } });
 
   map.addSource("coc", { type: "geojson", data: cocGeo, promoteId: "COCNUM" });
   map.addLayer({
     id: "coc-fill", type: "fill", source: "coc",
     paint: {
-      "fill-color": ["coalesce", ["feature-state", "fillColor"], "#3a3a38"],
-      "fill-opacity": ["coalesce", ["feature-state", "fillOpacity"], 0.15],
-      "fill-color-transition": { duration: 350 },
-      "fill-opacity-transition": { duration: 350 },
+      "fill-color": ["coalesce", ["feature-state", "fillColor"], COLORS.empty],
+      "fill-opacity": 0.88,
+      "fill-color-transition": { duration: 300 },
     },
   });
   map.addLayer({
-    id: "coc-outline", type: "line", source: "coc",
+    id: "coc-line", type: "line", source: "coc",
     paint: {
-      "line-color": ["coalesce", ["feature-state", "outlineColor"], "#0d0d0d"],
-      "line-width": ["case",
-        ["boolean", ["feature-state", "hover"], false], 2.5,
-        ["coalesce", ["feature-state", "outlineWidth"], 1],
-      ],
-      "line-color-transition": { duration: 250 },
+      "line-color": ["coalesce", ["feature-state", "outlineColor"], "#ffffff"],
+      "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, ["coalesce", ["feature-state", "outlineWidth"], 1]],
     },
   });
-  map.addLayer({
-    id: "coc-labels", type: "symbol", source: "coc",
-    layout: {
-      "text-field": ["get", "label"],
-      "text-size": 11,
-      "text-allow-overlap": true,
-      "text-ignore-placement": true,
-    },
-    paint: {
-      "text-color": "#ffffff",
-      "text-halo-color": "rgba(10,10,10,0.78)",
-      "text-halo-width": 3,
-      "text-opacity": ["coalesce", ["feature-state", "labelOpacity"], 0],
-      "text-opacity-transition": { duration: 250 },
-    },
-  });
-
   map.addSource("fires", { type: "geojson", data: fireGeo });
+  map.addLayer({ id: "fire-fill", type: "fill", source: "fires", filter: ["==", ["get", "YEAR_"], state.year], paint: { "fill-color": COLORS.orange, "fill-opacity": 0.45 } });
+  map.addLayer({ id: "fire-line", type: "line", source: "fires", filter: ["==", ["get", "YEAR_"], state.year], paint: { "line-color": "#c2451a", "line-width": 0.8 } });
+  state.labelGeo = labelPoints(cocGeo);
+  map.addSource("coc-label-pts", { type: "geojson", data: state.labelGeo, promoteId: "COCNUM" });
   map.addLayer({
-    id: "fire-fill", type: "fill", source: "fires",
-    filter: ["==", ["get", "YEAR_"], state.year],
-    paint: { "fill-color": "#e0692c", "fill-opacity": 0.4 },
-  });
-  map.addLayer({
-    id: "fire-line", type: "line", source: "fires",
-    filter: ["==", ["get", "YEAR_"], state.year],
-    paint: { "line-color": "#e0692c", "line-width": 1, "line-opacity": 0.85 },
+    id: "coc-labels", type: "symbol", source: "coc-label-pts",
+    layout: { "text-field": ["get", "label"], "text-size": 11.5, "text-allow-overlap": true, "text-ignore-placement": true, "text-font": ["Open Sans Semibold"] },
+    paint: {
+      "text-color": "#1b1b1a", "text-halo-color": "rgba(255,255,255,0.9)", "text-halo-width": 1.6,
+      "text-opacity": ["coalesce", ["feature-state", "labelOpacity"], 0],
+    },
   });
 
   map.on("mousemove", "coc-fill", e => {
-    if (!e.features.length) return;
-    const id = e.features[0].id;
-    if (state.hoveredCocId !== null && state.hoveredCocId !== id) {
-      map.setFeatureState({ source: "coc", id: state.hoveredCocId }, { hover: false });
-    }
+    const id = e.features[0]?.id;
+    if (id == null) return;
+    if (state.hoveredCocId !== null && state.hoveredCocId !== id) map.setFeatureState({ source: "coc", id: state.hoveredCocId }, { hover: false });
     state.hoveredCocId = id;
     map.setFeatureState({ source: "coc", id }, { hover: true });
     map.getCanvas().style.cursor = "pointer";
   });
   map.on("mouseleave", "coc-fill", () => {
-    if (state.hoveredCocId !== null) {
-      map.setFeatureState({ source: "coc", id: state.hoveredCocId }, { hover: false });
-    }
+    if (state.hoveredCocId !== null) map.setFeatureState({ source: "coc", id: state.hoveredCocId }, { hover: false });
     state.hoveredCocId = null;
     map.getCanvas().style.cursor = "";
   });
-  map.on("click", "coc-fill", e => {
-    if (!e.features.length) return;
-    const feature = e.features[0];
-    const orig = state.geoFeaturesById.get(feature.properties.COCNUM);
-    if (!orig) return;
-    selectCoc(feature.properties.COCNUM, { flyTo: false, switchTab: false });
-    new maplibregl.Popup().setLngLat(e.lngLat).setHTML(popupHtml(orig)).addTo(map);
+  map.on("click", e => {
+    const fires = map.getLayoutProperty("fire-fill", "visibility") !== "none" ? map.queryRenderedFeatures(e.point, { layers: ["fire-fill"] }) : [];
+    if (fires.length) {
+      const p = fires[0].properties;
+      const date = p.ALARM_DATE ? new Date(p.ALARM_DATE).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "unknown date";
+      new maplibregl.Popup({ maxWidth: "260px" }).setLngLat(e.lngLat)
+        .setHTML(`<h4>${p.FIRE_NAME ? p.FIRE_NAME.replace(/\b\w+/g, w => w[0] + w.slice(1).toLowerCase()) + " Fire" : "Unnamed fire"}</h4><p>${fmt(p.GIS_ACRES)} acres, started ${date}</p>`).addTo(map);
+      return;
+    }
+    const coc = map.queryRenderedFeatures(e.point, { layers: ["coc-fill"] })[0];
+    if (coc) selectCoc(coc.properties.COCNUM, { fly: false });
   });
-
-  map.on("click", "fire-fill", e => {
-    if (!e.features.length) return;
-    const p = e.features[0].properties;
-    const alarm = p.ALARM_DATE ? new Date(p.ALARM_DATE).toLocaleDateString() : "unknown";
-    new maplibregl.Popup().setLngLat(e.lngLat).setHTML(`<div class="popup">
-      <h3>${p.FIRE_NAME || "Unnamed fire"} (${p.YEAR_})</h3>
-      <div class="row">Agency: <b>${p.AGENCY || "—"}</b></div>
-      <div class="row">Acres: <b>${fmt(p.GIS_ACRES)}</b></div>
-      <div class="row">Cause: <b>${p.CAUSE_NAME || "Unknown"}</b></div>
-      <div class="row">Alarm date: <b>${alarm}</b></div>
-    </div>`).addTo(map);
-  });
-  map.on("mouseenter", "fire-fill", () => { map.getCanvas().style.cursor = "pointer"; });
-  map.on("mouseleave", "fire-fill", () => { map.getCanvas().style.cursor = ""; });
-
-  map.on("zoomend", updateLabelVisibility);
   map.on("moveend", updateLabelVisibility);
 
   state.mapLoaded = true;
+  update();
+}
 
-  const yearSlider = document.getElementById("yearSlider");
-  const setSliderFill = () => {
-    const pct = ((yearSlider.value - yearSlider.min) / (yearSlider.max - yearSlider.min)) * 100;
-    yearSlider.style.setProperty("--fill", `${pct}%`);
-  };
-  setSliderFill();
-
-  yearSlider.addEventListener("input", e => {
-    state.year = parseInt(e.target.value, 10);
+function wireControls() {
+  const slider = document.getElementById("yearSlider");
+  slider.addEventListener("input", e => {
+    state.year = +e.target.value;
     document.getElementById("yearLabel").textContent = state.year;
-    setSliderFill();
     update();
   });
-  metricSelect.addEventListener("change", e => {
-    state.metric = e.target.value;
-    update();
-  });
-  document.getElementById("fireToggle").addEventListener("change", rebuildFireLayer);
+  document.getElementById("metricSelect").addEventListener("change", e => { state.metric = e.target.value; update(); });
+  document.getElementById("fireToggle").addEventListener("change", refreshFires);
   document.getElementById("labelToggle").addEventListener("change", updateLabelVisibility);
-  document.getElementById("corrLag").addEventListener("change", e => {
-    state.corrLag = parseInt(e.target.value, 10);
-    renderCorrelationChart();
-  });
-  document.getElementById("corrExcludeZero").addEventListener("change", renderCorrelationChart);
-
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => setActiveTab(btn.dataset.tab));
-  });
+  document.getElementById("corrLag").addEventListener("change", e => { state.corrLag = +e.target.value; renderCorrelation(); });
+  document.getElementById("corrExcludeZero").addEventListener("change", renderCorrelation);
 
   document.querySelectorAll("#aiRankingTable thead th").forEach(th => {
-    th.addEventListener("click", () => {
+    const sort = () => {
       const key = th.dataset.sort;
-      rankingSort.dir = rankingSort.key === key ? -rankingSort.dir : (key === "coc_name" ? 1 : -1);
+      rankingSort.dir = rankingSort.key === key ? -rankingSort.dir : (key === "coc_name" || key === "ai_confidence" ? 1 : -1);
       rankingSort.key = key;
-      if (state.aiCompare && state.aiCompare.by_coc) renderAiRankingTable(state.aiCompare.by_coc);
+      renderRankingTable();
+    };
+    th.addEventListener("click", sort);
+    th.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sort(); } });
+  });
+  document.getElementById("aiRankingBody").addEventListener("click", e => {
+    const tr = e.target.closest("tr");
+    if (tr) selectCoc(tr.dataset.coc, { scroll: true });
+  });
+
+  // Region search over the 44 loaded CoCs.
+  const index = [...state.geoFeaturesById.values()]
+    .map(f => ({ num: f.properties.COCNUM, name: f.properties.COCNAME || f.properties.COCNUM }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const input = document.getElementById("cocSearch");
+  const list = document.getElementById("cocSearchResults");
+  let matches = [], hl = 0;
+  const paint = () => list.querySelectorAll(".search-result-item").forEach((el, i) => el.classList.toggle("hl", i === hl));
+  const pick = num => { selectCoc(num); input.value = ""; list.hidden = true; input.blur(); };
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    matches = q ? index.filter(m => m.name.toLowerCase().includes(q) || m.num.toLowerCase().includes(q)).slice(0, 8) : [];
+    hl = 0;
+    list.hidden = !matches.length;
+    list.innerHTML = matches.map((m, i) => `<div class="search-result-item${i === 0 ? " hl" : ""}" data-coc="${m.num}">${m.name} <span style="color:var(--muted)">${m.num}</span></div>`).join("");
+  });
+  input.addEventListener("keydown", e => {
+    if (list.hidden) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); hl = Math.min(matches.length - 1, hl + 1); paint(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); hl = Math.max(0, hl - 1); paint(); }
+    else if (e.key === "Enter") { e.preventDefault(); if (matches[hl]) pick(matches[hl].num); }
+    else if (e.key === "Escape") list.hidden = true;
+  });
+  list.addEventListener("click", e => { const item = e.target.closest(".search-result-item"); if (item) pick(item.dataset.coc); });
+  document.addEventListener("click", e => { if (!e.target.closest(".search-wrap")) list.hidden = true; });
+
+  let resizeTimer;
+  window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(renderAllCharts, 150); });
+
+  // Table of contents: mark the section currently in view.
+  const links = new Map([...document.querySelectorAll(".toc a")].map(a => [a.getAttribute("href").slice(1), a]));
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.remove("current"));
+        links.get(entry.target.id)?.classList.add("current");
+      }
     });
-  });
-
-  // CoC search: a simple type-ahead over the 44 loaded regions, so a specific
-  // region can be selected without needing to click its (sometimes tiny) map
-  // polygon precisely.
-  const searchIndex = Array.from(state.geoFeaturesById.values()).map(f => ({
-    cocNum: f.properties.COCNUM, cocName: f.properties.COCNAME || f.properties.COCNUM,
-  })).sort((a, b) => a.cocName.localeCompare(b.cocName));
-  const searchInput = document.getElementById("cocSearch");
-  const searchResults = document.getElementById("cocSearchResults");
-  let searchHlIndex = -1;
-  let searchMatches = [];
-
-  function renderSearchResults(matches) {
-    searchMatches = matches;
-    searchHlIndex = matches.length ? 0 : -1;
-    if (!matches.length) { searchResults.hidden = true; searchResults.innerHTML = ""; return; }
-    searchResults.innerHTML = matches.map((m, i) => {
-      const bIdx = m.cocName.toLowerCase().indexOf(searchInput.value.toLowerCase());
-      const label = bIdx >= 0
-        ? `${m.cocName.slice(0, bIdx)}<b>${m.cocName.slice(bIdx, bIdx + searchInput.value.length)}</b>${m.cocName.slice(bIdx + searchInput.value.length)}`
-        : m.cocName;
-      return `<div class="search-result-item${i === 0 ? " hl" : ""}" data-coc="${m.cocNum}" data-idx="${i}">${label} <span style="color:var(--text-muted);">(${m.cocNum})</span></div>`;
-    }).join("");
-    searchResults.hidden = false;
-  }
-
-  function pickSearchResult(cocNum) {
-    selectCoc(cocNum, { flyTo: true, switchTab: true });
-    searchInput.value = "";
-    searchResults.hidden = true;
-    searchInput.blur();
-  }
-
-  searchInput.addEventListener("input", () => {
-    const q = searchInput.value.trim().toLowerCase();
-    if (!q) { searchResults.hidden = true; return; }
-    const matches = searchIndex.filter(m =>
-      m.cocName.toLowerCase().includes(q) || m.cocNum.toLowerCase().includes(q)
-    ).slice(0, 8);
-    renderSearchResults(matches);
-  });
-  searchInput.addEventListener("keydown", e => {
-    if (searchResults.hidden || !searchMatches.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      searchHlIndex = Math.min(searchMatches.length - 1, searchHlIndex + 1);
-      searchResults.querySelectorAll(".search-result-item").forEach((el, i) => el.classList.toggle("hl", i === searchHlIndex));
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      searchHlIndex = Math.max(0, searchHlIndex - 1);
-      searchResults.querySelectorAll(".search-result-item").forEach((el, i) => el.classList.toggle("hl", i === searchHlIndex));
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (searchMatches[searchHlIndex]) pickSearchResult(searchMatches[searchHlIndex].cocNum);
-    } else if (e.key === "Escape") {
-      searchResults.hidden = true;
-    }
-  });
-  searchResults.addEventListener("click", e => {
-    const item = e.target.closest(".search-result-item");
-    if (item) pickSearchResult(item.dataset.coc);
-  });
-  document.addEventListener("click", e => {
-    if (!e.target.closest(".search-wrap")) searchResults.hidden = true;
-  });
-
-  // Optional: only present once ai_estimate_influence.py + compare_ai_vs_ground_truth.py
-  // have been run, so this is loaded separately and failure doesn't block the rest of init.
-  try {
-    state.aiCompare = await loadJSON("site/data/ai_vs_ground_truth.json");
-  } catch (err) {
-    state.aiCompare = null;
-  }
-  try {
-    state.aiEstimates = await loadJSON("site/data/ai_fire_influence_estimates.json");
-  } catch (err) {
-    state.aiEstimates = null;
-  }
-  renderAiCompareChart();
-
-  try {
-    state.yearlyFireInfluence = await loadJSON("site/data/yearly_fire_influence.json");
-  } catch (err) {
-    state.yearlyFireInfluence = null;
-  }
-  renderYearlyCorrelationChart();
-  renderCaseStudy();
-
-  update();
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  links.forEach((a, id) => { const s = document.getElementById(id); if (s) observer.observe(s); });
 }
 
 init().catch(err => {
   console.error(err);
-  document.getElementById("map").innerHTML =
-    `<div style="padding:20px;color:#e0692c;">Failed to load data: ${err.message}. Are you serving this over HTTP (not file://)?</div>`;
+  document.getElementById("map").insertAdjacentHTML("beforeend",
+    `<p style="padding:16px;font-family:var(--sans);font-size:14px;">Could not load the data (${err.message}). The page has to be served over HTTP, not opened as a file.</p>`);
 });
 </script>
 </body>

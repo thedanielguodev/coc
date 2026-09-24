@@ -31,6 +31,8 @@ GEOJSON_COPY = [
 # so missing ones are skipped rather than failing the build.
 OPTIONAL_JSON_COPY = [
     "ground_truth_fire_influence.json",
+    "ground_truth_structures_influence.json",
+    "panel_fe_influence.json",
     "yearly_fire_influence.json",
     "ai_fire_influence_estimates.json",
     "ai_vs_ground_truth.json",
