@@ -2,7 +2,7 @@
 
 A data project comparing HUD homeless counts for California's 44 Continuums of Care (CoCs) with CAL FIRE wildfire records, 2007–2024, and testing how well AI models estimate the relationship without seeing the counts.
 
-**Live dashboard:** https://thedanielguodev.github.io/coc/
+**Live dashboard:** https://research.danielguo.xyz/
 
 ## Research question
 
