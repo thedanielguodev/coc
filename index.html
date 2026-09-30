@@ -276,6 +276,7 @@
       <li><a href="#trends">Statewide trends</a></li>
       <li><a href="#association">Fire and homeless counts</a></li>
       <li><a href="#ai">AI estimates</a></li>
+      <li><a href="#ai-error">Where the AI is most wrong</a></li>
       <li><a href="#butte">Butte County</a></li>
       <li><a href="#methods">Data and methods</a></li>
       <li><a href="#data">Downloads and citation</a></li>
@@ -285,15 +286,17 @@
   <article>
     <h1>Do wildfires show up in California's homeless counts?</h1>
     <p class="dek">Eighteen years of federal homeless counts for California's 44 Continuums of Care, compared with state wildfire records, and with estimates from an AI model that never saw the counts.</p>
-    <p class="byline">Daniel Guo &middot; Working draft, updated September 24, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
+    <p class="byline">Daniel Guo &middot; Working draft, updated September 30, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
 
     <section id="findings" class="prose">
       <h2>Summary</h2>
       <p>A Continuum of Care (CoC) is the local body that runs HUD's annual Point-in-Time (PIT) count of people experiencing homelessness. This project matches each CoC's yearly count to the wildfires that burned inside its boundary, then asks whether regions with more fire damage count more homeless residents.</p>
       <ul class="findings">
-        <li>Pooled across <span data-fill="n_cocyears">756</span> CoC-years, acres burned and the homeless count are essentially uncorrelated (Pearson r = <span data-fill="r_acres">0.011</span>). Counts of structures destroyed, available from 2013, give the same result (r = <span data-fill="r_struct">0.003</span>).</li>
-        <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. None of these estimates reaches statistical significance.</li>
-        <li>An AI model given only each region's fire history predicted a positive relationship in all <span data-fill="n_estimates">440</span> of its estimates. On average it overstated the observed correlation by <span data-fill="bias">0.23</span>.</li>
+        <li>Pooled across <span data-fill="n_cocyears">712</span> CoC-years, acres burned and the homeless count are essentially uncorrelated (Pearson r = <span data-fill="r_acres">0.027</span>). Counts of structures destroyed, available from 2013, give the same result (r = <span data-fill="r_struct">0.003</span>). The 2021 count is left out of every statistic because most California CoCs skipped the unsheltered count that year.</li>
+        <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. The only estimate that reaches significance (p = <span data-fill="fe_sig_p">0.023</span>) comes entirely from Butte County and the Camp Fire. Without Butte, p = <span data-fill="fe_loo_p">0.94</span>.</li>
+        <li>The observed relationship does not differ across regions by more than sampling noise, so no census or insurance measure explains where it is stronger.</li>
+        <li>An AI model given only each region's fire history predicted a positive relationship in all <span data-fill="n_estimates">440</span> of its estimates. On average it overstated the observed correlation by <span data-fill="bias">0.22</span>.</li>
+        <li>The AI's estimate for a region rises with the number of structures its fires destroyed (&rho; = <span data-fill="rho_ai_struct">0.80</span>). The observed correlation does not (&rho; = <span data-fill="rho_obs_struct">&minus;0.13</span>). The AI is therefore most wrong where fires were most destructive.</li>
         <li>The model's errors were largest when it described itself as highly confident.</li>
         <li>Told how the PIT count is collected, the model lowered its estimates but still overstated the correlation. A second model, Gemini, overstated it much less. Neither model ever predicted a negative relationship, and neither could tell which regions had a stronger one.</li>
       </ul>
@@ -348,7 +351,7 @@
           <div><p class="multiple-title" id="trendHomelessTitle">Overall homeless</p><div id="trendHomeless" class="chart"></div></div>
           <div><p class="multiple-title">Acres burned in fires of 1,000+ acres</p><div id="trendFire" class="chart"></div></div>
         </div>
-        <figcaption class="fig-note"><b>Note:</b> The 2021 drop reflects COVID-19. HUD allowed CoCs to skip the unsheltered count that year, and many California CoCs did. <b>Source:</b> HUD PIT counts; CAL FIRE fire perimeters. Author's calculations.</figcaption>
+        <figcaption class="fig-note"><b>Note:</b> The 2021 drop reflects COVID-19. HUD allowed CoCs to skip the unsheltered count that year, and 36 of California's 44 CoCs did. 2021 is shown here but left out of every statistic on this page. <b>Source:</b> HUD PIT counts; CAL FIRE fire perimeters. Author's calculations.</figcaption>
       </figure>
     </section>
 
@@ -372,7 +375,7 @@
           <label><input type="checkbox" id="corrExcludeZero"> Only years with a large fire in the CoC</label>
         </div>
         <div id="corrChart" class="chart"></div>
-        <figcaption class="fig-note"><b>Note:</b> The line is a least-squares fit. Dots at zero acres are CoC-years with no fire of 1,000 acres or more. <b>Source:</b> HUD PIT counts; CAL FIRE fire perimeters, split between CoCs by area of overlap. Author's calculations.</figcaption>
+        <figcaption class="fig-note"><b>Note:</b> The line is a least-squares fit. The 2021 count is left out. Dots at zero acres are CoC-years with no fire of 1,000 acres or more. <b>Source:</b> HUD PIT counts; CAL FIRE fire perimeters, split between CoCs by area of overlap. Author's calculations.</figcaption>
       </figure>
 
       <div class="prose">
@@ -389,7 +392,7 @@
           <span><i style="background:var(--sig-strong)"></i>Significant after Bonferroni correction</span>
         </div>
         <div id="yearlyChart" class="chart"></div>
-        <figcaption class="fig-note" id="yearlyNote"><b>Note:</b> With 18 tests at p &lt; 0.05, about one false positive is expected by chance. Hover over a bar to see the result with that year's largest-acreage CoC removed. <b>Source:</b> Author's calculations.</figcaption>
+        <figcaption class="fig-note" id="yearlyNote"><b>Note:</b> With <span data-fill="n_yearly">17</span> tests at p &lt; 0.05, about one false positive is expected by chance. 2021 is left out. Hover over a bar to see the result with that year's largest-acreage CoC removed. <b>Source:</b> Author's calculations.</figcaption>
       </figure>
 
       <div class="prose">
@@ -407,11 +410,11 @@
       <div class="table-wrap" style="margin-top:32px">
         <table class="data" id="feTable">
           <caption>Table 2. Fixed-effects estimates, CoC and year effects removed</caption>
-          <thead><tr><th>Fire measure</th><th>Timing</th><th>Form</th><th class="n">n</th><th class="n">Coefficient</th><th class="n">Std. error</th><th class="n">p</th></tr></thead>
+          <thead><tr><th>Fire measure</th><th>Timing</th><th>Form</th><th class="n">n</th><th class="n">Coefficient</th><th class="n">Std. error</th><th class="n">p</th><th class="n">p without largest</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
-      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Standard errors are clustered by CoC (44 clusters). In the log form, both variables are log(1 + x), so the coefficient is roughly the percent change in the count for a 1 percent change in fire exposure. In the level form it is additional people counted per acre or per structure. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Standard errors are clustered by CoC (44 clusters). "p without largest" refits the model without the CoC that had the single largest fire year (Butte County, 2018, for structures; Shasta for acres). 2021 is left out. In the log form, both variables are log(1 + x), so the coefficient is roughly the percent change in the count for a 1 percent change in fire exposure. In the level form it is additional people counted per acre or per structure. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
     </section>
 
     <section id="ai">
@@ -432,7 +435,7 @@
           <span><i class="line" style="background:var(--orange)"></i>Fit through AI estimates</span>
         </div>
         <div id="aiChart" class="chart"></div>
-        <figcaption class="fig-note"><b>Note:</b> Observed r is the same-year Pearson correlation between acres burned and the overall homeless count within each CoC. Three CoCs with too few fire years are excluded. <b>Source:</b> Author's calculations; estimates from claude-sonnet-5 run through Claude Code.</figcaption>
+        <figcaption class="fig-note"><b>Note:</b> Observed r is the same-year Pearson correlation between acres burned and the overall homeless count within each CoC, with 2021 left out. Same-year timing matches the question the AI was asked. CoCs with too little data are excluded (see Table 3). <b>Source:</b> Author's calculations; estimates from claude-sonnet-5 run through Claude Code.</figcaption>
       </figure>
 
       <div class="table-wrap">
@@ -452,7 +455,7 @@
       </figure>
 
       <div class="prose">
-        <p>One possible explanation is that the model leans on well-known recent fires. If so, CoCs whose worst fire was recent should have larger errors. Figure 6 shows no such pattern.</p>
+        <p>One possible explanation is that the model leans on well-known recent fires. If so, CoCs whose worst fire was recent should have larger errors. Figure 6 shows no such pattern. What does predict the error is how destructive the fires were, not how recent (see <a href="#ai-error">Where the AI is most wrong</a>).</p>
       </div>
       <figure>
         <div class="fig-head">
@@ -470,7 +473,7 @@
       <figure>
         <div class="fig-head">
           <p class="fig-label">Figure 7. Average AI estimate by model and prompt</p>
-          <p class="fig-sub">Mean estimated correlation across 41 CoCs, compared with the observed average.</p>
+          <p class="fig-sub">Mean estimated correlation across <span data-fill="n_cond_cocs">40</span> CoCs, compared with the observed average.</p>
         </div>
         <div id="conditionChart" class="chart"></div>
         <figcaption class="fig-note"><b>Note:</b> The "PIT description" prompt adds a paragraph explaining that the count covers one night in January, includes only people in shelters or unsheltered locations, and skipped unsheltered people in 2021. Gemini 3.5 Flash-Lite is a smaller model than Claude Sonnet; larger Gemini models were not available within free-tier limits. <b>Source:</b> Author's calculations.</figcaption>
@@ -482,7 +485,7 @@
           <tbody></tbody>
         </table>
       </div>
-      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Overstatement is the mean of (AI estimate minus observed r) across CoCs, with its standard error. Each CoC's observed r rests on about 18 years of data and has a sampling error near &plusmn;0.26, so single-CoC comparisons are noisy; the averages are more reliable. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Overstatement is the mean of (AI estimate minus observed r) across CoCs, with its standard error. Each CoC's observed r rests on at most 17 years of data and has a sampling error near &plusmn;0.25, so single-CoC comparisons are noisy; the averages are more reliable. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
 
       <details class="more" id="aiTableDetails">
         <summary>Show results for every CoC</summary>
@@ -501,15 +504,58 @@
       </details>
     </section>
 
+    <section id="ai-error">
+      <div class="prose">
+        <h2>Where the AI is most wrong</h2>
+        <p>The gap between the AI's estimate and the observed correlation varies a lot from region to region. That variation can come from either side. Each region's observed r rests on at most 17 years of counts, so it is noisy. The AI's estimate, averaged over 10 runs, is not: the two halves of its runs agree almost perfectly (split-half reliability <span data-fill="ai_reliability">0.98</span>).</p>
+        <p>Table 5 tests whether the observed correlations differ across regions by more than their sampling noise. They do not, once 2021 is handled. So a regional difference in the AI's error mostly reflects what the AI believes about that region, and the useful question is what drives its estimate. Figure 8 shows the answer: how destructive the region's fires were.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 8. AI estimate and observed correlation, by structures destroyed</p>
+          <p class="fig-sub" id="gapSub">&nbsp;</p>
+        </div>
+        <div class="key" aria-hidden="true">
+          <span><i class="dot" style="background:#2a78d6"></i>AI estimate (Claude, original prompt)</span>
+          <span><i class="dot" style="background:#fff;border:1.5px solid #6c6a64;box-sizing:border-box"></i>Observed r</span>
+          <span><i class="line" style="background:var(--neutral-bar)"></i>Gap</span>
+        </div>
+        <div id="gapChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Note:</b> Each vertical line is one CoC. Structures destroyed are CAL FIRE DINS records inside the CoC, 2013&ndash;2024, on a log scale. Observed r is same-year, 2021 left out. Click a point to show that region on the map. <b>Source:</b> HUD PIT counts; CAL FIRE DINS. Author's calculations.</figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table class="data" id="heteroTable">
+          <caption>Table 5. Do observed correlations differ across CoCs by more than sampling noise?</caption>
+          <thead><tr><th>Fire timing</th><th>2021 count</th><th class="n">CoCs</th><th class="n">Mean r</th><th class="n">Q</th><th class="n">df</th><th class="n">p</th><th class="n">I&sup2;</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Cochran's Q compares the spread of the per-CoC correlations (Fisher z) with the spread expected from sampling noise alone. I&sup2; is the share of the spread that reflects real differences. Only the row that pairs the 2020 fire season with the incomplete 2021 count shows real differences. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
+
+      <div class="prose">
+        <p>Table 6 repeats the question with census and insurance data. Each measure is compared with the AI's estimate, the observed correlation, and the gap between them, correcting for testing 21 measures at once. The AI's estimates follow fire destruction and rurality. Measures such as income or insurer nonrenewals also line up with its estimates, but only because they differ between rural fire country and the urban coast. Once structures destroyed and population density are held fixed, <span data-fill="n_partial_sig">none</span> of the other measures predicts the AI's estimate. None predicts the observed correlation.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data" id="covTable">
+          <caption>Table 6. Rank correlation of CoC characteristics with the AI estimate, the observed correlation, and the gap</caption>
+          <thead><tr><th>CoC characteristic</th><th class="n">AI estimate &rho;</th><th class="n">Observed r &rho;</th><th class="n">Gap &rho;</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Spearman &rho; across CoCs, Claude with the original prompt. Bold values remain significant after a Benjamini-Hochberg correction for 21 measures (q &lt; 0.05). Census measures are ACS 2019&ndash;2023 five-year estimates by tract, summed to CoC boundaries. Insurer nonrenewals are homeowners and dwelling policies the insurer declined to renew, as a share of policies up for renewal, 2015&ndash;2021. <b style="color:var(--ink-2)">Source:</b> U.S. Census Bureau; California Department of Insurance; CAL FIRE. Author's calculations.</p>
+    </section>
+
     <section id="butte">
       <div class="prose">
         <h2>Butte County and the Camp Fire</h2>
         <p>The 2018 Camp Fire destroyed most of the town of Paradise in Butte County, roughly 14,000 to 19,000 structures. It is the largest loss of housing in this dataset.</p>
         <p id="caseStat"></p>
+        <p>It is also the only fire in the dataset that registers statistically. In the fixed-effects model for structures destroyed (Table 2), the same-year estimate has p = <span data-fill="fe_sig_p">0.023</span> with Butte included and p = <span data-fill="fe_loo_p">0.94</span> without it. Butte is also where the AI gave its highest estimate (<span data-fill="butte_ai">0.72</span>).</p>
       </div>
       <figure>
         <div class="fig-head">
-          <p class="fig-label">Figure 8. Homeless count, Chico, Paradise/Butte County CoC (CA-519)</p>
+          <p class="fig-label">Figure 9. Homeless count, Chico, Paradise/Butte County CoC (CA-519)</p>
           <p class="fig-sub">Overall PIT count by year.</p>
         </div>
         <div id="caseChart" class="chart"></div>
@@ -526,17 +572,21 @@
         <li>Fire perimeters: <a href="https://data.ca.gov/dataset/california-fire-perimeters-all">CAL FIRE historical fire perimeters</a>, limited to fires of at least 1,000 acres from 2000 on.</li>
         <li>Structures destroyed: <a href="https://data.ca.gov/dataset/cal-fire-damage-inspection-dins-data">CAL FIRE Damage Inspection (DINS)</a>, 2013 on.</li>
         <li>State outline, used to clip fires and boundaries to California: <a href="https://tigerweb.geo.census.gov/">Census TIGERweb</a>.</li>
+        <li>Demographics: <a href="https://www2.census.gov/programs-surveys/acs/summary_file/2023/table-based-SF/">American Community Survey 2019&ndash;2023 five-year estimates</a> by census tract.</li>
+        <li>Insurance: <a href="https://www.insurance.ca.gov/01-consumers/200-wrr/DataAnalysisOnWildfiresAndInsurance.cfm">California Department of Insurance</a> new, renewed, and nonrenewed homeowners policies by ZIP code, 2015&ndash;2021.</li>
       </ul>
       <h3>Matching fires to regions</h3>
-      <p>Each fire perimeter is intersected with every CoC boundary. When a fire crosses a boundary, its acres are divided in proportion to the area on each side. Each destroyed structure is assigned to the CoC that contains it.</p>
+      <p>Each fire perimeter is intersected with every CoC boundary. When a fire crosses a boundary, its acres are divided in proportion to the area on each side. Each destroyed structure is assigned to the CoC that contains it. Census tracts and insurance ZIP codes are assigned to the CoC containing their center point; where the Los Angeles boundary overlaps Pasadena and Glendale, the smaller CoC is used.</p>
       <h3>Statistics</h3>
-      <p>Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 18 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC.</p>
+      <p>The 2021 count is excluded from every statistic. HUD allowed CoCs to skip the unsheltered count that year because of COVID-19, and 36 of California's 44 CoCs reported no unsheltered people. Including it pairs the record 2020 fire season with an artificially low count. Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 17 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC, and are refit without the CoC that had the largest single fire year. Differences in the observed correlation across CoCs are tested with Cochran's Q on Fisher-transformed correlations. Relationships with census and insurance measures use Spearman correlations with a Benjamini-Hochberg correction, rank partial correlations that hold structures destroyed and population density fixed, and a precision-weighted meta-regression of the observed correlations.</p>
       <h3>AI experiment</h3>
       <p>The model saw each CoC's name, number, and acres burned by year. It never saw homeless counts or any of the results on this page. It returned an estimated correlation, a direction, a confidence level, and a short explanation for each CoC. All 44 CoCs were sent together in each of 10 independent runs. The estimate shown for a CoC is the mean across runs. The follow-up runs used the same prompt with one added paragraph describing the PIT count, and were repeated on Gemini 3.5 Flash-Lite through the Gemini API. The exact prompts and every raw answer are in the data files below.</p>
       <h3>Limitations</h3>
       <ul>
         <li>The analysis is correlational and cannot establish cause in either direction.</li>
-        <li>PIT counts are a single-night snapshot, and counting methods differ across CoCs and years.</li>
+        <li>PIT counts are a single-night snapshot, and counting methods differ across CoCs and years. Dropping 2021 leaves Nevada County with no usable fire years, so it is excluded from the per-CoC comparison.</li>
+        <li>Each CoC's observed correlation rests on at most 17 years, so single-CoC results are noisy. Statements about individual regions should be read with that in mind.</li>
+        <li>The PIT count is taken in January, before that year's fire season. The AI was asked about the same-year relationship, so that is the benchmark; next-year timing is reported alongside it.</li>
         <li>Fires under 1,000 acres are excluded, and CoC boundaries are treated as fixed across all years.</li>
         <li>Two AI models were tested, and all regions were estimated in the same request for each run.</li>
         <li>The original prompt lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." This wording may push every estimate upward. A neutral prompt has not been tested yet.</li>
@@ -562,6 +612,8 @@
         <li><a href="site/data/ai_condition_comparison.json">AI comparison across models and prompts</a></li>
         <li><a href="site/data/ai_fire_influence_estimates.json">AI estimates, all runs</a></li>
         <li><a href="site/data/ai_vs_ground_truth.json">AI vs. observed, by CoC</a></li>
+        <li><a href="site/data/error_heterogeneity.json">Where the AI is most wrong: tests and per-CoC values</a></li>
+        <li><a href="site/data/ca_coc_covariates.json">Census, insurance, and fire measures by CoC</a></li>
         <li><a href="site/data/ca_coc_boundaries.min.geojson">CoC boundaries (GeoJSON)</a></li>
         <li><a href="site/data/ca_fire_perimeters.geojson">Fire perimeters (GeoJSON)</a></li>
       </ul>
@@ -614,6 +666,10 @@ const SEQ_STOPS = [
   [13, 54, 107],
 ];
 
+// HUD let CoCs skip the 2021 unsheltered count (COVID-19); 36 of 44 CA CoCs
+// did, so 2021 is left out of every statistic (charts of counts still show it).
+const EXCLUDED_PIT_YEARS = new Set([2021]);
+
 const CASE_COC = "CA-519";
 const CASE_FIRE_YEAR = 2018;
 
@@ -635,6 +691,8 @@ const state = {
   structures: null,
   yearly: null,
   panelFe: null,
+  errorHetero: null,
+  covariates: null,
   selectedCocNum: null,
   hoveredCocId: null,
   mapLoaded: false,
@@ -1021,6 +1079,22 @@ function renderSummaryNumbers() {
   if (ests) fill("n_estimates", fmt(d3.sum(ests, e => (e.estimated_correlation_trials || [e.estimated_correlation]).length)));
   const s = state.aiCompare?.summary;
   if (s) fill("bias", s.mean_signed_error.toFixed(2));
+  const feStruct = state.panelFe?.results?.structures_destroyed?.lag0_level;
+  if (feStruct) { fill("fe_sig_p", fmtP(feStruct.p_value)); fill("fe_loo_p", fmtP(feStruct.leave_one_out.p_value)); }
+  if (state.yearly?.years) fill("n_yearly", state.yearly.years.length);
+  const cond = state.conditions?.results?.claude_baseline;
+  if (cond) fill("n_cond_cocs", cond.n_cocs);
+  const eh = state.errorHetero;
+  if (eh) {
+    const rho = (outcome, cov) => eh.correlates[outcome]?.tests.find(t => t.covariate === cov)?.spearman_rho;
+    fill("rho_ai_struct", fmtSigned(rho("ai_claude_baseline", "structures_destroyed_total")).replace("+", ""));
+    fill("rho_obs_struct", fmtSigned(rho("truth_lag0_drop2021", "structures_destroyed_total")));
+    fill("ai_reliability", d3.min(Object.values(eh.ai_split_half_reliability)).toFixed(2));
+    const nSig = eh.ai_partial_after_salience?.claude_baseline?.n_fdr_significant;
+    if (nSig != null) fill("n_partial_sig", nSig === 0 ? "none" : nSig);
+    const butte = eh.by_coc.find(r => r.coc_number === CASE_COC);
+    if (butte) fill("butte_ai", butte.ai_claude_baseline.toFixed(2));
+  }
 }
 
 function renderTrends() {
@@ -1044,7 +1118,7 @@ function buildCorrelationPoints(lag, excludeZero) {
   for (const [cocNum, rows] of state.pitByCoc.entries()) {
     for (const row of rows) {
       const val = row[state.metric];
-      if (val == null) continue;
+      if (val == null || EXCLUDED_PIT_YEARS.has(row.year)) continue;
       const fireYear = row.year - lag;
       if (fireYear < 2000) continue;
       const acres = getFireAcres(cocNum, fireYear);
@@ -1120,11 +1194,63 @@ function renderTables() {
         const m = res[key]?.[`${lag}_${form}`];
         if (!m) continue;
         const digits = Math.abs(m.coef) < 0.01 ? 4 : 3;
-        feRows.push(`<tr><td>${label}</td><td>${lag === "lag0" ? "Same year" : "Next year"}</td><td>${form === "log" ? "Log" : "Level"}</td><td class="n">${fmt(m.n)}</td><td class="n">${fmtSigned(m.coef, digits)}</td><td class="n">${m.se_clustered.toFixed(digits)}</td><td class="n">${fmtP(m.p_value)}</td></tr>`);
+        const loo = m.leave_one_out ? fmtP(m.leave_one_out.p_value) : "";
+        feRows.push(`<tr><td>${label}</td><td>${lag === "lag0" ? "Same year" : "Next year"}</td><td>${form === "log" ? "Log" : "Level"}</td><td class="n">${fmt(m.n)}</td><td class="n">${fmtSigned(m.coef, digits)}</td><td class="n">${m.se_clustered.toFixed(digits)}</td><td class="n">${fmtP(m.p_value)}</td><td class="n">${loo}</td></tr>`);
       }
     }
   }
   fe.innerHTML = feRows.join("");
+  renderHeteroTables();
+}
+
+const TRUTH_SPEC_LABELS = [
+  ["lag0_drop2021", "Same year", "Left out"],
+  ["lag1_drop2021", "Next year", "Left out"],
+  ["lag0_all_years", "Same year", "Included"],
+  ["lag1_all_years", "Next year", "Included"],
+];
+
+const COVARIATE_LABELS = [
+  ["structures_destroyed_total", "Structures destroyed, 2013–2024"],
+  ["fire_acres_total", "Acres burned, 2000–2024"],
+  ["pop_density_sqmi", "Population density"],
+  ["median_hh_income", "Median household income"],
+  ["poverty_rate", "Poverty rate"],
+  ["median_gross_rent", "Median gross rent"],
+  ["rent_burdened_share", "Renters paying 30%+ of income for rent"],
+  ["renter_share", "Renter share of households"],
+  ["median_home_value", "Median home value"],
+  ["vacancy_rate", "Housing vacancy rate"],
+  ["white_nh_share", "White, non-Hispanic share"],
+  ["hispanic_share", "Hispanic share"],
+  ["black_nh_share", "Black, non-Hispanic share"],
+  ["age65_share", "Age 65 and over"],
+  ["uninsured_health_share", "No health insurance"],
+  ["insurer_nonrenewal_rate", "Insurer nonrenewal rate, homeowners"],
+  ["insurer_nonrenewal_change", "Change in insurer nonrenewals, 2015–16 to 2020–21"],
+];
+
+function renderHeteroTables() {
+  const eh = state.errorHetero;
+  const hetero = document.querySelector("#heteroTable tbody");
+  const cov = document.querySelector("#covTable tbody");
+  if (!eh) {
+    hetero.innerHTML = `<tr><td colspan="8">Results not available.</td></tr>`;
+    cov.innerHTML = `<tr><td colspan="4">Results not available.</td></tr>`;
+    return;
+  }
+  hetero.innerHTML = TRUTH_SPEC_LABELS.filter(([k]) => eh.truth_heterogeneity[k]).map(([k, timing, y2021]) => {
+    const h = eh.truth_heterogeneity[k];
+    return `<tr><td>${timing}</td><td>${y2021}</td><td class="n">${h.n_cocs}</td><td class="n">${fmtSigned(h.mean_r, 3)}</td><td class="n">${h.cochran_q.toFixed(1)}</td><td class="n">${h.df}</td><td class="n">${fmtP(h.p_value)}</td><td class="n">${h.i_squared.toFixed(2)}</td></tr>`;
+  }).join("");
+  const cell = (outcome, key) => {
+    const t = eh.correlates[outcome]?.tests.find(t => t.covariate === key);
+    if (!t) return `<td class="n"></td>`;
+    const v = fmtSigned(t.spearman_rho);
+    return `<td class="n">${t.q_value < 0.05 ? `<b>${v}</b>` : v}</td>`;
+  };
+  cov.innerHTML = COVARIATE_LABELS.map(([key, label]) =>
+    `<tr><td>${label}</td>${cell("ai_claude_baseline", key)}${cell("truth_lag0_drop2021", key)}${cell("error_claude_baseline", key)}</tr>`).join("");
 }
 
 function trialErrorsByConfidence() {
@@ -1191,6 +1317,7 @@ function renderAi() {
   }
 
   renderYearFactor(data.by_coc);
+  renderGap();
   renderConditions();
   renderRankingTable();
 }
@@ -1216,6 +1343,61 @@ function renderYearFactor(byCoc) {
     tooltip: d => `<div class="t">${d.name}</div>Largest fire year: ${d.x} (${fmt(d.acres)} acres)<br>AI error: ${d.y.toFixed(2)}`,
     onClick: d => selectCoc(d.id, { scroll: true }),
   });
+}
+
+// Figure 8: one vertical segment per CoC from the observed r to the AI
+// estimate, placed by structures destroyed (symlog, so zero stays on the axis).
+function renderGap() {
+  const eh = state.errorHetero, covs = state.covariates;
+  if (!eh || !covs) { document.getElementById("gapChart").textContent = "Results not available."; return; }
+  const structures = new Map(covs.map(c => [c.coc_number, c.structures_destroyed_total]));
+  const rows = eh.by_coc
+    .filter(r => r.truth_lag0_drop2021 != null && structures.has(r.coc_number))
+    .map(r => ({ id: r.coc_number, name: r.coc_name, s: structures.get(r.coc_number), ai: r.ai_claude_baseline, obs: r.truth_lag0_drop2021 }));
+  const gap = g => d3.mean(g, r => r.ai - r.obs);
+  const big = rows.filter(r => r.s >= 1000), small = rows.filter(r => r.s < 100);
+  document.getElementById("gapSub").textContent =
+    `Mean gap (AI minus observed): ${fmtSigned(gap(big))} in the ${big.length} CoCs with 1,000 or more structures destroyed, ${fmtSigned(gap(small))} in the ${small.length} with fewer than 100.`;
+
+  const height = 380, margin = { top: 10, right: 16, bottom: 44, left: 56 };
+  const { svg, g, innerW, innerH } = setupSvg("gapChart", height, margin);
+  const x = d3.scaleSymlog().constant(1).domain([0, d3.max(rows, r => r.s)]).range([0, innerW]);
+  const y = d3.scaleLinear().domain([Math.min(-0.5, d3.min(rows, r => r.obs)), Math.max(0.8, d3.max(rows, r => r.ai))]).nice().range([innerH, 0]);
+  gridY(g, y, innerW, 6);
+  g.append("line").attr("class", "baseline").attr("x1", 0).attr("x2", innerW).attr("y1", y(0)).attr("y2", y(0));
+  g.append("g").selectAll("line").data(rows).join("line")
+    .attr("x1", r => x(r.s)).attr("x2", r => x(r.s)).attr("y1", r => y(r.obs)).attr("y2", r => y(r.ai))
+    .attr("stroke", COLORS.neutralBar).attr("stroke-width", 1.5);
+  g.append("g").selectAll("circle").data(rows).join("circle")
+    .attr("cx", r => x(r.s)).attr("cy", r => y(r.obs)).attr("r", 3.5)
+    .attr("fill", "#fff").attr("stroke", COLORS.muted).attr("stroke-width", 1.5);
+  g.append("g").selectAll("circle").data(rows).join("circle")
+    .attr("cx", r => x(r.s)).attr("cy", r => y(r.ai)).attr("r", 4)
+    .attr("fill", COLORS.blue).attr("stroke", "#fff").attr("stroke-width", 1);
+  const sel = rows.find(r => r.id === state.selectedCocNum);
+  if (sel) {
+    g.append("circle").attr("cx", x(sel.s)).attr("cy", y(sel.ai)).attr("r", 7)
+      .attr("fill", "none").attr("stroke", "#1b1b1a").attr("stroke-width", 2);
+  }
+  const ticks = [0, 10, 100, 1000, 10000].filter(t => t <= x.domain()[1]);
+  g.append("g").call(d3.axisLeft(y).ticks(6).tickFormat(v => v === 0 ? "0" : d3.format("+.1f")(v)).tickSize(0).tickPadding(8));
+  g.append("g").attr("transform", `translate(0,${innerH})`).call(d3.axisBottom(x).tickValues(ticks).tickFormat(d3.format(",")).tickSize(4));
+  svg.append("text").attr("class", "axis-title").attr("x", margin.left + innerW / 2).attr("y", height - 6).attr("text-anchor", "middle").text("Structures destroyed in the CoC, 2013–2024 (log scale)");
+  svg.append("text").attr("class", "axis-title").attr("transform", `translate(14,${margin.top + innerH / 2}) rotate(-90)`).attr("text-anchor", "middle").text("Correlation");
+
+  const pts = rows.flatMap(r => [{ r, px: x(r.s), py: y(r.ai) }, { r, px: x(r.s), py: y(r.obs) }]);
+  const delaunay = d3.Delaunay.from(pts, d => d.px, d => d.py);
+  let current = null;
+  g.append("rect").attr("width", innerW).attr("height", innerH).attr("fill", "transparent").style("cursor", "pointer")
+    .on("mousemove", event => {
+      const [mx, my] = d3.pointer(event);
+      const d = pts[delaunay.find(mx, my)];
+      if (!d || Math.hypot(d.px - mx, d.py - my) > 24) { current = null; hideTip(); return; }
+      current = d.r;
+      showTip(`<div class="t">${d.r.name}</div><div class="m">${d.r.id}</div>${fmt(d.r.s)} structures destroyed<br>AI estimate ${fmtSigned(d.r.ai)}<br>Observed r ${fmtSigned(d.r.obs)}<br>Gap ${fmtSigned(d.r.ai - d.r.obs)}`, event);
+    })
+    .on("mouseleave", () => { current = null; hideTip(); })
+    .on("click", () => { if (current) selectCoc(current.id, { scroll: true }); });
 }
 
 const CONDITION_ROWS = [
@@ -1483,7 +1665,7 @@ async function init() {
     loadJSON("site/data/ca_fire_perimeters.geojson"),
     loadJSON("site/data/ca_state_outline.geojson"),
   ]);
-  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions] = await Promise.all([
+  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates] = await Promise.all([
     loadOptional("site/data/ai_vs_ground_truth.json"),
     loadOptional("site/data/ai_fire_influence_estimates.json"),
     loadOptional("site/data/ground_truth_fire_influence.json"),
@@ -1491,8 +1673,10 @@ async function init() {
     loadOptional("site/data/yearly_fire_influence.json"),
     loadOptional("site/data/panel_fe_influence.json"),
     loadOptional("site/data/ai_condition_comparison.json"),
+    loadOptional("site/data/error_heterogeneity.json"),
+    loadOptional("site/data/ca_coc_covariates.json"),
   ]);
-  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions });
+  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates });
   state.pitByCoc = indexByCoc(pit);
   state.hicByCoc = indexByCoc(hic);
   state.firesByYear = fireYear;

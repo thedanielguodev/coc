@@ -32,6 +32,9 @@ DEST = DATA_DIR / "yearly_fire_influence.json"
 
 METRIC = "Overall Homeless"
 YEARS = range(2007, 2025)
+# HUD let CoCs skip the 2021 unsheltered count (COVID-19); 36 of 44 CA CoCs
+# report 0 unsheltered that year, so 2021 totals are not comparable.
+EXCLUDE_PIT_YEARS = {2021}
 
 
 def load_pit():
@@ -39,7 +42,7 @@ def load_pit():
     with open(PIT_SRC, newline="") as f:
         for row in csv.DictReader(f):
             val = row[METRIC]
-            if val == "":
+            if val == "" or int(row["year"]) in EXCLUDE_PIT_YEARS:
                 continue
             by_year[int(row["year"])][row["coc_number"]] = float(val)
     return by_year
@@ -96,6 +99,8 @@ def main():
     results = []
     for year in YEARS:
         homeless = pit_by_year.get(year, {})
+        if not homeless:
+            continue
         fire_year_acres = acres_by_year.get(year, {})
         rows = []  # (coc_number, acres, homeless)
         for coc_num, val in homeless.items():

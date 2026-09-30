@@ -38,6 +38,9 @@ DINS_SRC = DATA_DIR / "ca_structures_damage_by_coc_year.csv"
 DEST = DATA_DIR / "panel_fe_influence.json"
 
 METRIC = "Overall Homeless"
+# HUD let CoCs skip the 2021 unsheltered count (COVID-19); 36 of 44 CA CoCs
+# report 0 unsheltered that year, so 2021 totals are not comparable.
+EXCLUDE_PIT_YEARS = {2021}
 
 EXPOSURES = {
     "acres_burned": (FIRE_SRC, "acres_burned", 2000),  # FRAP pull starts 2000; PIT starts 2007
@@ -49,7 +52,7 @@ def load_pit():
     pit = {}
     with open(PIT_SRC, newline="") as f:
         for row in csv.DictReader(f):
-            if row[METRIC] != "":
+            if row[METRIC] != "" and int(row["year"]) not in EXCLUDE_PIT_YEARS:
                 pit[(row["coc_number"], int(row["year"]))] = float(row[METRIC])
     return pit
 
@@ -137,11 +140,18 @@ def main():
     results = {}
     for name, (path, col, min_year) in EXPOSURES.items():
         exposure = load_exposure(path, col)
-        results[name] = {
-            f"lag{lag}_{form}": fe_regression(pit, exposure, min_year, lag, form == "log")
-            for lag in (0, 1)
-            for form in ("log", "level")
-        }
+        # Leave-one-out: the CoC with the single largest exposure-year (for
+        # structures, Butte County's 2018 Camp Fire) is dropped and each model
+        # refit, so a result carried by one catastrophe is visible.
+        top_coc = max((k for k in exposure if k[1] >= min_year and k in pit), key=lambda k: exposure[k])[0]
+        pit_loo = {k: v for k, v in pit.items() if k[0] != top_coc}
+        results[name] = {}
+        for lag in (0, 1):
+            for form in ("log", "level"):
+                m = fe_regression(pit, exposure, min_year, lag, form == "log")
+                loo = fe_regression(pit_loo, exposure, min_year, lag, form == "log")
+                m["leave_one_out"] = {"dropped_coc": top_coc, "coef": loo["coef"], "se_clustered": loo["se_clustered"], "p_value": loo["p_value"]}
+                results[name][f"lag{lag}_{form}"] = m
 
     DEST.write_text(json.dumps({
         "metric": METRIC,
@@ -153,13 +163,17 @@ def main():
             "'level' uses raw counts (coef = additional homeless per acre or per "
             "structure destroyed). lag1 pairs exposure in year t-1 with the PIT "
             "count in year t. Tests within-CoC variation over time rather than the "
-            "pooled cross-section compute_fire_influence.py uses."
+            "pooled cross-section compute_fire_influence.py uses. PIT year 2021 is "
+            "excluded (COVID-19 unsheltered-count waiver). leave_one_out refits each "
+            "model without the CoC that has the single largest exposure-year."
         ),
         "results": results,
     }, indent=2))
     for name, models in results.items():
         for key, m in models.items():
-            print(f"{name:21s} {key:10s} coef={m['coef']:+.5f}  se={m['se_clustered']:.5f}  p={m['p_value']:.3f}  n={m['n']}")
+            loo = m["leave_one_out"]
+            print(f"{name:21s} {key:10s} coef={m['coef']:+.5f}  se={m['se_clustered']:.5f}  p={m['p_value']:.3f}  n={m['n']}"
+                  f"  | without {loo['dropped_coc']}: coef={loo['coef']:+.5f} p={loo['p_value']:.3f}")
     print(f"-> {DEST}")
 
 

@@ -17,6 +17,7 @@ CSV_TO_JSON = [
     "ca_coc_pit_veterans_by_year.csv",
     "ca_fires_by_year.csv",
     "ca_fires_by_coc_year.csv",
+    "ca_coc_covariates.csv",
 ]
 
 GEOJSON_COPY = [
@@ -40,6 +41,7 @@ OPTIONAL_JSON_COPY = [
     "ai_estimates_gemini_baseline.json",
     "ai_estimates_gemini_pit_informed.json",
     "ai_condition_comparison.json",
+    "error_heterogeneity.json",
 ]
 
 

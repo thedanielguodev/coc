@@ -34,6 +34,9 @@ DEST = DATA_DIR / "ground_truth_structures_influence.json"
 
 METRIC = "Overall Homeless"
 MIN_YEAR = 2013  # first year of DINS coverage
+# HUD let CoCs skip the 2021 unsheltered count (COVID-19); 36 of 44 CA CoCs
+# report 0 unsheltered that year, so 2021 totals are not comparable.
+EXCLUDE_PIT_YEARS = {2021}
 
 
 def load_pit():
@@ -42,7 +45,7 @@ def load_pit():
     with open(PIT_SRC, newline="") as f:
         for row in csv.DictReader(f):
             val = row[METRIC]
-            if val == "" or int(row["year"]) < MIN_YEAR:
+            if val == "" or int(row["year"]) < MIN_YEAR or int(row["year"]) in EXCLUDE_PIT_YEARS:
                 continue
             by_coc[row["coc_number"]].append((int(row["year"]), float(val)))
             names[row["coc_number"]] = row["coc_name"]

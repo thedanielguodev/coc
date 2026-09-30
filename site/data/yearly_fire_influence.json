@@ -1,6 +1,6 @@
 {
   "metric": "Overall Homeless",
-  "methodology": "For each year, a single cross-sectional Pearson r is computed across all CoCs with a PIT count that year, pairing that CoC's same-year acres burned (0 if no major fire) against its homeless count -- i.e. 44 separate single-year snapshots instead of one pooled 18-year regression. significant_p05 flags r's with an uncorrected p < 0.05; significant_bonferroni applies a Bonferroni correction for testing 18 years at once (alpha = 0.05/18 = 0.00278), since testing many years is expected to produce a small number of false positives by chance alone. leave_one_out_r recomputes r after dropping that year's single largest-acreage CoC, to check whether an apparent year-level correlation is actually driven by one outlier region (typically Los Angeles) rather than a real pattern.",
+  "methodology": "For each year, a single cross-sectional Pearson r is computed across all CoCs with a PIT count that year, pairing that CoC's same-year acres burned (0 if no major fire) against its homeless count -- i.e. 44 separate single-year snapshots instead of one pooled 18-year regression. significant_p05 flags r's with an uncorrected p < 0.05; significant_bonferroni applies a Bonferroni correction for testing 17 years at once (alpha = 0.05/17 = 0.00294), since testing many years is expected to produce a small number of false positives by chance alone. leave_one_out_r recomputes r after dropping that year's single largest-acreage CoC, to check whether an apparent year-level correlation is actually driven by one outlier region (typically Los Angeles) rather than a real pattern.",
   "years": [
     {
       "year": 2007,
@@ -139,16 +139,6 @@
       "p_value": 0.82003,
       "significant_p05": false,
       "leave_one_out_r": 0.0727,
-      "leave_one_out_dropped_coc": "CA-516",
-      "significant_bonferroni": false
-    },
-    {
-      "year": 2021,
-      "n": 44,
-      "pearson_r": -0.069,
-      "p_value": 0.65387,
-      "significant_p05": false,
-      "leave_one_out_r": -0.133,
       "leave_one_out_dropped_coc": "CA-516",
       "significant_bonferroni": false
     },

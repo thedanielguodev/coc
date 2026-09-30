@@ -1,126 +1,126 @@
 {
   "methodology": "Each condition's per-CoC estimate is the mean across its trials, compared with that CoC's observed same-year Pearson r (acres burned vs. PIT count). mean_signed_error > 0 means overstating the relationship. pit_effect is the paired per-CoC change in mean estimate from adding a description of what the PIT count measures.",
-  "observed_mean_r": 0.0493,
+  "observed_mean_r": 0.0581,
   "results": {
     "claude_baseline": {
       "n_trials": 10,
-      "n_cocs": 41,
-      "mean_estimate": 0.2807,
-      "mean_signed_error": 0.2313,
-      "mean_signed_error_se": 0.0469,
-      "mean_abs_error": 0.313,
-      "agreement_pearson_r": 0.0676,
-      "agreement_spearman_rho": -0.0389,
+      "n_cocs": 40,
+      "mean_estimate": 0.2827,
+      "mean_signed_error": 0.2246,
+      "mean_signed_error_se": 0.0524,
+      "mean_abs_error": 0.3315,
+      "agreement_pearson_r": 0.0117,
+      "agreement_spearman_rho": -0.0851,
       "n_estimates": 440,
       "n_negative_estimates": 0,
-      "mean_trial_sd": 0.0589,
+      "mean_trial_sd": 0.0593,
       "abs_error_by_confidence": {
         "high": {
           "n": 42,
-          "mean": 0.4735
+          "mean": 0.4727
         },
         "low": {
-          "n": 196,
-          "mean": 0.2363
+          "n": 187,
+          "mean": 0.2539
         },
         "medium": {
-          "n": 172,
-          "mean": 0.3731
+          "n": 171,
+          "mean": 0.3889
         }
       }
     },
     "claude_pit_informed": {
       "n_trials": 10,
-      "n_cocs": 41,
-      "mean_estimate": 0.1924,
-      "mean_signed_error": 0.1431,
-      "mean_signed_error_se": 0.0443,
-      "mean_abs_error": 0.2686,
-      "agreement_pearson_r": 0.0949,
-      "agreement_spearman_rho": 0.0092,
+      "n_cocs": 40,
+      "mean_estimate": 0.1941,
+      "mean_signed_error": 0.136,
+      "mean_signed_error_se": 0.0496,
+      "mean_abs_error": 0.2883,
+      "agreement_pearson_r": 0.0371,
+      "agreement_spearman_rho": -0.0465,
       "n_estimates": 440,
       "n_negative_estimates": 0,
-      "mean_trial_sd": 0.0511,
+      "mean_trial_sd": 0.0514,
       "abs_error_by_confidence": {
         "high": {
           "n": 27,
-          "mean": 0.2975
+          "mean": 0.3008
         },
         "low": {
-          "n": 270,
-          "mean": 0.235
+          "n": 261,
+          "mean": 0.2591
         },
         "medium": {
-          "n": 113,
-          "mean": 0.3566
+          "n": 112,
+          "mean": 0.3709
         }
       }
     },
     "gemini_baseline": {
       "n_trials": 10,
-      "n_cocs": 41,
-      "mean_estimate": 0.1272,
-      "mean_signed_error": 0.0779,
-      "mean_signed_error_se": 0.0422,
-      "mean_abs_error": 0.2432,
-      "agreement_pearson_r": 0.0828,
-      "agreement_spearman_rho": 0.0168,
+      "n_cocs": 40,
+      "mean_estimate": 0.1284,
+      "mean_signed_error": 0.0703,
+      "mean_signed_error_se": 0.047,
+      "mean_abs_error": 0.263,
+      "agreement_pearson_r": 0.0438,
+      "agreement_spearman_rho": -0.0037,
       "n_estimates": 440,
       "n_negative_estimates": 0,
-      "mean_trial_sd": 0.0395,
+      "mean_trial_sd": 0.0399,
       "abs_error_by_confidence": {
         "high": {
           "n": 54,
-          "mean": 0.2109
+          "mean": 0.2181
         },
         "low": {
-          "n": 165,
-          "mean": 0.2195
+          "n": 156,
+          "mean": 0.2373
         },
         "medium": {
-          "n": 191,
-          "mean": 0.2759
+          "n": 190,
+          "mean": 0.3008
         }
       }
     },
     "gemini_pit_informed": {
       "n_trials": 10,
-      "n_cocs": 41,
-      "mean_estimate": 0.0619,
-      "mean_signed_error": 0.0126,
-      "mean_signed_error_se": 0.0414,
-      "mean_abs_error": 0.2279,
-      "agreement_pearson_r": 0.1527,
-      "agreement_spearman_rho": 0.0666,
+      "n_cocs": 40,
+      "mean_estimate": 0.0626,
+      "mean_signed_error": 0.0046,
+      "mean_signed_error_se": 0.0461,
+      "mean_abs_error": 0.2546,
+      "agreement_pearson_r": 0.1134,
+      "agreement_spearman_rho": 0.0515,
       "n_estimates": 440,
       "n_negative_estimates": 0,
       "mean_trial_sd": 0.0142,
       "abs_error_by_confidence": {
         "high": {
           "n": 29,
-          "mean": 0.2052
+          "mean": 0.2105
         },
         "low": {
           "n": 57,
-          "mean": 0.2569
+          "mean": 0.2965
         },
         "medium": {
-          "n": 324,
-          "mean": 0.225
+          "n": 314,
+          "mean": 0.2511
         }
       }
     },
     "claude_pit_effect": {
-      "mean_change": -0.0882,
-      "se": 0.0065,
-      "n_cocs_lower": 40,
-      "n_cocs": 41
+      "mean_change": -0.0886,
+      "se": 0.0067,
+      "n_cocs_lower": 39,
+      "n_cocs": 40
     },
     "gemini_pit_effect": {
-      "mean_change": -0.0653,
-      "se": 0.0042,
-      "n_cocs_lower": 41,
-      "n_cocs": 41
+      "mean_change": -0.0658,
+      "se": 0.0043,
+      "n_cocs_lower": 40,
+      "n_cocs": 40
     }
   }
 }
