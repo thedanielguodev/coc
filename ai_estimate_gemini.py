@@ -5,17 +5,19 @@ Gemini instead of Claude. Same batched design as the Claude sub-agent trials:
 each trial sends all 44 CoCs' fire histories (never PIT counts) in one request
 and asks for a per-CoC Pearson r estimate.
 
-Two prompt conditions:
+Three prompt conditions:
   baseline      ai_estimate_influence.SYSTEM_PROMPT + the batched region list
   pit_informed  the same, plus PIT_CONTEXT describing what the HUD
                 Point-in-Time count does and does not measure
+  neutral       baseline with exactly two things removed: the list of
+                housing-loss mechanisms and "not a hedge toward zero"
 
 Comparing the two tells whether the model's overstatement shrinks once it knows
 how the outcome is measured (i.e. whether it's reasoning about the world or
 about this data).
 
 Requires GEMINI_API_KEY in the environment (never hardcode it).
-Usage: python ai_estimate_gemini.py [--condition baseline|pit_informed|both] [--trials 10] [--model gemini-3.8-flash]
+Usage: python ai_estimate_gemini.py [--condition baseline|pit_informed|neutral|both|all] [--trials 10] [--model gemini-3.8-flash]
 Output: data/ai_estimates_gemini_<condition>.json (raw per-trial output + prompt)
 """
 
@@ -45,6 +47,19 @@ SYSTEM_PROMPT = (
     "displacement, evacuation, insurance/rebuilding costs, economic disruption) "
     "plus whatever general knowledge you have of this region, not from being told "
     "the answer. Give your honest best estimate, not a hedge toward zero."
+)
+
+# SYSTEM_PROMPT minus the mechanism list and the "not a hedge toward zero"
+# instruction; every other word is unchanged, so any difference in estimates
+# is attributable to those two phrases.
+NEUTRAL_PROMPT = (
+    "You are participating in a research study on how well AI causal/statistical "
+    "intuition matches real data. You will be given a U.S. Continuum of Care (CoC) "
+    "homelessness-services region's wildfire history and asked to estimate its "
+    "statistical relationship to that region's homeless count. You are NOT given "
+    "the actual homeless counts -- estimate from your own reasoning "
+    "plus whatever general knowledge you have of this region, not from being told "
+    "the answer. Give your honest best estimate."
 )
 
 PIT_CONTEXT = (
@@ -88,7 +103,7 @@ def region_block(coc_num, coc_name, fire_rows):
 
 
 def build_prompt(condition, names, history):
-    parts = [SYSTEM_PROMPT]
+    parts = [NEUTRAL_PROMPT if condition == "neutral" else SYSTEM_PROMPT]
     if condition == "pit_informed":
         parts.append(PIT_CONTEXT)
     parts.append(
@@ -192,14 +207,15 @@ def run(condition, n_trials, model, key):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--condition", choices=["baseline", "pit_informed", "both"], default="both")
+    ap.add_argument("--condition", choices=["baseline", "pit_informed", "neutral", "both", "all"], default="both")
     ap.add_argument("--trials", type=int, default=10)
     ap.add_argument("--model", default="gemini-3.8-flash")
     args = ap.parse_args()
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         sys.exit("GEMINI_API_KEY is not set.")
-    for cond in (["baseline", "pit_informed"] if args.condition == "both" else [args.condition]):
+    conds = {"both": ["baseline", "pit_informed"], "all": ["baseline", "pit_informed", "neutral"]}.get(args.condition, [args.condition])
+    for cond in conds:
         run(cond, args.trials, args.model, key)
 
 

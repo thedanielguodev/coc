@@ -49,7 +49,8 @@ DATA_DIR = pathlib.Path(__file__).parent / "data"
 DEST = DATA_DIR / "error_heterogeneity.json"
 SALIENCE_CONTROLS = ["structures_destroyed_total", "pop_density_sqmi"]
 
-CONDITIONS = [("claude", "baseline"), ("claude", "pit_informed"), ("gemini", "baseline"), ("gemini", "pit_informed")]
+CONDITIONS = [("claude", "baseline"), ("claude", "pit_informed"), ("claude", "baseline_rerun"), ("claude", "neutral"),
+              ("gemini", "baseline"), ("gemini", "pit_informed"), ("gemini", "neutral")]
 TRUTH_SPECS = {
     "lag0_all_years": (0, False),
     "lag0_drop2021": (0, True),     # the published ground truth (same-year, as the AI was asked)

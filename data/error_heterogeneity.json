@@ -45,8 +45,11 @@
   "ai_split_half_reliability": {
     "claude_baseline": 0.99,
     "claude_pit_informed": 0.99,
+    "claude_baseline_rerun": 0.992,
+    "claude_neutral": 0.984,
     "gemini_baseline": 0.994,
-    "gemini_pit_informed": 0.983
+    "gemini_pit_informed": 0.983,
+    "gemini_neutral": 0.98
   },
   "error_variance_decomposition": {
     "claude_baseline": {
@@ -61,6 +64,18 @@
       "share_from_truth": 0.875,
       "share_from_covariance": -0.027
     },
+    "claude_baseline_rerun": {
+      "var_error": 0.0906,
+      "share_from_ai": 0.087,
+      "share_from_truth": 0.928,
+      "share_from_covariance": -0.015
+    },
+    "claude_neutral": {
+      "var_error": 0.0851,
+      "share_from_ai": 0.061,
+      "share_from_truth": 0.987,
+      "share_from_covariance": -0.048
+    },
     "gemini_baseline": {
       "var_error": 0.0862,
       "share_from_ai": 0.043,
@@ -72,6 +87,12 @@
       "share_from_ai": 0.016,
       "share_from_truth": 1.013,
       "share_from_covariance": -0.029
+    },
+    "gemini_neutral": {
+      "var_error": 0.0841,
+      "share_from_ai": 0.007,
+      "share_from_truth": 0.999,
+      "share_from_covariance": -0.006
     }
   },
   "correlates": {
@@ -867,6 +888,270 @@
         }
       ]
     },
+    "ai_claude_baseline_rerun": {
+      "n_cocs": 40,
+      "n_fdr_significant": 8,
+      "tests": [
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.663,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.756,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.814,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.486,
+          "p_value": 0.0006,
+          "q_value": 0.0029
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.482,
+          "p_value": 0.0007,
+          "q_value": 0.0029
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.427,
+          "p_value": 0.0036,
+          "q_value": 0.0126
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.42,
+          "p_value": 0.0043,
+          "q_value": 0.0129
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.36,
+          "p_value": 0.0175,
+          "q_value": 0.0459
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.35,
+          "p_value": 0.0215,
+          "q_value": 0.0502
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.338,
+          "p_value": 0.027,
+          "q_value": 0.054
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": -0.335,
+          "p_value": 0.0283,
+          "q_value": 0.054
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.321,
+          "p_value": 0.0367,
+          "q_value": 0.0642
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": -0.3,
+          "p_value": 0.0523,
+          "q_value": 0.0845
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": -0.273,
+          "p_value": 0.0799,
+          "q_value": 0.1198
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": -0.233,
+          "p_value": 0.1397,
+          "q_value": 0.1956
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": -0.169,
+          "p_value": 0.2908,
+          "q_value": 0.3817
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.157,
+          "p_value": 0.3264,
+          "q_value": 0.4032
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": 0.15,
+          "p_value": 0.3493,
+          "q_value": 0.4075
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": 0.122,
+          "p_value": 0.4502,
+          "q_value": 0.4976
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": -0.058,
+          "p_value": 0.7201,
+          "q_value": 0.7462
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.052,
+          "p_value": 0.7462,
+          "q_value": 0.7462
+        }
+      ]
+    },
+    "ai_claude_neutral": {
+      "n_cocs": 40,
+      "n_fdr_significant": 11,
+      "tests": [
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.583,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.624,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.708,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.771,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": -0.51,
+          "p_value": 0.0003,
+          "q_value": 0.0013
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.469,
+          "p_value": 0.0011,
+          "q_value": 0.0039
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": -0.46,
+          "p_value": 0.0014,
+          "q_value": 0.0042
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.433,
+          "p_value": 0.003,
+          "q_value": 0.0079
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": -0.409,
+          "p_value": 0.0057,
+          "q_value": 0.013
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.406,
+          "p_value": 0.0062,
+          "q_value": 0.013
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.347,
+          "p_value": 0.0228,
+          "q_value": 0.0435
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.313,
+          "p_value": 0.0419,
+          "q_value": 0.069
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": -0.308,
+          "p_value": 0.0458,
+          "q_value": 0.069
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.308,
+          "p_value": 0.046,
+          "q_value": 0.069
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.292,
+          "p_value": 0.0602,
+          "q_value": 0.0823
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": 0.289,
+          "p_value": 0.0627,
+          "q_value": 0.0823
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": -0.253,
+          "p_value": 0.1068,
+          "q_value": 0.1319
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.063,
+          "p_value": 0.6975,
+          "q_value": 0.8138
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": -0.029,
+          "p_value": 0.8603,
+          "q_value": 0.9152
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.019,
+          "p_value": 0.9046,
+          "q_value": 0.9152
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": -0.017,
+          "p_value": 0.9152,
+          "q_value": 0.9152
+        }
+      ]
+    },
     "ai_gemini_baseline": {
       "n_cocs": 40,
       "n_fdr_significant": 14,
@@ -1128,6 +1413,138 @@
           "spearman_rho": 0.089,
           "p_value": 0.5836,
           "q_value": 0.5836
+        }
+      ]
+    },
+    "ai_gemini_neutral": {
+      "n_cocs": 40,
+      "n_fdr_significant": 13,
+      "tests": [
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.581,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.709,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.778,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.779,
+          "p_value": 0.0,
+          "q_value": 0.0
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.543,
+          "p_value": 0.0001,
+          "q_value": 0.0004
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.521,
+          "p_value": 0.0002,
+          "q_value": 0.0007
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.484,
+          "p_value": 0.0006,
+          "q_value": 0.0018
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": -0.39,
+          "p_value": 0.009,
+          "q_value": 0.0236
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.376,
+          "p_value": 0.0125,
+          "q_value": 0.0271
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": -0.374,
+          "p_value": 0.0129,
+          "q_value": 0.0271
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.343,
+          "p_value": 0.0244,
+          "q_value": 0.0446
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": -0.341,
+          "p_value": 0.0255,
+          "q_value": 0.0446
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.332,
+          "p_value": 0.0299,
+          "q_value": 0.0483
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.322,
+          "p_value": 0.0358,
+          "q_value": 0.0537
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": -0.246,
+          "p_value": 0.117,
+          "q_value": 0.1638
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": 0.214,
+          "p_value": 0.1765,
+          "q_value": 0.2317
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": -0.192,
+          "p_value": 0.2268,
+          "q_value": 0.2802
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.136,
+          "p_value": 0.3989,
+          "q_value": 0.4444
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": 0.135,
+          "p_value": 0.4021,
+          "q_value": 0.4444
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.071,
+          "p_value": 0.6627,
+          "q_value": 0.6958
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": -0.02,
+          "p_value": 0.9037,
+          "q_value": 0.9037
         }
       ]
     },
@@ -1659,6 +2076,534 @@
         }
       ]
     },
+    "error_claude_baseline_rerun": {
+      "n_cocs": 40,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.398,
+          "p_value": 0.0074,
+          "q_value": 0.1554
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": 0.302,
+          "p_value": 0.0506,
+          "q_value": 0.3399
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": -0.297,
+          "p_value": 0.0549,
+          "q_value": 0.3399
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.277,
+          "p_value": 0.0752,
+          "q_value": 0.3399
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.267,
+          "p_value": 0.0872,
+          "q_value": 0.3399
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.255,
+          "p_value": 0.1036,
+          "q_value": 0.3399
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.249,
+          "p_value": 0.1133,
+          "q_value": 0.3399
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.224,
+          "p_value": 0.1558,
+          "q_value": 0.3932
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.218,
+          "p_value": 0.1685,
+          "q_value": 0.3932
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.208,
+          "p_value": 0.1895,
+          "q_value": 0.3979
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.166,
+          "p_value": 0.2999,
+          "q_value": 0.5725
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": 0.155,
+          "p_value": 0.3347,
+          "q_value": 0.5857
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": 0.136,
+          "p_value": 0.3987,
+          "q_value": 0.6227
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.131,
+          "p_value": 0.4151,
+          "q_value": 0.6227
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": 0.107,
+          "p_value": 0.5058,
+          "q_value": 0.6935
+        },
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.095,
+          "p_value": 0.5574,
+          "q_value": 0.6935
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": 0.094,
+          "p_value": 0.5614,
+          "q_value": 0.6935
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": 0.071,
+          "p_value": 0.6595,
+          "q_value": 0.7694
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.057,
+          "p_value": 0.7265,
+          "q_value": 0.803
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.043,
+          "p_value": 0.7909,
+          "q_value": 0.8304
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": 0.0,
+          "p_value": 1.0,
+          "q_value": 1.0
+        }
+      ]
+    },
+    "abs_error_claude_baseline_rerun": {
+      "n_cocs": 40,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.34,
+          "p_value": 0.026,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.312,
+          "p_value": 0.0427,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.271,
+          "p_value": 0.0823,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.265,
+          "p_value": 0.0906,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.261,
+          "p_value": 0.0954,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.253,
+          "p_value": 0.1068,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.235,
+          "p_value": 0.1365,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.232,
+          "p_value": 0.1413,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.225,
+          "p_value": 0.1554,
+          "q_value": 0.3626
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": 0.191,
+          "p_value": 0.2304,
+          "q_value": 0.4191
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.19,
+          "p_value": 0.2318,
+          "q_value": 0.4191
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.187,
+          "p_value": 0.2395,
+          "q_value": 0.4191
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.176,
+          "p_value": 0.2694,
+          "q_value": 0.4352
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": 0.105,
+          "p_value": 0.5171,
+          "q_value": 0.6968
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": -0.102,
+          "p_value": 0.5255,
+          "q_value": 0.6968
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": -0.094,
+          "p_value": 0.559,
+          "q_value": 0.6968
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.093,
+          "p_value": 0.5641,
+          "q_value": 0.6968
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": -0.078,
+          "p_value": 0.6286,
+          "q_value": 0.7334
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": -0.019,
+          "p_value": 0.9061,
+          "q_value": 0.9751
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": 0.013,
+          "p_value": 0.9373,
+          "q_value": 0.9751
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": -0.005,
+          "p_value": 0.9751,
+          "q_value": 0.9751
+        }
+      ]
+    },
+    "error_claude_neutral": {
+      "n_cocs": 40,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.358,
+          "p_value": 0.0181,
+          "q_value": 0.3801
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": -0.277,
+          "p_value": 0.0754,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": 0.266,
+          "p_value": 0.0884,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.24,
+          "p_value": 0.1279,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.239,
+          "p_value": 0.1292,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.205,
+          "p_value": 0.1969,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.201,
+          "p_value": 0.2062,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.196,
+          "p_value": 0.2182,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.191,
+          "p_value": 0.2296,
+          "q_value": 0.5357
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.169,
+          "p_value": 0.2901,
+          "q_value": 0.5639
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.167,
+          "p_value": 0.2954,
+          "q_value": 0.5639
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": 0.15,
+          "p_value": 0.3512,
+          "q_value": 0.6146
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": 0.139,
+          "p_value": 0.3855,
+          "q_value": 0.6227
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": 0.129,
+          "p_value": 0.4244,
+          "q_value": 0.6366
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.095,
+          "p_value": 0.5566,
+          "q_value": 0.745
+        },
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.092,
+          "p_value": 0.5708,
+          "q_value": 0.745
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": 0.084,
+          "p_value": 0.6031,
+          "q_value": 0.745
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.062,
+          "p_value": 0.6996,
+          "q_value": 0.8162
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": 0.051,
+          "p_value": 0.751,
+          "q_value": 0.8301
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": 0.021,
+          "p_value": 0.8978,
+          "q_value": 0.9042
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.02,
+          "p_value": 0.9042,
+          "q_value": 0.9042
+        }
+      ]
+    },
+    "abs_error_claude_neutral": {
+      "n_cocs": 40,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.344,
+          "p_value": 0.0241,
+          "q_value": 0.231
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.327,
+          "p_value": 0.0328,
+          "q_value": 0.231
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.317,
+          "p_value": 0.0395,
+          "q_value": 0.231
+        },
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.311,
+          "p_value": 0.044,
+          "q_value": 0.231
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.294,
+          "p_value": 0.0581,
+          "q_value": 0.244
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.266,
+          "p_value": 0.0892,
+          "q_value": 0.3122
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.245,
+          "p_value": 0.1197,
+          "q_value": 0.3591
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": 0.183,
+          "p_value": 0.2514,
+          "q_value": 0.5889
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.183,
+          "p_value": 0.2524,
+          "q_value": 0.5889
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": -0.163,
+          "p_value": 0.3089,
+          "q_value": 0.6289
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": -0.156,
+          "p_value": 0.3294,
+          "q_value": 0.6289
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.141,
+          "p_value": 0.3797,
+          "q_value": 0.6645
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": -0.12,
+          "p_value": 0.4573,
+          "q_value": 0.7091
+        },
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.116,
+          "p_value": 0.4727,
+          "q_value": 0.7091
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.088,
+          "p_value": 0.5861,
+          "q_value": 0.7622
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.086,
+          "p_value": 0.5966,
+          "q_value": 0.7622
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.081,
+          "p_value": 0.617,
+          "q_value": 0.7622
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": -0.064,
+          "p_value": 0.6936,
+          "q_value": 0.7945
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": 0.058,
+          "p_value": 0.7221,
+          "q_value": 0.7945
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": 0.047,
+          "p_value": 0.7713,
+          "q_value": 0.7945
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": -0.042,
+          "p_value": 0.7945,
+          "q_value": 0.7945
+        }
+      ]
+    },
     "error_gemini_baseline": {
       "n_cocs": 40,
       "n_fdr_significant": 0,
@@ -2186,6 +3131,270 @@
           "q_value": 0.9843
         }
       ]
+    },
+    "error_gemini_neutral": {
+      "n_cocs": 40,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": -0.299,
+          "p_value": 0.053,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": 0.26,
+          "p_value": 0.0972,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.204,
+          "p_value": 0.1993,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": 0.2,
+          "p_value": 0.2092,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": 0.195,
+          "p_value": 0.2196,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": 0.193,
+          "p_value": 0.2242,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": 0.19,
+          "p_value": 0.2318,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": 0.17,
+          "p_value": 0.2871,
+          "q_value": 0.7182
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.163,
+          "p_value": 0.3078,
+          "q_value": 0.7182
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": 0.132,
+          "p_value": 0.4101,
+          "q_value": 0.7371
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": 0.132,
+          "p_value": 0.4134,
+          "q_value": 0.7371
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.129,
+          "p_value": 0.4212,
+          "q_value": 0.7371
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.105,
+          "p_value": 0.5171,
+          "q_value": 0.8015
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.096,
+          "p_value": 0.5534,
+          "q_value": 0.8015
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": 0.091,
+          "p_value": 0.5725,
+          "q_value": 0.8015
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.08,
+          "p_value": 0.6211,
+          "q_value": 0.8063
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.073,
+          "p_value": 0.6527,
+          "q_value": 0.8063
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": -0.051,
+          "p_value": 0.7536,
+          "q_value": 0.8771
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": 0.042,
+          "p_value": 0.7936,
+          "q_value": 0.8771
+        },
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": 0.013,
+          "p_value": 0.9341,
+          "q_value": 0.9589
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": -0.008,
+          "p_value": 0.9589,
+          "q_value": 0.9589
+        }
+      ]
+    },
+    "abs_error_gemini_neutral": {
+      "n_cocs": 40,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "uninsured_health_share",
+          "spearman_rho": 0.397,
+          "p_value": 0.0077,
+          "q_value": 0.1617
+        },
+        {
+          "covariate": "fire_years",
+          "spearman_rho": 0.315,
+          "p_value": 0.0407,
+          "q_value": 0.2486
+        },
+        {
+          "covariate": "hispanic_share",
+          "spearman_rho": 0.301,
+          "p_value": 0.0514,
+          "q_value": 0.2486
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "spearman_rho": 0.3,
+          "p_value": 0.0522,
+          "q_value": 0.2486
+        },
+        {
+          "covariate": "fire_acres_total",
+          "spearman_rho": 0.293,
+          "p_value": 0.0592,
+          "q_value": 0.2486
+        },
+        {
+          "covariate": "pop_density_sqmi",
+          "spearman_rho": -0.272,
+          "p_value": 0.0815,
+          "q_value": 0.2853
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "spearman_rho": 0.206,
+          "p_value": 0.1944,
+          "q_value": 0.5741
+        },
+        {
+          "covariate": "median_home_value",
+          "spearman_rho": -0.196,
+          "p_value": 0.2187,
+          "q_value": 0.5741
+        },
+        {
+          "covariate": "median_hh_income",
+          "spearman_rho": -0.177,
+          "p_value": 0.2673,
+          "q_value": 0.6237
+        },
+        {
+          "covariate": "vacancy_rate",
+          "spearman_rho": 0.165,
+          "p_value": 0.3021,
+          "q_value": 0.6281
+        },
+        {
+          "covariate": "black_nh_share",
+          "spearman_rho": -0.156,
+          "p_value": 0.329,
+          "q_value": 0.6281
+        },
+        {
+          "covariate": "median_gross_rent",
+          "spearman_rho": -0.142,
+          "p_value": 0.3764,
+          "q_value": 0.6587
+        },
+        {
+          "covariate": "poverty_rate",
+          "spearman_rho": 0.129,
+          "p_value": 0.4244,
+          "q_value": 0.6856
+        },
+        {
+          "covariate": "renter_share",
+          "spearman_rho": -0.076,
+          "p_value": 0.6402,
+          "q_value": 0.8882
+        },
+        {
+          "covariate": "white_nh_share",
+          "spearman_rho": -0.071,
+          "p_value": 0.662,
+          "q_value": 0.8882
+        },
+        {
+          "covariate": "age65_share",
+          "spearman_rho": -0.059,
+          "p_value": 0.7134,
+          "q_value": 0.8882
+        },
+        {
+          "covariate": "population",
+          "spearman_rho": -0.055,
+          "p_value": 0.7361,
+          "q_value": 0.8882
+        },
+        {
+          "covariate": "policies_per_year",
+          "spearman_rho": -0.042,
+          "p_value": 0.7936,
+          "q_value": 0.8882
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "spearman_rho": 0.036,
+          "p_value": 0.8228,
+          "q_value": 0.8882
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "spearman_rho": -0.032,
+          "p_value": 0.8459,
+          "q_value": 0.8882
+        },
+        {
+          "covariate": "structures_destroyed_total",
+          "spearman_rho": -0.015,
+          "p_value": 0.9262,
+          "q_value": 0.9262
+        }
+      ]
     }
   },
   "ai_partial_after_salience": {
@@ -2437,6 +3646,254 @@
         }
       ]
     },
+    "claude_baseline_rerun": {
+      "controls": [
+        "structures_destroyed_total",
+        "pop_density_sqmi"
+      ],
+      "r2_from_controls": 0.721,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "fire_acres_peak_year",
+          "partial_rho": 0.36,
+          "p_value": 0.0206,
+          "q_value": 0.3914
+        },
+        {
+          "covariate": "median_home_value",
+          "partial_rho": 0.284,
+          "p_value": 0.0753,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "partial_rho": -0.2,
+          "p_value": 0.2213,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "black_nh_share",
+          "partial_rho": -0.199,
+          "p_value": 0.2234,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "vacancy_rate",
+          "partial_rho": 0.18,
+          "p_value": 0.2733,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "partial_rho": 0.174,
+          "p_value": 0.2887,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "partial_rho": -0.173,
+          "p_value": 0.2908,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "fire_acres_total",
+          "partial_rho": 0.16,
+          "p_value": 0.3295,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "white_nh_share",
+          "partial_rho": 0.154,
+          "p_value": 0.3491,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "fire_years",
+          "partial_rho": -0.154,
+          "p_value": 0.3506,
+          "q_value": 0.6661
+        },
+        {
+          "covariate": "age65_share",
+          "partial_rho": 0.138,
+          "p_value": 0.4041,
+          "q_value": 0.698
+        },
+        {
+          "covariate": "renter_share",
+          "partial_rho": 0.117,
+          "p_value": 0.48,
+          "q_value": 0.7379
+        },
+        {
+          "covariate": "hispanic_share",
+          "partial_rho": -0.104,
+          "p_value": 0.5291,
+          "q_value": 0.7379
+        },
+        {
+          "covariate": "population",
+          "partial_rho": -0.099,
+          "p_value": 0.5504,
+          "q_value": 0.7379
+        },
+        {
+          "covariate": "median_gross_rent",
+          "partial_rho": 0.082,
+          "p_value": 0.6208,
+          "q_value": 0.7379
+        },
+        {
+          "covariate": "median_hh_income",
+          "partial_rho": 0.073,
+          "p_value": 0.659,
+          "q_value": 0.7379
+        },
+        {
+          "covariate": "policies_per_year",
+          "partial_rho": -0.073,
+          "p_value": 0.6602,
+          "q_value": 0.7379
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "partial_rho": -0.054,
+          "p_value": 0.7451,
+          "q_value": 0.7865
+        },
+        {
+          "covariate": "poverty_rate",
+          "partial_rho": -0.012,
+          "p_value": 0.9427,
+          "q_value": 0.9427
+        }
+      ]
+    },
+    "claude_neutral": {
+      "controls": [
+        "structures_destroyed_total",
+        "pop_density_sqmi"
+      ],
+      "r2_from_controls": 0.721,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "partial_rho": -0.275,
+          "p_value": 0.0856,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "partial_rho": -0.27,
+          "p_value": 0.0929,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "partial_rho": -0.249,
+          "p_value": 0.1224,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "fire_years",
+          "partial_rho": -0.223,
+          "p_value": 0.1702,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "median_gross_rent",
+          "partial_rho": -0.217,
+          "p_value": 0.183,
+          "q_value": 0.6954
+        },
+        {
+          "covariate": "renter_share",
+          "partial_rho": 0.194,
+          "p_value": 0.2356,
+          "q_value": 0.737
+        },
+        {
+          "covariate": "poverty_rate",
+          "partial_rho": 0.177,
+          "p_value": 0.2795,
+          "q_value": 0.737
+        },
+        {
+          "covariate": "fire_acres_peak_year",
+          "partial_rho": 0.167,
+          "p_value": 0.3103,
+          "q_value": 0.737
+        },
+        {
+          "covariate": "population",
+          "partial_rho": -0.127,
+          "p_value": 0.4429,
+          "q_value": 0.8926
+        },
+        {
+          "covariate": "policies_per_year",
+          "partial_rho": -0.12,
+          "p_value": 0.4698,
+          "q_value": 0.8926
+        },
+        {
+          "covariate": "median_hh_income",
+          "partial_rho": -0.094,
+          "p_value": 0.5691,
+          "q_value": 0.983
+        },
+        {
+          "covariate": "black_nh_share",
+          "partial_rho": -0.071,
+          "p_value": 0.6686,
+          "q_value": 0.9941
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "partial_rho": -0.054,
+          "p_value": 0.7444,
+          "q_value": 0.9941
+        },
+        {
+          "covariate": "hispanic_share",
+          "partial_rho": -0.031,
+          "p_value": 0.8525,
+          "q_value": 0.9941
+        },
+        {
+          "covariate": "age65_share",
+          "partial_rho": -0.029,
+          "p_value": 0.8617,
+          "q_value": 0.9941
+        },
+        {
+          "covariate": "median_home_value",
+          "partial_rho": 0.021,
+          "p_value": 0.8975,
+          "q_value": 0.9941
+        },
+        {
+          "covariate": "fire_acres_total",
+          "partial_rho": -0.013,
+          "p_value": 0.9372,
+          "q_value": 0.9941
+        },
+        {
+          "covariate": "white_nh_share",
+          "partial_rho": 0.011,
+          "p_value": 0.9496,
+          "q_value": 0.9941
+        },
+        {
+          "covariate": "vacancy_rate",
+          "partial_rho": 0.001,
+          "p_value": 0.9941,
+          "q_value": 0.9941
+        }
+      ]
+    },
     "gemini_baseline": {
       "controls": [
         "structures_destroyed_total",
@@ -2682,6 +4139,130 @@
           "partial_rho": 0.034,
           "p_value": 0.8404,
           "q_value": 0.8404
+        }
+      ]
+    },
+    "gemini_neutral": {
+      "controls": [
+        "structures_destroyed_total",
+        "pop_density_sqmi"
+      ],
+      "r2_from_controls": 0.73,
+      "n_fdr_significant": 0,
+      "tests": [
+        {
+          "covariate": "fire_acres_peak_year",
+          "partial_rho": 0.372,
+          "p_value": 0.0162,
+          "q_value": 0.3078
+        },
+        {
+          "covariate": "median_home_value",
+          "partial_rho": 0.27,
+          "p_value": 0.0922,
+          "q_value": 0.7106
+        },
+        {
+          "covariate": "black_nh_share",
+          "partial_rho": -0.247,
+          "p_value": 0.1266,
+          "q_value": 0.7106
+        },
+        {
+          "covariate": "fire_acres_total",
+          "partial_rho": 0.226,
+          "p_value": 0.1638,
+          "q_value": 0.7106
+        },
+        {
+          "covariate": "insurer_nonrenewal_rate",
+          "partial_rho": -0.203,
+          "p_value": 0.2147,
+          "q_value": 0.7106
+        },
+        {
+          "covariate": "vacancy_rate",
+          "partial_rho": 0.198,
+          "p_value": 0.2244,
+          "q_value": 0.7106
+        },
+        {
+          "covariate": "renter_share",
+          "partial_rho": 0.18,
+          "p_value": 0.2719,
+          "q_value": 0.738
+        },
+        {
+          "covariate": "median_gross_rent",
+          "partial_rho": 0.158,
+          "p_value": 0.3359,
+          "q_value": 0.7978
+        },
+        {
+          "covariate": "uninsured_health_share",
+          "partial_rho": -0.103,
+          "p_value": 0.5331,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "median_hh_income",
+          "partial_rho": 0.088,
+          "p_value": 0.5981,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "white_nh_share",
+          "partial_rho": 0.083,
+          "p_value": 0.617,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "age65_share",
+          "partial_rho": 0.052,
+          "p_value": 0.7552,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "rent_burdened_share",
+          "partial_rho": 0.042,
+          "p_value": 0.8006,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "poverty_rate",
+          "partial_rho": 0.021,
+          "p_value": 0.8982,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "insurer_nonrenewal_change",
+          "partial_rho": 0.019,
+          "p_value": 0.9101,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "hispanic_share",
+          "partial_rho": -0.015,
+          "p_value": 0.928,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "policies_per_year",
+          "partial_rho": 0.014,
+          "p_value": 0.9349,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "population",
+          "partial_rho": 0.012,
+          "p_value": 0.9426,
+          "q_value": 0.9921
+        },
+        {
+          "covariate": "fire_years",
+          "partial_rho": -0.002,
+          "p_value": 0.9921,
+          "q_value": 0.9921
         }
       ]
     }
@@ -3314,8 +4895,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.22,
       "ai_claude_pit_informed": 0.165,
+      "ai_claude_baseline_rerun": 0.17,
+      "ai_claude_neutral": 0.125,
       "ai_gemini_baseline": 0.113,
-      "ai_gemini_pit_informed": 0.05
+      "ai_gemini_pit_informed": 0.05,
+      "ai_gemini_neutral": 0.05
     },
     {
       "coc_number": "CA-502",
@@ -3330,8 +4914,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.195,
       "ai_claude_pit_informed": 0.115,
+      "ai_claude_baseline_rerun": 0.155,
+      "ai_claude_neutral": 0.095,
       "ai_gemini_baseline": 0.087,
-      "ai_gemini_pit_informed": 0.045
+      "ai_gemini_pit_informed": 0.045,
+      "ai_gemini_neutral": 0.05
     },
     {
       "coc_number": "CA-503",
@@ -3346,8 +4933,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.09,
       "ai_claude_pit_informed": 0.07,
+      "ai_claude_baseline_rerun": 0.13,
+      "ai_claude_neutral": 0.11,
       "ai_gemini_baseline": 0.051,
-      "ai_gemini_pit_informed": 0.025
+      "ai_gemini_pit_informed": 0.025,
+      "ai_gemini_neutral": 0.033
     },
     {
       "coc_number": "CA-504",
@@ -3362,8 +4952,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.59,
       "ai_claude_pit_informed": 0.405,
+      "ai_claude_baseline_rerun": 0.38,
+      "ai_claude_neutral": 0.285,
       "ai_gemini_baseline": 0.217,
-      "ai_gemini_pit_informed": 0.136
+      "ai_gemini_pit_informed": 0.136,
+      "ai_gemini_neutral": 0.103
     },
     {
       "coc_number": "CA-505",
@@ -3378,8 +4971,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.105,
       "ai_claude_pit_informed": 0.065,
+      "ai_claude_baseline_rerun": 0.11,
+      "ai_claude_neutral": 0.065,
       "ai_gemini_baseline": 0.045,
-      "ai_gemini_pit_informed": 0.022
+      "ai_gemini_pit_informed": 0.022,
+      "ai_gemini_neutral": 0.025
     },
     {
       "coc_number": "CA-506",
@@ -3394,8 +4990,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.265,
       "ai_claude_pit_informed": 0.175,
+      "ai_claude_baseline_rerun": 0.205,
+      "ai_claude_neutral": 0.14,
       "ai_gemini_baseline": 0.135,
-      "ai_gemini_pit_informed": 0.066
+      "ai_gemini_pit_informed": 0.066,
+      "ai_gemini_neutral": 0.063
     },
     {
       "coc_number": "CA-507",
@@ -3410,8 +5009,11 @@
       "truth_lag1_drop2021_n": null,
       "ai_claude_baseline": 0.06,
       "ai_claude_pit_informed": 0.065,
+      "ai_claude_baseline_rerun": 0.1,
+      "ai_claude_neutral": 0.055,
       "ai_gemini_baseline": 0.039,
-      "ai_gemini_pit_informed": 0.014
+      "ai_gemini_pit_informed": 0.014,
+      "ai_gemini_neutral": 0.023
     },
     {
       "coc_number": "CA-508",
@@ -3426,8 +5028,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.425,
       "ai_claude_pit_informed": 0.31,
+      "ai_claude_baseline_rerun": 0.29,
+      "ai_claude_neutral": 0.175,
       "ai_gemini_baseline": 0.162,
-      "ai_gemini_pit_informed": 0.096
+      "ai_gemini_pit_informed": 0.096,
+      "ai_gemini_neutral": 0.071
     },
     {
       "coc_number": "CA-509",
@@ -3442,8 +5047,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.395,
       "ai_claude_pit_informed": 0.295,
+      "ai_claude_baseline_rerun": 0.285,
+      "ai_claude_neutral": 0.195,
       "ai_gemini_baseline": 0.157,
-      "ai_gemini_pit_informed": 0.075
+      "ai_gemini_pit_informed": 0.075,
+      "ai_gemini_neutral": 0.067
     },
     {
       "coc_number": "CA-510",
@@ -3458,8 +5066,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.17,
       "ai_claude_pit_informed": 0.105,
+      "ai_claude_baseline_rerun": 0.155,
+      "ai_claude_neutral": 0.1,
       "ai_gemini_baseline": 0.104,
-      "ai_gemini_pit_informed": 0.044
+      "ai_gemini_pit_informed": 0.044,
+      "ai_gemini_neutral": 0.038
     },
     {
       "coc_number": "CA-511",
@@ -3474,8 +5085,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.155,
       "ai_claude_pit_informed": 0.095,
+      "ai_claude_baseline_rerun": 0.135,
+      "ai_claude_neutral": 0.09,
       "ai_gemini_baseline": 0.069,
-      "ai_gemini_pit_informed": 0.035
+      "ai_gemini_pit_informed": 0.035,
+      "ai_gemini_neutral": 0.033
     },
     {
       "coc_number": "CA-512",
@@ -3490,8 +5104,11 @@
       "truth_lag1_drop2021_n": null,
       "ai_claude_baseline": 0.118,
       "ai_claude_pit_informed": 0.11,
+      "ai_claude_baseline_rerun": 0.12,
+      "ai_claude_neutral": 0.055,
       "ai_gemini_baseline": 0.076,
-      "ai_gemini_pit_informed": 0.023
+      "ai_gemini_pit_informed": 0.023,
+      "ai_gemini_neutral": 0.041
     },
     {
       "coc_number": "CA-513",
@@ -3506,8 +5123,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.305,
       "ai_claude_pit_informed": 0.185,
+      "ai_claude_baseline_rerun": 0.195,
+      "ai_claude_neutral": 0.155,
       "ai_gemini_baseline": 0.141,
-      "ai_gemini_pit_informed": 0.066
+      "ai_gemini_pit_informed": 0.066,
+      "ai_gemini_neutral": 0.066
     },
     {
       "coc_number": "CA-514",
@@ -3522,8 +5142,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.33,
       "ai_claude_pit_informed": 0.215,
+      "ai_claude_baseline_rerun": 0.225,
+      "ai_claude_neutral": 0.18,
       "ai_gemini_baseline": 0.157,
-      "ai_gemini_pit_informed": 0.061
+      "ai_gemini_pit_informed": 0.061,
+      "ai_gemini_neutral": 0.067
     },
     {
       "coc_number": "CA-515",
@@ -3538,8 +5161,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.23,
       "ai_claude_pit_informed": 0.165,
+      "ai_claude_baseline_rerun": 0.195,
+      "ai_claude_neutral": 0.13,
       "ai_gemini_baseline": 0.123,
-      "ai_gemini_pit_informed": 0.054
+      "ai_gemini_pit_informed": 0.054,
+      "ai_gemini_neutral": 0.044
     },
     {
       "coc_number": "CA-516",
@@ -3554,8 +5180,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.575,
       "ai_claude_pit_informed": 0.435,
+      "ai_claude_baseline_rerun": 0.305,
+      "ai_claude_neutral": 0.265,
       "ai_gemini_baseline": 0.21,
-      "ai_gemini_pit_informed": 0.103
+      "ai_gemini_pit_informed": 0.103,
+      "ai_gemini_neutral": 0.081
     },
     {
       "coc_number": "CA-517",
@@ -3570,8 +5199,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.4,
       "ai_claude_pit_informed": 0.32,
+      "ai_claude_baseline_rerun": 0.33,
+      "ai_claude_neutral": 0.24,
       "ai_gemini_baseline": 0.193,
-      "ai_gemini_pit_informed": 0.101
+      "ai_gemini_pit_informed": 0.101,
+      "ai_gemini_neutral": 0.075
     },
     {
       "coc_number": "CA-518",
@@ -3586,8 +5218,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.22,
       "ai_claude_pit_informed": 0.16,
+      "ai_claude_baseline_rerun": 0.18,
+      "ai_claude_neutral": 0.12,
       "ai_gemini_baseline": 0.091,
-      "ai_gemini_pit_informed": 0.044
+      "ai_gemini_pit_informed": 0.044,
+      "ai_gemini_neutral": 0.037
     },
     {
       "coc_number": "CA-519",
@@ -3602,8 +5237,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.725,
       "ai_claude_pit_informed": 0.58,
+      "ai_claude_baseline_rerun": 0.475,
+      "ai_claude_neutral": 0.355,
       "ai_gemini_baseline": 0.271,
-      "ai_gemini_pit_informed": 0.166
+      "ai_gemini_pit_informed": 0.166,
+      "ai_gemini_neutral": 0.118
     },
     {
       "coc_number": "CA-520",
@@ -3618,8 +5256,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.13,
       "ai_claude_pit_informed": 0.075,
+      "ai_claude_baseline_rerun": 0.1,
+      "ai_claude_neutral": 0.095,
       "ai_gemini_baseline": 0.047,
-      "ai_gemini_pit_informed": 0.02
+      "ai_gemini_pit_informed": 0.02,
+      "ai_gemini_neutral": 0.029
     },
     {
       "coc_number": "CA-521",
@@ -3634,8 +5275,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.2,
       "ai_claude_pit_informed": 0.15,
+      "ai_claude_baseline_rerun": 0.195,
+      "ai_claude_neutral": 0.15,
       "ai_gemini_baseline": 0.109,
-      "ai_gemini_pit_informed": 0.057
+      "ai_gemini_pit_informed": 0.057,
+      "ai_gemini_neutral": 0.053
     },
     {
       "coc_number": "CA-522",
@@ -3650,8 +5294,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.235,
       "ai_claude_pit_informed": 0.175,
+      "ai_claude_baseline_rerun": 0.2,
+      "ai_claude_neutral": 0.13,
       "ai_gemini_baseline": 0.142,
-      "ai_gemini_pit_informed": 0.087
+      "ai_gemini_pit_informed": 0.087,
+      "ai_gemini_neutral": 0.06
     },
     {
       "coc_number": "CA-523",
@@ -3666,8 +5313,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.25,
       "ai_claude_pit_informed": 0.15,
+      "ai_claude_baseline_rerun": 0.245,
+      "ai_claude_neutral": 0.18,
       "ai_gemini_baseline": 0.182,
-      "ai_gemini_pit_informed": 0.083
+      "ai_gemini_pit_informed": 0.083,
+      "ai_gemini_neutral": 0.072
     },
     {
       "coc_number": "CA-524",
@@ -3682,8 +5332,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.175,
       "ai_claude_pit_informed": 0.095,
+      "ai_claude_baseline_rerun": 0.115,
+      "ai_claude_neutral": 0.08,
       "ai_gemini_baseline": 0.06,
-      "ai_gemini_pit_informed": 0.03
+      "ai_gemini_pit_informed": 0.03,
+      "ai_gemini_neutral": 0.032
     },
     {
       "coc_number": "CA-525",
@@ -3698,8 +5351,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.42,
       "ai_claude_pit_informed": 0.285,
+      "ai_claude_baseline_rerun": 0.275,
+      "ai_claude_neutral": 0.2,
       "ai_gemini_baseline": 0.177,
-      "ai_gemini_pit_informed": 0.093
+      "ai_gemini_pit_informed": 0.093,
+      "ai_gemini_neutral": 0.067
     },
     {
       "coc_number": "CA-526",
@@ -3714,8 +5370,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.4,
       "ai_claude_pit_informed": 0.26,
+      "ai_claude_baseline_rerun": 0.25,
+      "ai_claude_neutral": 0.17,
       "ai_gemini_baseline": 0.193,
-      "ai_gemini_pit_informed": 0.099
+      "ai_gemini_pit_informed": 0.099,
+      "ai_gemini_neutral": 0.074
     },
     {
       "coc_number": "CA-527",
@@ -3730,8 +5389,11 @@
       "truth_lag1_drop2021_n": 9,
       "ai_claude_baseline": 0.345,
       "ai_claude_pit_informed": 0.25,
+      "ai_claude_baseline_rerun": 0.26,
+      "ai_claude_neutral": 0.21,
       "ai_gemini_baseline": 0.208,
-      "ai_gemini_pit_informed": 0.11
+      "ai_gemini_pit_informed": 0.11,
+      "ai_gemini_neutral": 0.075
     },
     {
       "coc_number": "CA-529",
@@ -3746,8 +5408,11 @@
       "truth_lag1_drop2021_n": 9,
       "ai_claude_baseline": 0.59,
       "ai_claude_pit_informed": 0.435,
+      "ai_claude_baseline_rerun": 0.33,
+      "ai_claude_neutral": 0.24,
       "ai_gemini_baseline": 0.239,
-      "ai_gemini_pit_informed": 0.145
+      "ai_gemini_pit_informed": 0.145,
+      "ai_gemini_neutral": 0.096
     },
     {
       "coc_number": "CA-530",
@@ -3762,8 +5427,11 @@
       "truth_lag1_drop2021_n": 9,
       "ai_claude_baseline": 0.14,
       "ai_claude_pit_informed": 0.105,
+      "ai_claude_baseline_rerun": 0.11,
+      "ai_claude_neutral": 0.085,
       "ai_gemini_baseline": 0.109,
-      "ai_gemini_pit_informed": 0.05
+      "ai_gemini_pit_informed": 0.05,
+      "ai_gemini_neutral": 0.037
     },
     {
       "coc_number": "CA-600",
@@ -3778,8 +5446,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.18,
       "ai_claude_pit_informed": 0.115,
+      "ai_claude_baseline_rerun": 0.22,
+      "ai_claude_neutral": 0.15,
       "ai_gemini_baseline": 0.105,
-      "ai_gemini_pit_informed": 0.042
+      "ai_gemini_pit_informed": 0.042,
+      "ai_gemini_neutral": 0.046
     },
     {
       "coc_number": "CA-601",
@@ -3794,8 +5465,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.265,
       "ai_claude_pit_informed": 0.175,
+      "ai_claude_baseline_rerun": 0.165,
+      "ai_claude_neutral": 0.045,
       "ai_gemini_baseline": 0.134,
-      "ai_gemini_pit_informed": 0.046
+      "ai_gemini_pit_informed": 0.046,
+      "ai_gemini_neutral": 0.042
     },
     {
       "coc_number": "CA-602",
@@ -3810,8 +5484,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.19,
       "ai_claude_pit_informed": 0.115,
+      "ai_claude_baseline_rerun": 0.115,
+      "ai_claude_neutral": 0.06,
       "ai_gemini_baseline": 0.101,
-      "ai_gemini_pit_informed": 0.042
+      "ai_gemini_pit_informed": 0.042,
+      "ai_gemini_neutral": 0.039
     },
     {
       "coc_number": "CA-603",
@@ -3826,8 +5503,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.42,
       "ai_claude_pit_informed": 0.285,
+      "ai_claude_baseline_rerun": 0.225,
+      "ai_claude_neutral": 0.135,
       "ai_gemini_baseline": 0.162,
-      "ai_gemini_pit_informed": 0.073
+      "ai_gemini_pit_informed": 0.073,
+      "ai_gemini_neutral": 0.068
     },
     {
       "coc_number": "CA-604",
@@ -3842,8 +5522,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.245,
       "ai_claude_pit_informed": 0.14,
+      "ai_claude_baseline_rerun": 0.155,
+      "ai_claude_neutral": 0.135,
       "ai_gemini_baseline": 0.129,
-      "ai_gemini_pit_informed": 0.052
+      "ai_gemini_pit_informed": 0.052,
+      "ai_gemini_neutral": 0.057
     },
     {
       "coc_number": "CA-607",
@@ -3858,8 +5541,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.115,
       "ai_claude_pit_informed": 0.03,
+      "ai_claude_baseline_rerun": 0.042,
+      "ai_claude_neutral": 0.01,
       "ai_gemini_baseline": 0.011,
-      "ai_gemini_pit_informed": 0.001
+      "ai_gemini_pit_informed": 0.001,
+      "ai_gemini_neutral": 0.0
     },
     {
       "coc_number": "CA-608",
@@ -3874,8 +5560,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.26,
       "ai_claude_pit_informed": 0.145,
+      "ai_claude_baseline_rerun": 0.165,
+      "ai_claude_neutral": 0.105,
       "ai_gemini_baseline": 0.137,
-      "ai_gemini_pit_informed": 0.056
+      "ai_gemini_pit_informed": 0.056,
+      "ai_gemini_neutral": 0.054
     },
     {
       "coc_number": "CA-609",
@@ -3890,8 +5579,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.375,
       "ai_claude_pit_informed": 0.24,
+      "ai_claude_baseline_rerun": 0.2,
+      "ai_claude_neutral": 0.115,
       "ai_gemini_baseline": 0.15,
-      "ai_gemini_pit_informed": 0.061
+      "ai_gemini_pit_informed": 0.061,
+      "ai_gemini_neutral": 0.054
     },
     {
       "coc_number": "CA-611",
@@ -3906,8 +5598,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.455,
       "ai_claude_pit_informed": 0.315,
+      "ai_claude_baseline_rerun": 0.25,
+      "ai_claude_neutral": 0.135,
       "ai_gemini_baseline": 0.177,
-      "ai_gemini_pit_informed": 0.081
+      "ai_gemini_pit_informed": 0.081,
+      "ai_gemini_neutral": 0.071
     },
     {
       "coc_number": "CA-612",
@@ -3922,8 +5617,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.09,
       "ai_claude_pit_informed": 0.03,
+      "ai_claude_baseline_rerun": 0.042,
+      "ai_claude_neutral": 0.005,
       "ai_gemini_baseline": 0.009,
-      "ai_gemini_pit_informed": 0.001
+      "ai_gemini_pit_informed": 0.001,
+      "ai_gemini_neutral": 0.0
     },
     {
       "coc_number": "CA-614",
@@ -3938,8 +5636,11 @@
       "truth_lag1_drop2021_n": 17,
       "ai_claude_baseline": 0.255,
       "ai_claude_pit_informed": 0.16,
+      "ai_claude_baseline_rerun": 0.16,
+      "ai_claude_neutral": 0.12,
       "ai_gemini_baseline": 0.114,
-      "ai_gemini_pit_informed": 0.051
+      "ai_gemini_pit_informed": 0.051,
+      "ai_gemini_neutral": 0.051
     }
   ]
 }

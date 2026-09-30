@@ -40,6 +40,9 @@ OPTIONAL_JSON_COPY = [
     "ai_estimates_claude_pit_informed.json",
     "ai_estimates_gemini_baseline.json",
     "ai_estimates_gemini_pit_informed.json",
+    "ai_estimates_claude_baseline_rerun.json",
+    "ai_estimates_claude_neutral.json",
+    "ai_estimates_gemini_neutral.json",
     "ai_condition_comparison.json",
     "error_heterogeneity.json",
 ]

@@ -56,6 +56,56 @@
         }
       }
     },
+    "claude_baseline_rerun": {
+      "n_trials": 10,
+      "n_cocs": 40,
+      "mean_estimate": 0.199,
+      "mean_signed_error": 0.1409,
+      "mean_signed_error_se": 0.0482,
+      "mean_abs_error": 0.2889,
+      "agreement_pearson_r": 0.0258,
+      "agreement_spearman_rho": -0.0047,
+      "n_estimates": 440,
+      "n_negative_estimates": 0,
+      "mean_trial_sd": 0.0364,
+      "abs_error_by_confidence": {
+        "high": {
+          "n": 3,
+          "mean": 0.2048
+        },
+        "low": {
+          "n": 347,
+          "mean": 0.2931
+        },
+        "medium": {
+          "n": 50,
+          "mean": 0.275
+        }
+      }
+    },
+    "claude_neutral": {
+      "n_trials": 10,
+      "n_cocs": 40,
+      "mean_estimate": 0.1373,
+      "mean_signed_error": 0.0792,
+      "mean_signed_error_se": 0.0467,
+      "mean_abs_error": 0.2676,
+      "agreement_pearson_r": 0.0984,
+      "agreement_spearman_rho": 0.0747,
+      "n_estimates": 440,
+      "n_negative_estimates": 1,
+      "mean_trial_sd": 0.0278,
+      "abs_error_by_confidence": {
+        "low": {
+          "n": 370,
+          "mean": 0.2736
+        },
+        "medium": {
+          "n": 30,
+          "mean": 0.1958
+        }
+      }
+    },
     "gemini_baseline": {
       "n_trials": 10,
       "n_cocs": 40,
@@ -110,6 +160,33 @@
         }
       }
     },
+    "gemini_neutral": {
+      "n_trials": 10,
+      "n_cocs": 40,
+      "mean_estimate": 0.0541,
+      "mean_signed_error": -0.004,
+      "mean_signed_error_se": 0.0464,
+      "mean_abs_error": 0.2554,
+      "agreement_pearson_r": 0.035,
+      "agreement_spearman_rho": 0.0135,
+      "n_estimates": 440,
+      "n_negative_estimates": 0,
+      "mean_trial_sd": 0.0199,
+      "abs_error_by_confidence": {
+        "high": {
+          "n": 20,
+          "mean": 0.2124
+        },
+        "low": {
+          "n": 56,
+          "mean": 0.2747
+        },
+        "medium": {
+          "n": 324,
+          "mean": 0.2551
+        }
+      }
+    },
     "claude_pit_effect": {
       "mean_change": -0.0886,
       "se": 0.0067,
@@ -119,6 +196,20 @@
     "gemini_pit_effect": {
       "mean_change": -0.0658,
       "se": 0.0043,
+      "n_cocs_lower": 40,
+      "n_cocs": 40
+    },
+    "claude_neutral_effect": {
+      "compared_with": "claude_baseline_rerun",
+      "mean_change": -0.0617,
+      "se": 0.0045,
+      "n_cocs_lower": 40,
+      "n_cocs": 40
+    },
+    "gemini_neutral_effect": {
+      "compared_with": "gemini_baseline",
+      "mean_change": -0.0743,
+      "se": 0.0061,
       "n_cocs_lower": 40,
       "n_cocs": 40
     }

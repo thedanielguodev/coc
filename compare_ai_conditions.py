@@ -8,6 +8,15 @@ side by side:
   claude  pit_informed  data/ai_estimates_claude_pit_informed.json
   gemini  baseline      data/ai_estimates_gemini_baseline.json
   gemini  pit_informed  data/ai_estimates_gemini_pit_informed.json
+  claude  baseline_rerun  data/ai_estimates_claude_baseline_rerun.json (same prompt, re-run
+                          alongside the neutral trials so both share one model version)
+  claude  neutral       data/ai_estimates_claude_neutral.json
+  gemini  neutral       data/ai_estimates_gemini_neutral.json
+
+The neutral prompt drops exactly two things from the original: the list of
+housing-loss mechanisms and "not a hedge toward zero". neutral_effect is the
+paired per-CoC change from the original prompt to the neutral one, measured
+against the baseline run in the same batch (claude: baseline_rerun).
 
 Ground truth is each CoC's same-year Pearson r (acres burned vs. PIT count),
 taken from ai_vs_ground_truth.json's by_coc (the 41 CoCs with enough data).
@@ -95,8 +104,9 @@ def main():
     truth = {r["coc_number"]: r["ground_truth_r"] for r in json.loads((DATA_DIR / "ai_vs_ground_truth.json").read_text())["by_coc"]}
     obs_mean = st.mean(truth.values())
     results = {}
-    for model in ("claude", "gemini"):
-        for condition in ("baseline", "pit_informed"):
+    for model, conditions in (("claude", ("baseline", "pit_informed", "baseline_rerun", "neutral")),
+                              ("gemini", ("baseline", "pit_informed", "neutral"))):
+        for condition in conditions:
             trials = load_trials(model, condition)
             if trials:
                 results[f"{model}_{condition}"] = summarize(trials, truth)
@@ -107,6 +117,17 @@ def main():
         if a and b:
             d = [b["_mean_estimate_by_coc"][c] - a["_mean_estimate_by_coc"][c] for c in truth]
             results[f"{model}_pit_effect"] = {
+                "mean_change": round(st.mean(d), 4),
+                "se": round(st.stdev(d) / math.sqrt(len(d)), 4),
+                "n_cocs_lower": sum(x < 0 for x in d),
+                "n_cocs": len(d),
+            }
+    for model, base in (("claude", "baseline_rerun"), ("gemini", "baseline")):
+        a, b = results.get(f"{model}_{base}"), results.get(f"{model}_neutral")
+        if a and b:
+            d = [b["_mean_estimate_by_coc"][c] - a["_mean_estimate_by_coc"][c] for c in truth]
+            results[f"{model}_neutral_effect"] = {
+                "compared_with": f"{model}_{base}",
                 "mean_change": round(st.mean(d), 4),
                 "se": round(st.stdev(d) / math.sqrt(len(d)), 4),
                 "n_cocs_lower": sum(x < 0 for x in d),
@@ -127,7 +148,7 @@ def main():
     }, indent=2))
     print(f"observed mean per-CoC r = {obs_mean:.3f}")
     for k, v in results.items():
-        if "pit_effect" in k:
+        if "_effect" in k:
             print(f"{k:22s} change {v['mean_change']:+.3f} (se {v['se']:.3f}), lower in {v['n_cocs_lower']}/{v['n_cocs']} CoCs")
         else:
             print(f"{k:22s} mean est {v['mean_estimate']:.3f}  bias {v['mean_signed_error']:+.3f} (se {v['mean_signed_error_se']:.3f})  "

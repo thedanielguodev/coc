@@ -293,12 +293,13 @@
       <p>A Continuum of Care (CoC) is the local body that runs HUD's annual Point-in-Time (PIT) count of people experiencing homelessness. This project matches each CoC's yearly count to the wildfires that burned inside its boundary, then asks whether regions with more fire damage count more homeless residents.</p>
       <ul class="findings">
         <li>Pooled across <span data-fill="n_cocyears">712</span> CoC-years, acres burned and the homeless count are essentially uncorrelated (Pearson r = <span data-fill="r_acres">0.027</span>). Counts of structures destroyed, available from 2013, give the same result (r = <span data-fill="r_struct">0.003</span>). The 2021 count is left out of every statistic because most California CoCs skipped the unsheltered count that year.</li>
-        <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. The only estimate that reaches significance (p = <span data-fill="fe_sig_p">0.023</span>) comes entirely from Butte County and the Camp Fire. Without Butte, p = <span data-fill="fe_loo_p">0.94</span>.</li>
+        <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. The only estimate that reaches significance (p = <span data-fill="fe_sig_p">0.023</span>) depends entirely on Butte County: without it, p = <span data-fill="fe_loo_p">0.94</span>.</li>
         <li>The observed relationship does not differ across regions by more than sampling noise, so no census or insurance measure explains where it is stronger.</li>
         <li>An AI model given only each region's fire history predicted a positive relationship in all <span data-fill="n_estimates">440</span> of its estimates. On average it overstated the observed correlation by <span data-fill="bias">0.22</span>.</li>
         <li>The AI's estimate for a region rises with the number of structures its fires destroyed (&rho; = <span data-fill="rho_ai_struct">0.80</span>). The observed correlation does not (&rho; = <span data-fill="rho_obs_struct">&minus;0.13</span>). The AI is therefore most wrong where fires were most destructive.</li>
         <li>The model's errors were largest when it described itself as highly confident.</li>
-        <li>Told how the PIT count is collected, the model lowered its estimates but still overstated the correlation. A second model, Gemini, overstated it much less. Neither model ever predicted a negative relationship, and neither could tell which regions had a stronger one.</li>
+        <li>Told how the PIT count is collected, the model lowered its estimates but still overstated the correlation. A second model, Gemini, overstated it much less. Across all 3,080 estimates from both models and every prompt, only one was negative, and neither model could tell which regions had a stronger relationship.</li>
+        <li>Removing the prompt's list of housing-loss mechanisms and its instruction not to "hedge toward zero" lowered the model's estimate in every region (by <span data-fill="neutral_change">0.06</span> on average) and cut its overstatement roughly in half. Gemini's neutral estimates matched the data on average. Both models' estimates still rose with the number of structures destroyed.</li>
       </ul>
       <p>The PIT count misses many people displaced by fire, such as families staying with relatives or in hotels paid by insurance or FEMA. A weak result here does not show that wildfires have no effect on housing loss. A national study of all 50 states found that homes lost to climate disasters were associated with larger increases in homelessness (<a href="https://doi.org/10.1001/jamanetworkopen.2026.5187">Leifheit et al., 2026</a>). The AI's positive direction may be right. This page measures how well it estimates the size of the relationship that appears in HUD's CoC-level counts.</p>
     </section>
@@ -468,7 +469,8 @@
 
       <div class="prose">
         <h3>Does knowing how the data is collected change the estimates?</h3>
-        <p>Part of the gap could come from the model not knowing how the PIT count works. To test this, the experiment was repeated with one added paragraph describing what the count includes and leaves out. It was also run on a second model, Gemini 3.5 Flash-Lite, with both versions of the prompt. Each of the four combinations had 10 independent runs.</p>
+        <p>Part of the gap could come from the model not knowing how the PIT count works. To test this, the experiment was repeated with one added paragraph describing what the count includes and leaves out. It was also run on a second model, Gemini 3.5 Flash-Lite, with both versions of the prompt. Each combination had 10 independent runs.</p>
+        <p>The original prompt also lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." To test whether that wording inflates the estimates, a neutral version removes exactly those two phrases and changes nothing else. Because the Claude model available on September 30 answered the original prompt differently from the one used earlier, the neutral runs were compared with 10 runs of the original prompt made in the same batch.</p>
       </div>
       <figure>
         <div class="fig-head">
@@ -476,7 +478,7 @@
           <p class="fig-sub">Mean estimated correlation across <span data-fill="n_cond_cocs">40</span> CoCs, compared with the observed average.</p>
         </div>
         <div id="conditionChart" class="chart"></div>
-        <figcaption class="fig-note"><b>Note:</b> The "PIT description" prompt adds a paragraph explaining that the count covers one night in January, includes only people in shelters or unsheltered locations, and skipped unsheltered people in 2021. Gemini 3.5 Flash-Lite is a smaller model than Claude Sonnet; larger Gemini models were not available within free-tier limits. <b>Source:</b> Author's calculations.</figcaption>
+        <figcaption class="fig-note"><b>Note:</b> The "neutral" prompt is the original with the list of housing-loss mechanisms and "not a hedge toward zero" removed; it is compared with the original prompt run in the same September 30 batch. The "PIT description" prompt adds a paragraph explaining that the count covers one night in January, includes only people in shelters or unsheltered locations, and skipped unsheltered people in 2021. Gemini 3.5 Flash-Lite is a smaller model than Claude Sonnet; larger Gemini models were not available within free-tier limits. <b>Source:</b> Author's calculations.</figcaption>
       </figure>
       <div class="table-wrap">
         <table class="data" id="conditionTable">
@@ -551,7 +553,7 @@
         <h2>Butte County and the Camp Fire</h2>
         <p>The 2018 Camp Fire destroyed most of the town of Paradise in Butte County, roughly 14,000 to 19,000 structures. It is the largest loss of housing in this dataset.</p>
         <p id="caseStat"></p>
-        <p>It is also the only fire in the dataset that registers statistically. In the fixed-effects model for structures destroyed (Table 2), the same-year estimate has p = <span data-fill="fe_sig_p">0.023</span> with Butte included and p = <span data-fill="fe_loo_p">0.94</span> without it. Butte is also where the AI gave its highest estimate (<span data-fill="butte_ai">0.72</span>).</p>
+        <p>Butte also drives the one significant fixed-effects result for structures destroyed (Table 2): the same-year estimate has p = <span data-fill="fe_sig_p">0.023</span> with Butte included and p = <span data-fill="fe_loo_p">0.94</span> without it. That result is not the Camp Fire raising the count. Same-year timing pairs the November 2018 fire with the January 2018 count, taken before the fire, and with next-year timing the model is not significant. Butte is also where the AI gave its highest estimate (<span data-fill="butte_ai">0.72</span>).</p>
       </div>
       <figure>
         <div class="fig-head">
@@ -589,7 +591,7 @@
         <li>The PIT count is taken in January, before that year's fire season. The AI was asked about the same-year relationship, so that is the benchmark; next-year timing is reported alongside it.</li>
         <li>Fires under 1,000 acres are excluded, and CoC boundaries are treated as fixed across all years.</li>
         <li>Two AI models were tested, and all regions were estimated in the same request for each run.</li>
-        <li>The original prompt lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." This wording may push every estimate upward. A neutral prompt has not been tested yet.</li>
+        <li>The original prompt lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." A neutral version without that wording lowered Claude's estimates by about 0.06 and cut its overstatement roughly in half, so part of the original overstatement comes from the prompt. On Gemini, the neutral prompt brought the average estimate down to the observed average, but its estimates still rose with structures destroyed.</li>
       </ul>
       <p>Claude Code was used to help write the data pipeline and this page.</p>
     </section>
@@ -609,6 +611,8 @@
         <li><a href="site/data/ai_estimates_claude_pit_informed.json">AI estimates, Claude with PIT description</a></li>
         <li><a href="site/data/ai_estimates_gemini_baseline.json">AI estimates, Gemini, original prompt</a></li>
         <li><a href="site/data/ai_estimates_gemini_pit_informed.json">AI estimates, Gemini with PIT description</a></li>
+        <li><a href="site/data/ai_estimates_claude_neutral.json">AI estimates, Claude, neutral prompt</a></li>
+        <li><a href="site/data/ai_estimates_claude_baseline_rerun.json">AI estimates, Claude, original prompt re-run in the same batch</a></li>
         <li><a href="site/data/ai_condition_comparison.json">AI comparison across models and prompts</a></li>
         <li><a href="site/data/ai_fire_influence_estimates.json">AI estimates, all runs</a></li>
         <li><a href="site/data/ai_vs_ground_truth.json">AI vs. observed, by CoC</a></li>
@@ -1084,6 +1088,8 @@ function renderSummaryNumbers() {
   if (state.yearly?.years) fill("n_yearly", state.yearly.years.length);
   const cond = state.conditions?.results?.claude_baseline;
   if (cond) fill("n_cond_cocs", cond.n_cocs);
+  const neutral = state.conditions?.results?.claude_neutral_effect;
+  if (neutral) fill("neutral_change", Math.abs(neutral.mean_change).toFixed(2));
   const eh = state.errorHetero;
   if (eh) {
     const rho = (outcome, cov) => eh.correlates[outcome]?.tests.find(t => t.covariate === cov)?.spearman_rho;
@@ -1400,12 +1406,19 @@ function renderGap() {
     .on("click", () => { if (current) selectCoc(current.id, { scroll: true }); });
 }
 
+// Rows render only when their data file exists. The neutral prompt drops the
+// mechanism list and "not a hedge toward zero"; for Claude it is compared with
+// a baseline re-run in the same batch, so both share one model version.
 const CONDITION_ROWS = [
   ["claude_baseline", "Claude Sonnet", "Original"],
   ["claude_pit_informed", "Claude Sonnet", "PIT description"],
+  ["claude_baseline_rerun", "Claude Sonnet, Sept. 30 batch", "Original"],
+  ["claude_neutral", "Claude Sonnet, Sept. 30 batch", "Neutral"],
   ["gemini_baseline", "Gemini Flash-Lite", "Original"],
   ["gemini_pit_informed", "Gemini Flash-Lite", "PIT description"],
+  ["gemini_neutral", "Gemini Flash-Lite", "Neutral"],
 ];
+const PROMPT_LABELS = { "Original": "original prompt", "PIT description": "PIT description", "Neutral": "neutral prompt" };
 
 function renderConditions() {
   const res = state.conditions?.results;
@@ -1418,8 +1431,8 @@ function renderConditions() {
   const rows = CONDITION_ROWS.filter(([k]) => res[k]).map(([k, model, prompt]) => ({ key: k, model, prompt, ...res[k] }));
   tbody.innerHTML = rows.map(r => `<tr><td>${r.model}</td><td>${r.prompt}</td><td class="n">${r.mean_estimate.toFixed(2)}</td><td class="n">${fmtSigned(r.mean_signed_error)} (${r.mean_signed_error_se.toFixed(2)})</td><td class="n">${fmtR(r.agreement_spearman_rho, 2)}</td><td class="n">${r.n_negative_estimates} of ${fmt(r.n_estimates)}</td></tr>`).join("");
   const observed = state.conditions.observed_mean_r;
-  drawHBars("conditionChart", rows.map(r => ({ ...r, label: `${r.model}, ${r.prompt === "Original" ? "original prompt" : "PIT description"}`, value: r.mean_estimate })), {
-    labelWidth: 230,
+  drawHBars("conditionChart", rows.map(r => ({ ...r, label: `${r.model}, ${PROMPT_LABELS[r.prompt]}`, value: r.mean_estimate })), {
+    labelWidth: 300,
     refLine: { value: observed, label: `Observed average, ${observed.toFixed(2)}` },
     tooltip: r => `<div class="t">${r.label}</div>Mean estimate ${r.mean_estimate.toFixed(3)}<br>Overstatement ${fmtSigned(r.mean_signed_error, 3)} (SE ${r.mean_signed_error_se.toFixed(3)})<br>${r.n_negative_estimates} of ${r.n_estimates} estimates below zero`,
   });
