@@ -4,6 +4,13 @@ A data project comparing HUD homeless counts for California's 44 Continuums of C
 
 **Live dashboard:** https://research.danielguo.xyz/
 
+## Key findings
+
+- Fire exposure shows no detectable pooled association with Point-in-Time homeless counts across California's 44 CoCs (acres burned r = 0.027; structures destroyed r = 0.003).
+- The one fixed-effects estimate that reaches significance depends entirely on Butte County, and its timing pairs the Camp Fire with a count taken before it, so it is not a Camp Fire effect.
+- AI models overstate the relationship. Their estimates track structures destroyed (Spearman ρ = 0.80 for Claude) rather than the observed data, and across 3,080 estimates only one was negative.
+- PIT counts miss many people displaced by fire, so this does not show that wildfire has no effect on housing loss.
+
 ## Research question
 
 Can an AI model, given only a region's wildfire history, estimate the relationship between wildfire and the homeless count that HUD's data actually shows? If not, are its errors random or systematic, and where are they largest?
@@ -78,3 +85,7 @@ Run in this order; each step reads the previous step's output in `data/`:
 .venv/bin/python analyze_error_heterogeneity.py  # where the AI-vs-observed gap is largest, and what predicts it -> data/error_heterogeneity.json
 .venv/bin/python build_site_data.py       # converts CSVs to JSON and stages everything into site/data/
 ```
+
+## License
+
+Code is released under the [MIT License](LICENSE). The underlying data from HUD, CAL FIRE, the U.S. Census Bureau, and the California Department of Insurance remains subject to those sources' terms.
