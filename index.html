@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wildfire and Homelessness in California</title>
-<meta name="description" content="California Continuum of Care homeless counts, 2007-2024, compared with CAL FIRE wildfire records, and with an AI model's estimates of the same relationship.">
+<meta name="description" content="California Continuum of Care homeless counts, 2007-2024, compared with CAL FIRE wildfire records, and with two AI models' estimates of the same relationship.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -276,6 +276,7 @@
       <li><a href="#trends">Statewide trends</a></li>
       <li><a href="#association">Fire and homeless counts</a></li>
       <li><a href="#ai">AI estimates</a></li>
+      <li><a href="#neutral">The neutral prompt</a></li>
       <li><a href="#ai-error">Where the AI is most wrong</a></li>
       <li><a href="#butte">Butte County</a></li>
       <li><a href="#methods">Data and methods</a></li>
@@ -285,21 +286,19 @@
 
   <article>
     <h1>Do wildfires show up in California's homeless counts?</h1>
-    <p class="dek">Eighteen years of federal homeless counts for California's 44 Continuums of Care, compared with state wildfire records, and with estimates from an AI model that never saw the counts.</p>
-    <p class="byline">Daniel Guo &middot; Working draft, updated September 30, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
+    <p class="dek">Eighteen years of federal homeless counts for California's 44 Continuums of Care, compared with state wildfire records, and with estimates from two AI models that never saw the counts.</p>
+    <p class="byline">Daniel Guo &middot; Working draft, updated October 15, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
 
     <section id="findings" class="prose">
       <h2>Summary</h2>
       <p>A Continuum of Care (CoC) is the local body that runs HUD's annual Point-in-Time (PIT) count of people experiencing homelessness. This project matches each CoC's yearly count to the wildfires that burned inside its boundary, then asks whether regions with more fire damage count more homeless residents.</p>
       <ul class="findings">
+        <li>The main result: a neutral prompt lowers the AI's estimates but does not make them follow the data. Without the original prompt's list of housing-loss mechanisms and its instruction not to "hedge toward zero," Claude's estimate fell in every region, but its average (<span data-fill="nt_claude_mean">0.14</span>) stayed more than twice the observed average (<span data-fill="obs_mean">0.06</span>). The excess sits where fires destroyed the most homes: <span data-fill="nt_claude_gap_hi">+0.22</span> in the CoCs with 1,000 or more structures destroyed (p = <span data-fill="nt_claude_p_hi">0.012</span>), against <span data-fill="nt_claude_gap_lo">&minus;0.06</span> in those with fewer than 100. Gemini matched the observed average under the neutral prompt, yet its estimates still rose with fire destruction.</li>
         <li>Pooled across <span data-fill="n_cocyears">712</span> CoC-years, acres burned and the homeless count are essentially uncorrelated (Pearson r = <span data-fill="r_acres">0.027</span>). Counts of structures destroyed, available from 2013, give the same result (r = <span data-fill="r_struct">0.003</span>). The 2021 count is left out of every statistic because most California CoCs skipped the unsheltered count that year.</li>
         <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. The only estimate that reaches significance (p = <span data-fill="fe_sig_p">0.023</span>) depends entirely on Butte County: without it, p = <span data-fill="fe_loo_p">0.94</span>.</li>
-        <li>The observed relationship does not differ across regions by more than sampling noise, so no census or insurance measure explains where it is stronger.</li>
-        <li>An AI model given only each region's fire history predicted a positive relationship in all <span data-fill="n_estimates">440</span> of its estimates. On average it overstated the observed correlation by <span data-fill="bias">0.22</span>.</li>
-        <li>The AI's estimate for a region rises with the number of structures its fires destroyed (&rho; = <span data-fill="rho_ai_struct">0.80</span>). The observed correlation does not (&rho; = <span data-fill="rho_obs_struct">&minus;0.13</span>). The AI is therefore most wrong where fires were most destructive.</li>
-        <li>The model's errors were largest when it described itself as highly confident.</li>
-        <li>Told how the PIT count is collected, the model lowered its estimates but still overstated the correlation. A second model, Gemini, overstated it much less. Across all 3,080 estimates from both models and every prompt, only one was negative, and neither model could tell which regions had a stronger relationship.</li>
-        <li>Removing the prompt's list of housing-loss mechanisms and its instruction not to "hedge toward zero" lowered the model's estimate in every region (by <span data-fill="neutral_change">0.06</span> on average) and cut its overstatement roughly in half. Gemini's neutral estimates matched the data on average. Both models' estimates still rose with the number of structures destroyed.</li>
+        <li>Under the original prompt, Claude's average estimate was <span data-fill="claude_mean">0.28</span>, and it overstated the observed correlation by <span data-fill="bias">0.22</span> on average. Describing how the PIT count is collected reduced the overstatement to <span data-fill="pit_bias">0.14</span>. Gemini's estimates were smaller throughout. Neither model could tell which regions had a stronger relationship.</li>
+        <li>Both models' estimates rise with the number of structures a region's fires destroyed (&rho; = <span data-fill="rho_ai_struct">0.80</span> for Claude, <span data-fill="rho_gem_struct">0.78</span> for Gemini). The observed correlation does not (&rho; = <span data-fill="rho_obs_struct">&minus;0.13</span>), and it does not differ across regions by more than sampling noise.</li>
+        <li>The estimates were highly repeatable across runs, and the model's errors were largest when it described itself as highly confident. Repeatability is not accuracy.</li>
       </ul>
       <p>The PIT count misses many people displaced by fire, such as families staying with relatives or in hotels paid by insurance or FEMA. A weak result here does not show that wildfires have no effect on housing loss. A national study of all 50 states found that homes lost to climate disasters were associated with larger increases in homelessness (<a href="https://doi.org/10.1001/jamanetworkopen.2026.5187">Leifheit et al., 2026</a>). The AI's positive direction may be right. This page measures how well it estimates the size of the relationship that appears in HUD's CoC-level counts.</p>
     </section>
@@ -468,7 +467,7 @@
       </figure>
 
       <div class="prose">
-        <h3>Does knowing how the data is collected change the estimates?</h3>
+        <h3>Does the prompt change the estimates?</h3>
         <p>Part of the gap could come from the model not knowing how the PIT count works. To test this, the experiment was repeated with one added paragraph describing what the count includes and leaves out. It was also run on a second model, Gemini 3.5 Flash-Lite, with both versions of the prompt. Each combination had 10 independent runs.</p>
         <p>The original prompt also lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." To test whether that wording inflates the estimates, a neutral version removes exactly those two phrases and changes nothing else. Because the Claude model available on September 30 answered the original prompt differently from the one used earlier, the neutral runs were compared with 10 runs of the original prompt made in the same batch.</p>
       </div>
@@ -506,15 +505,50 @@
       </details>
     </section>
 
+    <section id="neutral">
+      <div class="prose">
+        <h2>The neutral prompt</h2>
+        <p>The neutral prompt is the most direct test of whether the experiment's own wording produced the overstatement. In the same-batch comparison it lowered Claude's estimate for <span data-fill="nt_n_lower">all 40</span> CoCs, and Claude's average fell from <span data-fill="rerun_mean">0.20</span> to <span data-fill="nt_claude_mean">0.14</span>. That is still more than twice the observed average of <span data-fill="obs_mean">0.06</span>. Across all CoCs, the remaining overstatement (<span data-fill="nt_claude_bias">+0.08</span>, standard error <span data-fill="nt_claude_se">0.05</span>) is about <span data-fill="nt_claude_z">1.7</span> standard errors above zero, which is suggestive rather than conclusive. The gap is not spread evenly, and Figure 8 shows where it is.</p>
+      </div>
+      <figure>
+        <div class="fig-head">
+          <p class="fig-label">Figure 8. Original and neutral estimates for each CoC</p>
+          <p class="fig-sub">Estimated and observed correlation. CoCs sorted by structures destroyed by fire, 2013&ndash;2024, most at the top. Click a row to show that region on the map.</p>
+        </div>
+        <div class="key" aria-hidden="true">
+          <span><i class="dot" style="background:#fff;border:1.5px solid var(--blue);box-sizing:border-box"></i>Original prompt</span>
+          <span><i class="dot" style="background:var(--blue)"></i>Neutral prompt</span>
+          <span><i style="background:var(--muted);width:8px;height:8px;transform:rotate(45deg);border-radius:0"></i>Observed r</span>
+        </div>
+        <div id="dumbbellChart" class="chart"></div>
+        <figcaption class="fig-note"><b>Note:</b> Each value is the mean of 10 runs. The Claude panel compares the two prompts within the same September 30 batch. Gemini's original-prompt runs were made a week before its neutral runs, so a change in the model behind the same name cannot be ruled out. Observed r is same-year, 2021 left out. <b>Source:</b> HUD PIT counts; CAL FIRE DINS. Author's calculations.</figcaption>
+      </figure>
+      <div class="prose">
+        <p>Every estimate moves left, because the neutral prompt lowers them all, but the order of the CoCs barely changes. Both models still give their highest estimates to the regions at the top, and Butte County is the highest estimate for both models under both prompts. The observed correlations fall on both sides of zero with no trend from top to bottom.</p>
+        <p>In the <span data-fill="n_hi">10</span> CoCs where fires destroyed 1,000 or more structures, neutral Claude overstated the relationship by <span data-fill="nt_claude_gap_hi">+0.22</span> on average, with <span data-fill="nt_claude_above_hi">8 of 10</span> above their observed value (exact permutation test, p = <span data-fill="nt_claude_p_hi">0.012</span>). In the <span data-fill="n_lo">15</span> with fewer than 100, it slightly understated it (<span data-fill="nt_claude_gap_lo">&minus;0.06</span>). The difference between the two groups is unlikely to be chance (p = <span data-fill="nt_claude_p_diff">0.009</span>). Gemini points the same way but more weakly: <span data-fill="nt_gem_gap_hi">+0.07</span> in the most-destroyed CoCs (p = <span data-fill="nt_gem_p_hi">0.20</span>) and <span data-fill="nt_gem_gap_lo">&minus;0.11</span> in the least (difference p = <span data-fill="nt_gem_p_diff">0.057</span>). Under the neutral prompt Gemini is close to the data even where destruction was greatest, but its estimates are still ordered by destruction. Table 5 gives the same numbers for every model and prompt.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data" id="salienceTable">
+          <caption>Table 5. Estimates and gaps by structures destroyed</caption>
+          <thead><tr><th rowspan="2">Model, prompt</th><th class="n" rowspan="2">&rho; with structures</th><th colspan="3" style="text-align:center">Gap by structures destroyed (CoCs)</th><th class="n" rowspan="2">p, 1,000+</th></tr><tr><th class="n">&lt;100</th><th class="n">100&ndash;999</th><th class="n">1,000+</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> &rho; is the Spearman correlation across <span data-fill="n_cond_cocs">40</span> CoCs between each condition's estimate and structures destroyed, 2013&ndash;2024. Gap is the mean of estimate minus observed r within each group, with the number of CoCs in parentheses. p is a one-sided exact sign-flip permutation test that the mean gap in the 1,000+ group is above zero. The groups were set in an earlier analysis of the original-prompt results and reused here, so these tests were not pre-registered. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
+      <div class="prose">
+        <p>The estimate's correlation with structures destroyed barely changes across prompts, while the observed correlation's is slightly negative. The prompt changes how high the estimates are, not what they follow.</p>
+      </div>
+    </section>
+
     <section id="ai-error">
       <div class="prose">
         <h2>Where the AI is most wrong</h2>
         <p>The gap between the AI's estimate and the observed correlation varies a lot from region to region. That variation can come from either side. Each region's observed r rests on at most 17 years of counts, so it is noisy. The AI's estimate, averaged over 10 runs, is not: the two halves of its runs agree almost perfectly (split-half reliability <span data-fill="ai_reliability">0.98</span>).</p>
-        <p>Table 5 tests whether the observed correlations differ across regions by more than their sampling noise. They do not, once 2021 is handled. So a regional difference in the AI's error mostly reflects what the AI believes about that region, and the useful question is what drives its estimate. Figure 8 shows the answer: how destructive the region's fires were.</p>
+        <p>Table 6 tests whether the observed correlations differ across regions by more than their sampling noise. They do not, once 2021 is handled. So a regional difference in the AI's error mostly reflects what the AI believes about that region, and the useful question is what drives its estimate. Figure 9 shows the answer: how destructive the region's fires were.</p>
       </div>
       <figure>
         <div class="fig-head">
-          <p class="fig-label">Figure 8. AI estimate and observed correlation, by structures destroyed</p>
+          <p class="fig-label">Figure 9. AI estimate and observed correlation, by structures destroyed</p>
           <p class="fig-sub" id="gapSub">&nbsp;</p>
         </div>
         <div class="key" aria-hidden="true">
@@ -528,7 +562,7 @@
 
       <div class="table-wrap">
         <table class="data" id="heteroTable">
-          <caption>Table 5. Do observed correlations differ across CoCs by more than sampling noise?</caption>
+          <caption>Table 6. Do observed correlations differ across CoCs by more than sampling noise?</caption>
           <thead><tr><th>Fire timing</th><th>2021 count</th><th class="n">CoCs</th><th class="n">Mean r</th><th class="n">Q</th><th class="n">df</th><th class="n">p</th><th class="n">I&sup2;</th></tr></thead>
           <tbody></tbody>
         </table>
@@ -536,11 +570,11 @@
       <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Cochran's Q compares the spread of the per-CoC correlations (Fisher z) with the spread expected from sampling noise alone. I&sup2; is the share of the spread that reflects real differences. Only the row that pairs the 2020 fire season with the incomplete 2021 count shows real differences. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
 
       <div class="prose">
-        <p>Table 6 repeats the question with census and insurance data. Each measure is compared with the AI's estimate, the observed correlation, and the gap between them, correcting for testing 21 measures at once. The AI's estimates follow fire destruction and rurality. Measures such as income or insurer nonrenewals also line up with its estimates, but only because they differ between rural fire country and the urban coast. Once structures destroyed and population density are held fixed, <span data-fill="n_partial_sig">none</span> of the other measures predicts the AI's estimate. None predicts the observed correlation.</p>
+        <p>Table 7 repeats the question with census and insurance data. Each measure is compared with the AI's estimate, the observed correlation, and the gap between them, correcting for testing 21 measures at once. The AI's estimates follow fire destruction and rurality. Measures such as income or insurer nonrenewals also line up with its estimates, but only because they differ between rural fire country and the urban coast. Once structures destroyed and population density are held fixed, <span data-fill="n_partial_sig">none</span> of the other measures predicts the AI's estimate. None predicts the observed correlation.</p>
       </div>
       <div class="table-wrap">
         <table class="data" id="covTable">
-          <caption>Table 6. Rank correlation of CoC characteristics with the AI estimate, the observed correlation, and the gap</caption>
+          <caption>Table 7. Rank correlation of CoC characteristics with the AI estimate, the observed correlation, and the gap</caption>
           <thead><tr><th>CoC characteristic</th><th class="n">AI estimate &rho;</th><th class="n">Observed r &rho;</th><th class="n">Gap &rho;</th></tr></thead>
           <tbody></tbody>
         </table>
@@ -557,7 +591,7 @@
       </div>
       <figure>
         <div class="fig-head">
-          <p class="fig-label">Figure 9. Homeless count, Chico, Paradise/Butte County CoC (CA-519)</p>
+          <p class="fig-label">Figure 10. Homeless count, Chico, Paradise/Butte County CoC (CA-519)</p>
           <p class="fig-sub">Overall PIT count by year.</p>
         </div>
         <div id="caseChart" class="chart"></div>
@@ -580,9 +614,9 @@
       <h3>Matching fires to regions</h3>
       <p>Each fire perimeter is intersected with every CoC boundary. When a fire crosses a boundary, its acres are divided in proportion to the area on each side. Each destroyed structure is assigned to the CoC that contains it. Census tracts and insurance ZIP codes are assigned to the CoC containing their center point; where the Los Angeles boundary overlaps Pasadena and Glendale, the smaller CoC is used.</p>
       <h3>Statistics</h3>
-      <p>The 2021 count is excluded from every statistic. HUD allowed CoCs to skip the unsheltered count that year because of COVID-19, and 36 of California's 44 CoCs reported no unsheltered people. Including it pairs the record 2020 fire season with an artificially low count. Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 17 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC, and are refit without the CoC that had the largest single fire year. Differences in the observed correlation across CoCs are tested with Cochran's Q on Fisher-transformed correlations. Relationships with census and insurance measures use Spearman correlations with a Benjamini-Hochberg correction, rank partial correlations that hold structures destroyed and population density fixed, and a precision-weighted meta-regression of the observed correlations.</p>
+      <p>The 2021 count is excluded from every statistic. HUD allowed CoCs to skip the unsheltered count that year because of COVID-19, and 36 of California's 44 CoCs reported no unsheltered people. Including it pairs the record 2020 fire season with an artificially low count. Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 17 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC, and are refit without the CoC that had the largest single fire year. Differences in the observed correlation across CoCs are tested with Cochran's Q on Fisher-transformed correlations. Relationships with census and insurance measures use Spearman correlations with a Benjamini-Hochberg correction, rank partial correlations that hold structures destroyed and population density fixed, and a precision-weighted meta-regression of the observed correlations. To test whether the AI's overstatement is concentrated where fires were most destructive, CoCs are grouped by structures destroyed in 2013&ndash;2024 (fewer than 100, 100&ndash;999, and 1,000 or more) and compared with exact permutation tests, which make no assumption about the shape of the distribution: a sign-flip test of whether the mean gap in the 1,000+ group is above zero, and a two-group test of whether it is larger than in the group with fewer than 100.</p>
       <h3>AI experiment</h3>
-      <p>The model saw each CoC's name, number, and acres burned by year. It never saw homeless counts or any of the results on this page. It returned an estimated correlation, a direction, a confidence level, and a short explanation for each CoC. All 44 CoCs were sent together in each of 10 independent runs. The estimate shown for a CoC is the mean across runs. The follow-up runs used the same prompt with one added paragraph describing the PIT count, and were repeated on Gemini 3.5 Flash-Lite through the Gemini API. The exact prompts and every raw answer are in the data files below.</p>
+      <p>The model saw each CoC's name, number, and acres burned by year. It never saw homeless counts or any of the results on this page. It returned an estimated correlation, a direction, a confidence level, and a short explanation for each CoC. All 44 CoCs were sent together in each of 10 independent runs. The estimate shown for a CoC is the mean across runs. The follow-up runs used the same prompt with one added paragraph describing the PIT count, and were repeated on Gemini 3.5 Flash-Lite through the Gemini API. A neutral prompt removed the list of housing-loss mechanisms and the instruction not to "hedge toward zero" and changed nothing else. Because the Claude model answered the original prompt differently by September 30, the neutral Claude runs are compared with 10 runs of the original prompt made in the same batch. The exact prompts and every raw answer are in the data files below.</p>
       <h3>Limitations</h3>
       <ul>
         <li>The analysis is correlational and cannot establish cause in either direction.</li>
@@ -590,8 +624,10 @@
         <li>Each CoC's observed correlation rests on at most 17 years, so single-CoC results are noisy. Statements about individual regions should be read with that in mind.</li>
         <li>The PIT count is taken in January, before that year's fire season. The AI was asked about the same-year relationship, so that is the benchmark; next-year timing is reported alongside it.</li>
         <li>Fires under 1,000 acres are excluded, and CoC boundaries are treated as fixed across all years.</li>
-        <li>Two AI models were tested, and all regions were estimated in the same request for each run.</li>
-        <li>The original prompt lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." A neutral version without that wording lowered Claude's estimates by about 0.06 and cut its overstatement roughly in half, so part of the original overstatement comes from the prompt. On Gemini, the neutral prompt brought the average estimate down to the observed average, but its estimates still rose with structures destroyed.</li>
+        <li>All regions were estimated in the same request for each run.</li>
+        <li>The original prompt lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." A neutral version without that wording lowered Claude's estimates by about <span data-fill="neutral_change">0.06</span> and removed <span data-fill="neutral_cut">44%</span> of its overstatement, so part of the original overstatement comes from the prompt.</li>
+        <li>Model versions drift. Claude gave different answers to the same prompt in two batches, and Gemini may also have changed behind the same name, so each neutral condition is compared with its closest baseline. Gemini Flash-Lite is a smaller model, so the comparison between models is also a comparison between model sizes.</li>
+        <li>The destruction groups were defined in an earlier analysis of the original-prompt results and reused for the neutral prompt, so those tests were not pre-registered. There is no human comparison group, so the results cannot show whether the pattern is specific to AI.</li>
       </ul>
       <p>Claude Code was used to help write the data pipeline and this page.</p>
     </section>
@@ -1089,11 +1125,47 @@ function renderSummaryNumbers() {
   const cond = state.conditions?.results?.claude_baseline;
   if (cond) fill("n_cond_cocs", cond.n_cocs);
   const neutral = state.conditions?.results?.claude_neutral_effect;
-  if (neutral) fill("neutral_change", Math.abs(neutral.mean_change).toFixed(2));
+  if (neutral) {
+    fill("neutral_change", Math.abs(neutral.mean_change).toFixed(2));
+    fill("nt_n_lower", neutral.n_cocs_lower === neutral.n_cocs ? `all ${neutral.n_cocs}` : `${neutral.n_cocs_lower} of ${neutral.n_cocs}`);
+  }
+  const res = state.conditions?.results;
+  if (res) {
+    fill("obs_mean", state.conditions.observed_mean_r.toFixed(2));
+    if (res.claude_baseline) fill("claude_mean", res.claude_baseline.mean_estimate.toFixed(2));
+    if (res.claude_pit_informed) fill("pit_bias", res.claude_pit_informed.mean_signed_error.toFixed(2));
+    const rerun = res.claude_baseline_rerun, nt = res.claude_neutral;
+    if (rerun && nt) {
+      fill("rerun_mean", rerun.mean_estimate.toFixed(2));
+      fill("nt_claude_mean", nt.mean_estimate.toFixed(2));
+      fill("nt_claude_bias", fmtSigned(nt.mean_signed_error));
+      fill("nt_claude_se", nt.mean_signed_error_se.toFixed(2));
+      fill("nt_claude_z", (nt.mean_signed_error / nt.mean_signed_error_se).toFixed(1));
+      fill("neutral_cut", `${Math.round((rerun.mean_signed_error - nt.mean_signed_error) / rerun.mean_signed_error * 100)}%`);
+    }
+  }
+  const rows = salienceRows();
+  const ntc = salienceStats("claude_neutral", true), ntg = salienceStats("gemini_neutral", true);
+  if (rows && ntc) {
+    fill("n_hi", rows.filter(r => r.group === "hi").length);
+    fill("n_lo", rows.filter(r => r.group === "lo").length);
+    fill("nt_claude_gap_hi", fmtSigned(ntc.mean.hi));
+    fill("nt_claude_gap_lo", fmtSigned(ntc.mean.lo));
+    fill("nt_claude_above_hi", `${ntc.aboveHi} of ${ntc.gaps.hi.length}`);
+    fill("nt_claude_p_hi", fmtP(ntc.pHi));
+    fill("nt_claude_p_diff", fmtP(ntc.pDiff));
+  }
+  if (ntg) {
+    fill("nt_gem_gap_hi", fmtSigned(ntg.mean.hi));
+    fill("nt_gem_gap_lo", fmtSigned(ntg.mean.lo));
+    fill("nt_gem_p_hi", fmtP(ntg.pHi));
+    fill("nt_gem_p_diff", fmtP(ntg.pDiff));
+  }
   const eh = state.errorHetero;
   if (eh) {
     const rho = (outcome, cov) => eh.correlates[outcome]?.tests.find(t => t.covariate === cov)?.spearman_rho;
     fill("rho_ai_struct", fmtSigned(rho("ai_claude_baseline", "structures_destroyed_total")).replace("+", ""));
+    fill("rho_gem_struct", fmtSigned(rho("ai_gemini_baseline", "structures_destroyed_total")).replace("+", ""));
     fill("rho_obs_struct", fmtSigned(rho("truth_lag0_drop2021", "structures_destroyed_total")));
     fill("ai_reliability", d3.min(Object.values(eh.ai_split_half_reliability)).toFixed(2));
     const nSig = eh.ai_partial_after_salience?.claude_baseline?.n_fdr_significant;
@@ -1325,6 +1397,7 @@ function renderAi() {
   renderYearFactor(data.by_coc);
   renderGap();
   renderConditions();
+  renderNeutral();
   renderRankingTable();
 }
 
@@ -1436,6 +1509,199 @@ function renderConditions() {
     refLine: { value: observed, label: `Observed average, ${observed.toFixed(2)}` },
     tooltip: r => `<div class="t">${r.label}</div>Mean estimate ${r.mean_estimate.toFixed(3)}<br>Overstatement ${fmtSigned(r.mean_signed_error, 3)} (SE ${r.mean_signed_error_se.toFixed(3)})<br>${r.n_negative_estimates} of ${r.n_estimates} estimates below zero`,
   });
+}
+
+// ---------------------------------------------------------------------------
+// Neutral prompt: estimates and gaps by structures destroyed (Figure 8, Table 5)
+// ---------------------------------------------------------------------------
+
+const SALIENCE_CONDITIONS = [
+  ["claude_baseline", "Claude, original (Sept. 23)"],
+  ["claude_pit_informed", "Claude, PIT description"],
+  ["claude_baseline_rerun", "Claude, original (Sept. 30)"],
+  ["claude_neutral", "Claude, neutral (Sept. 30)"],
+  ["gemini_baseline", "Gemini, original"],
+  ["gemini_pit_informed", "Gemini, PIT description"],
+  ["gemini_neutral", "Gemini, neutral"],
+];
+const DESTRUCTION_GROUPS = [
+  ["hi", "1,000 or more structures destroyed"],
+  ["mid", "100 to 999"],
+  ["lo", "Fewer than 100"],
+];
+const destructionGroup = s => s >= 1000 ? "hi" : s >= 100 ? "mid" : "lo";
+
+// One row per CoC with an observed r: structures destroyed, observed r, and
+// every condition's mean estimate (from error_heterogeneity.json's by_coc).
+function salienceRows() {
+  const eh = state.errorHetero, covs = state.covariates;
+  if (!eh || !covs) return null;
+  const structures = new Map(covs.map(c => [c.coc_number, c.structures_destroyed_total]));
+  return eh.by_coc
+    .filter(r => r.truth_lag0_drop2021 != null && structures.has(r.coc_number))
+    .map(r => ({ id: r.coc_number, name: r.coc_name, s: structures.get(r.coc_number), obs: r.truth_lag0_drop2021, group: destructionGroup(structures.get(r.coc_number)), r }));
+}
+
+// Exact one-sided sign-flip test that the mean of v is above zero.
+function signFlipP(v) {
+  const n = v.length, observed = d3.sum(v);
+  let hits = 0;
+  for (let mask = 0; mask < (1 << n); mask++) {
+    let t = 0;
+    for (let i = 0; i < n; i++) t += (mask >> i) & 1 ? -v[i] : v[i];
+    if (t >= observed - 1e-12) hits++;
+  }
+  return hits / (1 << n);
+}
+
+// Exact one-sided two-group permutation test that mean(a) > mean(b). With the
+// pooled total fixed, the difference in means rises with sum(a), so it is
+// enough to count size-|a| subsets whose sum is at least sum(a).
+function twoGroupP(a, b) {
+  const pool = [...a, ...b], n = pool.length, k = a.length, target = d3.sum(a) - 1e-12;
+  let hits = 0, total = 0;
+  const walk = (start, left, sum) => {
+    if (left === 0) { total++; if (sum >= target) hits++; return; }
+    for (let i = start; i <= n - left; i++) walk(i + 1, left - 1, sum + pool[i]);
+  };
+  walk(0, k, 0);
+  return hits / total;
+}
+
+// Prefer the pipeline's stored rho (error_heterogeneity.json) so the page and
+// the manuscript agree to the last digit.
+const storedStructuresRho = outcome =>
+  state.errorHetero?.correlates?.[outcome]?.tests.find(t => t.covariate === "structures_destroyed_total")?.spearman_rho;
+
+// Per-condition statistics, cached because the two-group test enumerates
+// ~3 million subsets.
+const salienceCache = new Map();
+function salienceStats(key, withDiff = false) {
+  const rows = salienceRows();
+  if (!rows || rows[0].r[`ai_${key}`] == null) return null;
+  let st = salienceCache.get(key);
+  if (!st) {
+    const gaps = { lo: [], mid: [], hi: [] };
+    for (const row of rows) gaps[row.group].push(row.r[`ai_${key}`] - row.obs);
+    st = {
+      rho: storedStructuresRho(`ai_${key}`) ?? spearman(rows.map(row => ({ x: row.r[`ai_${key}`], y: row.s }))),
+      gaps, mean: Object.fromEntries(Object.entries(gaps).map(([g, v]) => [g, d3.mean(v)])),
+      pHi: signFlipP(gaps.hi), aboveHi: gaps.hi.filter(v => v > 0).length,
+    };
+    salienceCache.set(key, st);
+  }
+  if (withDiff && st.pDiff == null) st.pDiff = twoGroupP(st.gaps.hi, st.gaps.lo);
+  return st;
+}
+
+function renderSalienceTable() {
+  const tbody = document.querySelector("#salienceTable tbody");
+  const rows = salienceRows();
+  if (!rows) { tbody.innerHTML = `<tr><td colspan="6">Results not available.</td></tr>`; return; }
+  const out = SALIENCE_CONDITIONS.map(([key, label]) => [key, label, salienceStats(key)]).filter(([, , st]) => st)
+    .map(([, label, st]) => `<tr><td>${label}</td><td class="n">${fmtR(st.rho, 2)}</td><td class="n">${fmtSigned(st.mean.lo)}</td><td class="n">${fmtSigned(st.mean.mid)}</td><td class="n">${fmtSigned(st.mean.hi)}</td><td class="n">${fmtP(st.pHi)}</td></tr>`);
+  const obsRho = storedStructuresRho("truth_lag0_drop2021") ?? spearman(rows.map(row => ({ x: row.obs, y: row.s })));
+  out.push(`<tr><td>Observed correlation</td><td class="n">${fmtR(obsRho, 2)}</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n"></td></tr>`);
+  const n = g => rows.filter(row => row.group === g).length;
+  const head = document.querySelectorAll("#salienceTable thead tr:last-child th");
+  head[0].textContent = `<100 (${n("lo")})`;
+  head[1].textContent = `100–999 (${n("mid")})`;
+  head[2].textContent = `1,000+ (${n("hi")})`;
+  tbody.innerHTML = out.join("");
+}
+
+const DUMBBELL_PANELS = [
+  { title: "Claude Sonnet, Sept. 30 batch", orig: "ai_claude_baseline_rerun", neutral: "ai_claude_neutral" },
+  { title: "Gemini 3.5 Flash-Lite", orig: "ai_gemini_baseline", neutral: "ai_gemini_neutral" },
+];
+
+// Figure 8: one row per CoC, grouped and sorted by structures destroyed. Each
+// panel connects the original-prompt estimate (open) to the neutral one
+// (filled); the diamond is the observed r. Wide screens share one label
+// column across both panels; narrow screens stack the panels.
+function renderDumbbell() {
+  const el = document.getElementById("dumbbellChart");
+  const rows = salienceRows();
+  if (!rows || rows[0].r.ai_claude_neutral == null) { el.textContent = "Results not available."; return; }
+  el.innerHTML = "";
+  const items = [];
+  for (const [g, label] of DESTRUCTION_GROUPS) {
+    const members = rows.filter(row => row.group === g).sort((a, b) => b.s - a.s);
+    items.push({ header: `${label} (${members.length} CoCs)` });
+    items.push(...members);
+  }
+  const values = rows.flatMap(row => [row.obs, ...DUMBBELL_PANELS.flatMap(p => [row.r[p.orig], row.r[p.neutral]])]);
+  const domain = [Math.min(-0.2, d3.min(values)), Math.max(0.2, d3.max(values))];
+  const fullW = Math.max(300, el.clientWidth);
+  const wide = fullW >= 640;
+  const groups = wide ? [DUMBBELL_PANELS] : DUMBBELL_PANELS.map(p => [p]);
+  for (const panels of groups) drawDumbbellSvg(el, items, panels, domain, fullW, wide ? 210 : 120);
+}
+
+function drawDumbbellSvg(el, items, panels, domain, width, labelW) {
+  const rowH = 15, headerH = 26, gap = 24;
+  const margin = { top: 46, right: 12, bottom: 28, left: labelW };
+  let yPos = 0;
+  for (const it of items) { it.y = yPos + (it.header ? headerH - 8 : rowH / 2); yPos += it.header ? headerH : rowH; }
+  const innerH = yPos, height = margin.top + innerH + margin.bottom;
+  const panelW = (width - margin.left - margin.right - gap * (panels.length - 1)) / panels.length;
+  const svg = d3.select(el).append("svg").attr("width", width).attr("height", height);
+  const g = svg.append("g").attr("transform", `translate(0,${margin.top})`);
+  const x = d3.scaleLinear().domain(domain).nice().range([0, panelW]);
+  const cocs = items.filter(it => !it.header);
+
+  const sel = cocs.find(it => it.id === state.selectedCocNum);
+  if (sel) g.append("rect").attr("x", 0).attr("width", width).attr("y", sel.y - rowH / 2).attr("height", rowH).attr("fill", "#eef4fc");
+
+  for (const it of items.filter(it => it.header)) {
+    g.append("line").attr("x1", 0).attr("x2", width - margin.right).attr("y1", it.y - headerH + 10).attr("y2", it.y - headerH + 10).attr("stroke", COLORS.axis);
+    g.append("text").attr("x", 0).attr("y", it.y).attr("font-size", 12).attr("font-weight", 600).attr("fill", COLORS.ink2).text(it.header);
+  }
+  g.selectAll("text.coc").data(cocs).join("text").attr("class", "direct-label")
+    .attr("x", labelW - 12).attr("y", d => d.y).attr("dy", "0.35em").attr("text-anchor", "end")
+    .attr("font-size", 11).text(d => d.name.replace(/ CoC$/, ""))
+    .each(function () {
+      // Trim to the label column using the rendered width.
+      const t = d3.select(this);
+      let s = t.text();
+      while (s.length > 4 && this.getComputedTextLength() > labelW - 16) { s = s.slice(0, -1); t.text(s.trimEnd() + "…"); }
+    });
+
+  panels.forEach((p, i) => {
+    const pg = g.append("g").attr("transform", `translate(${margin.left + i * (panelW + gap)},0)`);
+    svg.append("text").attr("x", margin.left + i * (panelW + gap)).attr("y", 14)
+      .attr("font-size", 13).attr("font-weight", 600).attr("fill", COLORS.ink2).text(p.title);
+    pg.append("g").selectAll("line").data(x.ticks(5)).join("line").attr("class", "gridline")
+      .attr("x1", d => x(d)).attr("x2", d => x(d)).attr("y1", 0).attr("y2", innerH);
+    pg.append("line").attr("class", "baseline").attr("x1", x(0)).attr("x2", x(0)).attr("y1", 0).attr("y2", innerH).attr("stroke", COLORS.ink2);
+    pg.append("g").attr("transform", "translate(0,-4)").call(d3.axisTop(x).ticks(5).tickFormat(v => v === 0 ? "0" : d3.format("+.1f")(v)).tickSize(3));
+    pg.append("g").attr("transform", `translate(0,${innerH + 4})`).call(d3.axisBottom(x).ticks(5).tickFormat(v => v === 0 ? "0" : d3.format("+.1f")(v)).tickSize(3));
+    pg.selectAll("line.seg").data(cocs).join("line").attr("class", "seg")
+      .attr("x1", d => x(d.r[p.orig])).attr("x2", d => x(d.r[p.neutral])).attr("y1", d => d.y).attr("y2", d => d.y)
+      .attr("stroke", COLORS.blue).attr("stroke-opacity", 0.45).attr("stroke-width", 1.5);
+    pg.selectAll("path.obs").data(cocs).join("path").attr("class", "obs")
+      .attr("d", d3.symbol(d3.symbolDiamond, 26)).attr("transform", d => `translate(${x(d.obs)},${d.y})`)
+      .attr("fill", COLORS.muted).attr("fill-opacity", 0.8);
+    pg.selectAll("circle.orig").data(cocs).join("circle").attr("class", "orig")
+      .attr("cx", d => x(d.r[p.orig])).attr("cy", d => d.y).attr("r", 3.5)
+      .attr("fill", "#fff").attr("stroke", COLORS.blue).attr("stroke-width", 1.5);
+    pg.selectAll("circle.neutral").data(cocs).join("circle").attr("class", "neutral")
+      .attr("cx", d => x(d.r[p.neutral])).attr("cy", d => d.y).attr("r", 3.5).attr("fill", COLORS.blue);
+  });
+
+  const tipHtml = d => `<div class="t">${d.name}</div><div class="m">${d.id}, ${fmt(d.s)} structures destroyed</div>Observed r ${fmtSigned(d.obs)}<br>` +
+    DUMBBELL_PANELS.map(p => `${p.title.split(",")[0]}: ${fmtSigned(d.r[p.orig])} original, ${fmtSigned(d.r[p.neutral])} neutral`).join("<br>");
+  g.selectAll("rect.hit").data(cocs).join("rect").attr("class", "hit")
+    .attr("x", 0).attr("width", width).attr("y", d => d.y - rowH / 2).attr("height", rowH)
+    .attr("fill", "transparent").style("cursor", "pointer")
+    .on("mousemove", (event, d) => showTip(tipHtml(d), event))
+    .on("mouseleave", hideTip)
+    .on("click", (event, d) => selectCoc(d.id, { scroll: true }));
+}
+
+function renderNeutral() {
+  renderDumbbell();
+  renderSalienceTable();
 }
 
 let rankingSort = { key: "abs_error", dir: -1 };
