@@ -7,3 +7,6 @@ manuscript*.md
 AGENTS.md
 CLAUDE.md
 paper_response.md
+
+# Figures for the private manuscript
+manuscript_figures/
