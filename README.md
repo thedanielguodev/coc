@@ -8,7 +8,8 @@ A data project comparing HUD homeless counts for California's 44 Continuums of C
 
 - Fire exposure shows no detectable pooled association with Point-in-Time homeless counts across California's 44 CoCs (acres burned r = 0.027; structures destroyed r = 0.003).
 - The one fixed-effects estimate that reaches significance depends entirely on Butte County, and its timing pairs the Camp Fire with a count taken before it, so it is not a Camp Fire effect.
-- AI models overstate the relationship. Their estimates track structures destroyed (Spearman ρ = 0.80 for Claude) rather than the observed data, and across 3,080 estimates only one was negative.
+- A neutral prompt lowers the AI's estimates but does not make them follow the data. Without the original prompt's list of housing-loss mechanisms and its "not a hedge toward zero" instruction, Claude's estimate fell in all 40 compared CoCs, but its average (0.14) stayed more than twice the observed average (0.06). The excess sits where fires destroyed the most homes: +0.22 in the 10 CoCs with 1,000 or more structures destroyed (exact permutation p = 0.012), against −0.06 in the 15 with fewer than 100. Gemini matched the observed average under the neutral prompt, yet its estimates still rose with destruction.
+- Under the original prompt, Claude averaged 0.28 and overstated the observed correlation by 0.22. Both models' estimates track structures destroyed (Spearman ρ = 0.80 for Claude, 0.78 for Gemini), while the observed correlation does not (ρ = −0.13).
 - PIT counts miss many people displaced by fire, so this does not show that wildfire has no effect on housing loss.
 
 ## Research question
@@ -25,8 +26,9 @@ The page is laid out as a research report with numbered figures and tables:
 - **Statewide trends** (Figure 1): homeless count and acres burned, 2007–2024.
 - **Fire and homeless counts** (Figures 2–3, Tables 1–2): the pooled scatter with a same-year or next-year toggle, year-by-year correlations with a Bonferroni correction and leave-one-out check, pooled correlations for acres burned and structures destroyed, and the fixed-effects estimates.
 - **AI estimates** (Figures 4–7, Tables 3–4): each CoC's AI estimate against its observed correlation, error by stated confidence, a recency check, and the comparison across models and prompts. A sortable table lists every CoC.
-- **Where the AI is most wrong** (Figure 8, Tables 5–6): the AI's estimate and the observed correlation plotted against structures destroyed, a test of whether observed correlations differ across CoCs beyond sampling noise, and rank correlations with census and insurance measures.
-- **Butte County** (Figure 9): the Camp Fire against Butte County's count.
+- **The neutral prompt** (Figure 8, Table 5): each CoC's original and neutral-prompt estimates beside its observed correlation, sorted by structures destroyed, and the gap in each destruction group for every model and prompt, with exact permutation tests computed in the browser.
+- **Where the AI is most wrong** (Figure 9, Tables 6–7): the AI's estimate and the observed correlation plotted against structures destroyed, a test of whether observed correlations differ across CoCs beyond sampling noise, and rank correlations with census and insurance measures.
+- **Butte County** (Figure 10): the Camp Fire against Butte County's count.
 - **Data and methods**, limitations, data downloads, and a suggested citation.
 
 ## Data sources
@@ -45,7 +47,9 @@ Fire acreage is attributed to CoCs by a spatial join (`join_fires_to_coc.py`): e
 2. `ai_estimate_influence.py` sends Claude each CoC's name and fire history (year → acres burned) *only* — no PIT counts — and asks it to independently estimate that CoC's Pearson r.
 3. `compare_ai_vs_ground_truth.py` diffs the AI's estimate against the real value per CoC (signed error, absolute error, and a exaggerates / underestimates / sign-flip / roughly-matches classification) and computes the statewide bias summary the dashboard's "AI vs. ground truth" panel renders.
 
-Follow-up runs (`ai_estimate_gemini.py`, `compare_ai_conditions.py`) repeat the test with a paragraph describing what the PIT count measures, and on a second model (Gemini). Adding the description lowered Claude's average estimate from 0.28 to 0.19 against an observed 0.06; Gemini 3.5 Flash-Lite estimated 0.13 and 0.06. A neutral prompt without the original's list of housing-loss mechanisms and its "not a hedge toward zero" instruction lowered Claude's estimate in every region (−0.06, compared with the original prompt re-run in the same batch) and cut its overstatement roughly in half; on Gemini the neutral prompt brought the average estimate to the observed value. Both models' estimates still rose with structures destroyed. Across 3,080 estimates only one was negative, and no model could rank regions by their observed relationship.
+Follow-up runs (`ai_estimate_gemini.py`, `compare_ai_conditions.py`) repeat the test with a paragraph describing what the PIT count measures, and on a second model (Gemini). Adding the description lowered Claude's average estimate from 0.28 to 0.19 against an observed 0.06; Gemini 3.5 Flash-Lite estimated 0.13 and 0.06. A neutral prompt without the original's list of housing-loss mechanisms and its "not a hedge toward zero" instruction lowered Claude's estimate in every region (−0.06, compared with the original prompt re-run in the same batch) and removed 44% of its overstatement (+0.14 to +0.08); on Gemini the neutral prompt brought the average estimate to the observed value. Both models' estimates still rose with structures destroyed, and no model could rank regions by their observed relationship.
+
+To test whether the remaining overstatement is concentrated where fires were most destructive, CoCs are grouped by structures destroyed in 2013–2024 (fewer than 100, 100–999, 1,000 or more) and compared with exact permutation tests: a sign-flip test that the mean gap in the 1,000+ group is above zero, and a two-group test that it is larger than in the <100 group. The dashboard computes these from `site/data/error_heterogeneity.json` and `site/data/ca_coc_covariates.json`. The groups were defined in an earlier analysis of the original-prompt results, so these tests were not pre-registered.
 
 `analyze_error_heterogeneity.py` asks where the AI's error is largest. The observed per-CoC correlations do not vary beyond sampling noise (Cochran's Q), so the variation in error comes almost entirely from the AI side. The AI's estimate tracks structures destroyed (Spearman ρ = 0.80 for Claude) and rurality; after holding those fixed, no census or insurance measure predicts it. The AI overstates most in the CoCs with the most destructive fires.
 
@@ -84,6 +88,7 @@ Run in this order; each step reads the previous step's output in `data/`:
 .venv/bin/python build_coc_covariates.py     # ACS tract demographics + CDI insurance nonrenewals + fire totals per CoC -> data/ca_coc_covariates.csv
 .venv/bin/python analyze_error_heterogeneity.py  # where the AI-vs-observed gap is largest, and what predicts it -> data/error_heterogeneity.json
 .venv/bin/python build_site_data.py       # converts CSVs to JSON and stages everything into site/data/
+.venv/bin/python make_manuscript_figures.py  # optional, needs matplotlib: renders the manuscript's figures -> manuscript_figures/ (gitignored) and prints their statistics
 ```
 
 ## License

@@ -7,3 +7,6 @@ pyxlsb
 
 # Optional: AI estimation arm (needs ANTHROPIC_API_KEY)
 anthropic
+
+# Optional: manuscript figures (make_manuscript_figures.py)
+matplotlib
