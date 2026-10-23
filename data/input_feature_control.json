@@ -1,0 +1,357 @@
+{
+ "features": [
+  "total_acres",
+  "peak_acres",
+  "n_fire_years",
+  "sd_acres",
+  "total_fire_count"
+ ],
+ "n_cocs": 40,
+ "conditions": {
+  "claude_baseline": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.464,
+    "loo_r2_inputs_plus_structures": 0.599,
+    "loo_delta_r2_structures": 0.135,
+    "r2_inputs_only": 0.604,
+    "r2_structures_only": 0.647,
+    "r2_inputs_plus_structures": 0.759,
+    "delta_r2_structures": 0.156,
+    "partial_rho_structures": 0.627,
+    "perm_p_two_sided": 0.0
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.11,
+    "loo_r2_inputs_plus_structures": 0.026,
+    "loo_delta_r2_structures": 0.136,
+    "r2_inputs_only": 0.201,
+    "r2_structures_only": 0.269,
+    "r2_inputs_plus_structures": 0.342,
+    "delta_r2_structures": 0.141,
+    "partial_rho_structures": 0.421,
+    "perm_p_two_sided": 0.0065
+   }
+  },
+  "claude_pit_informed": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.445,
+    "loo_r2_inputs_plus_structures": 0.573,
+    "loo_delta_r2_structures": 0.128,
+    "r2_inputs_only": 0.595,
+    "r2_structures_only": 0.623,
+    "r2_inputs_plus_structures": 0.74,
+    "delta_r2_structures": 0.145,
+    "partial_rho_structures": 0.598,
+    "perm_p_two_sided": 0.0
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.126,
+    "loo_r2_inputs_plus_structures": -0.009,
+    "loo_delta_r2_structures": 0.117,
+    "r2_inputs_only": 0.185,
+    "r2_structures_only": 0.213,
+    "r2_inputs_plus_structures": 0.308,
+    "delta_r2_structures": 0.123,
+    "partial_rho_structures": 0.388,
+    "perm_p_two_sided": 0.0144
+   }
+  },
+  "claude_baseline_rerun": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.507,
+    "loo_r2_inputs_plus_structures": 0.676,
+    "loo_delta_r2_structures": 0.168,
+    "r2_inputs_only": 0.627,
+    "r2_structures_only": 0.663,
+    "r2_inputs_plus_structures": 0.777,
+    "delta_r2_structures": 0.151,
+    "partial_rho_structures": 0.635,
+    "perm_p_two_sided": 0.0
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.143,
+    "loo_r2_inputs_plus_structures": -0.074,
+    "loo_delta_r2_structures": 0.069,
+    "r2_inputs_only": 0.177,
+    "r2_structures_only": 0.159,
+    "r2_inputs_plus_structures": 0.262,
+    "delta_r2_structures": 0.085,
+    "partial_rho_structures": 0.322,
+    "perm_p_two_sided": 0.0451
+   }
+  },
+  "claude_neutral": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.417,
+    "loo_r2_inputs_plus_structures": 0.579,
+    "loo_delta_r2_structures": 0.163,
+    "r2_inputs_only": 0.553,
+    "r2_structures_only": 0.592,
+    "r2_inputs_plus_structures": 0.693,
+    "delta_r2_structures": 0.14,
+    "partial_rho_structures": 0.56,
+    "perm_p_two_sided": 0.0
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.135,
+    "loo_r2_inputs_plus_structures": -0.078,
+    "loo_delta_r2_structures": 0.057,
+    "r2_inputs_only": 0.175,
+    "r2_structures_only": 0.128,
+    "r2_inputs_plus_structures": 0.251,
+    "delta_r2_structures": 0.075,
+    "partial_rho_structures": 0.303,
+    "perm_p_two_sided": 0.0551
+   }
+  },
+  "gemini_baseline": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.549,
+    "loo_r2_inputs_plus_structures": 0.639,
+    "loo_delta_r2_structures": 0.09,
+    "r2_inputs_only": 0.671,
+    "r2_structures_only": 0.611,
+    "r2_inputs_plus_structures": 0.772,
+    "delta_r2_structures": 0.101,
+    "partial_rho_structures": 0.554,
+    "perm_p_two_sided": 0.0003
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.133,
+    "loo_r2_inputs_plus_structures": -0.117,
+    "loo_delta_r2_structures": 0.016,
+    "r2_inputs_only": 0.178,
+    "r2_structures_only": 0.097,
+    "r2_inputs_plus_structures": 0.227,
+    "delta_r2_structures": 0.05,
+    "partial_rho_structures": 0.246,
+    "perm_p_two_sided": 0.1262
+   }
+  },
+  "gemini_pit_informed": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.45,
+    "loo_r2_inputs_plus_structures": 0.531,
+    "loo_delta_r2_structures": 0.081,
+    "r2_inputs_only": 0.59,
+    "r2_structures_only": 0.541,
+    "r2_inputs_plus_structures": 0.691,
+    "delta_r2_structures": 0.101,
+    "partial_rho_structures": 0.496,
+    "perm_p_two_sided": 0.001
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.159,
+    "loo_r2_inputs_plus_structures": -0.154,
+    "loo_delta_r2_structures": 0.005,
+    "r2_inputs_only": 0.152,
+    "r2_structures_only": 0.057,
+    "r2_inputs_plus_structures": 0.194,
+    "delta_r2_structures": 0.042,
+    "partial_rho_structures": 0.222,
+    "perm_p_two_sided": 0.1721
+   }
+  },
+  "gemini_neutral": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.47,
+    "loo_r2_inputs_plus_structures": 0.598,
+    "loo_delta_r2_structures": 0.128,
+    "r2_inputs_only": 0.605,
+    "r2_structures_only": 0.609,
+    "r2_inputs_plus_structures": 0.731,
+    "delta_r2_structures": 0.126,
+    "partial_rho_structures": 0.564,
+    "perm_p_two_sided": 0.0
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.173,
+    "loo_r2_inputs_plus_structures": -0.181,
+    "loo_delta_r2_structures": -0.008,
+    "r2_inputs_only": 0.14,
+    "r2_structures_only": 0.036,
+    "r2_inputs_plus_structures": 0.17,
+    "delta_r2_structures": 0.03,
+    "partial_rho_structures": 0.188,
+    "perm_p_two_sided": 0.2454
+   }
+  }
+ },
+ "spearman_structures_vs_each_input": {
+  "total_acres": 0.625,
+  "peak_acres": 0.648,
+  "n_fire_years": 0.438,
+  "sd_acres": 0.672,
+  "total_fire_count": 0.462
+ },
+ "leave_out_butte_CA-519": {
+  "claude_baseline": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.504,
+    "loo_r2_inputs_plus_structures": 0.587,
+    "loo_delta_r2_structures": 0.083,
+    "r2_inputs_only": 0.627,
+    "r2_structures_only": 0.622,
+    "r2_inputs_plus_structures": 0.759,
+    "delta_r2_structures": 0.131,
+    "partial_rho_structures": 0.594,
+    "perm_p_two_sided": 0.0
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.088,
+    "loo_r2_inputs_plus_structures": 0.019,
+    "loo_delta_r2_structures": 0.108,
+    "r2_inputs_only": 0.214,
+    "r2_structures_only": 0.257,
+    "r2_inputs_plus_structures": 0.34,
+    "delta_r2_structures": 0.126,
+    "partial_rho_structures": 0.4,
+    "perm_p_two_sided": 0.0126
+   }
+  },
+  "claude_pit_informed": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.49,
+    "loo_r2_inputs_plus_structures": 0.57,
+    "loo_delta_r2_structures": 0.081,
+    "r2_inputs_only": 0.621,
+    "r2_structures_only": 0.597,
+    "r2_inputs_plus_structures": 0.741,
+    "delta_r2_structures": 0.12,
+    "partial_rho_structures": 0.563,
+    "perm_p_two_sided": 0.0002
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.114,
+    "loo_r2_inputs_plus_structures": -0.015,
+    "loo_delta_r2_structures": 0.099,
+    "r2_inputs_only": 0.193,
+    "r2_structures_only": 0.211,
+    "r2_inputs_plus_structures": 0.307,
+    "delta_r2_structures": 0.114,
+    "partial_rho_structures": 0.376,
+    "perm_p_two_sided": 0.0201
+   }
+  },
+  "claude_baseline_rerun": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.521,
+    "loo_r2_inputs_plus_structures": 0.664,
+    "loo_delta_r2_structures": 0.143,
+    "r2_inputs_only": 0.639,
+    "r2_structures_only": 0.64,
+    "r2_inputs_plus_structures": 0.77,
+    "delta_r2_structures": 0.132,
+    "partial_rho_structures": 0.604,
+    "perm_p_two_sided": 0.0
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.139,
+    "loo_r2_inputs_plus_structures": -0.072,
+    "loo_delta_r2_structures": 0.067,
+    "r2_inputs_only": 0.182,
+    "r2_structures_only": 0.176,
+    "r2_inputs_plus_structures": 0.268,
+    "delta_r2_structures": 0.086,
+    "partial_rho_structures": 0.325,
+    "perm_p_two_sided": 0.0441
+   }
+  },
+  "claude_neutral": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.425,
+    "loo_r2_inputs_plus_structures": 0.56,
+    "loo_delta_r2_structures": 0.135,
+    "r2_inputs_only": 0.567,
+    "r2_structures_only": 0.565,
+    "r2_inputs_plus_structures": 0.685,
+    "delta_r2_structures": 0.117,
+    "partial_rho_structures": 0.52,
+    "perm_p_two_sided": 0.0009
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.132,
+    "loo_r2_inputs_plus_structures": -0.08,
+    "loo_delta_r2_structures": 0.052,
+    "r2_inputs_only": 0.181,
+    "r2_structures_only": 0.143,
+    "r2_inputs_plus_structures": 0.255,
+    "delta_r2_structures": 0.074,
+    "partial_rho_structures": 0.301,
+    "perm_p_two_sided": 0.0623
+   }
+  },
+  "gemini_baseline": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.602,
+    "loo_r2_inputs_plus_structures": 0.645,
+    "loo_delta_r2_structures": 0.043,
+    "r2_inputs_only": 0.703,
+    "r2_structures_only": 0.584,
+    "r2_inputs_plus_structures": 0.78,
+    "delta_r2_structures": 0.077,
+    "partial_rho_structures": 0.509,
+    "perm_p_two_sided": 0.0012
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.129,
+    "loo_r2_inputs_plus_structures": -0.115,
+    "loo_delta_r2_structures": 0.014,
+    "r2_inputs_only": 0.185,
+    "r2_structures_only": 0.118,
+    "r2_inputs_plus_structures": 0.236,
+    "delta_r2_structures": 0.051,
+    "partial_rho_structures": 0.249,
+    "perm_p_two_sided": 0.1241
+   }
+  },
+  "gemini_pit_informed": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.499,
+    "loo_r2_inputs_plus_structures": 0.533,
+    "loo_delta_r2_structures": 0.034,
+    "r2_inputs_only": 0.62,
+    "r2_structures_only": 0.511,
+    "r2_inputs_plus_structures": 0.696,
+    "delta_r2_structures": 0.076,
+    "partial_rho_structures": 0.446,
+    "perm_p_two_sided": 0.0047
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.158,
+    "loo_r2_inputs_plus_structures": -0.154,
+    "loo_delta_r2_structures": 0.004,
+    "r2_inputs_only": 0.159,
+    "r2_structures_only": 0.071,
+    "r2_inputs_plus_structures": 0.202,
+    "delta_r2_structures": 0.043,
+    "partial_rho_structures": 0.226,
+    "perm_p_two_sided": 0.1688
+   }
+  },
+  "gemini_neutral": {
+   "estimate": {
+    "loo_r2_inputs_only": 0.53,
+    "loo_r2_inputs_plus_structures": 0.609,
+    "loo_delta_r2_structures": 0.079,
+    "r2_inputs_only": 0.639,
+    "r2_structures_only": 0.582,
+    "r2_inputs_plus_structures": 0.737,
+    "delta_r2_structures": 0.098,
+    "partial_rho_structures": 0.521,
+    "perm_p_two_sided": 0.0005
+   },
+   "error": {
+    "loo_r2_inputs_only": -0.175,
+    "loo_r2_inputs_plus_structures": -0.183,
+    "loo_delta_r2_structures": -0.008,
+    "r2_inputs_only": 0.144,
+    "r2_structures_only": 0.049,
+    "r2_inputs_plus_structures": 0.176,
+    "delta_r2_structures": 0.032,
+    "partial_rho_structures": 0.192,
+    "perm_p_two_sided": 0.24
+   }
+  }
+ }
+}
