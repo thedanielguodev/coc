@@ -45,6 +45,7 @@ OPTIONAL_JSON_COPY = [
     "ai_estimates_gemini_neutral.json",
     "ai_condition_comparison.json",
     "error_heterogeneity.json",
+    "input_feature_control.json",
 ]
 
 

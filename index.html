@@ -287,7 +287,7 @@
   <article>
     <h1>Do wildfires show up in California's homeless counts?</h1>
     <p class="dek">Eighteen years of federal homeless counts for California's 44 Continuums of Care, compared with state wildfire records, and with estimates from two AI models that never saw the counts.</p>
-    <p class="byline">Daniel Guo &middot; Working draft, updated October 15, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
+    <p class="byline">Daniel Guo &middot; Working draft, updated November 1, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
 
     <section id="findings" class="prose">
       <h2>Summary</h2>
@@ -296,8 +296,9 @@
         <li>The main result: a neutral prompt lowers the AI's estimates but does not make them follow the data. Without the original prompt's list of housing-loss mechanisms and its instruction not to "hedge toward zero," Claude's estimate fell in every region, but its average (<span data-fill="nt_claude_mean">0.14</span>) stayed more than twice the observed average (<span data-fill="obs_mean">0.06</span>). The excess sits where fires destroyed the most homes: <span data-fill="nt_claude_gap_hi">+0.22</span> in the CoCs with 1,000 or more structures destroyed (p = <span data-fill="nt_claude_p_hi">0.012</span>), against <span data-fill="nt_claude_gap_lo">&minus;0.06</span> in those with fewer than 100. Gemini matched the observed average under the neutral prompt, yet its estimates still rose with fire destruction.</li>
         <li>Pooled across <span data-fill="n_cocyears">712</span> CoC-years, acres burned and the homeless count are essentially uncorrelated (Pearson r = <span data-fill="r_acres">0.027</span>). Counts of structures destroyed, available from 2013, give the same result (r = <span data-fill="r_struct">0.003</span>). The 2021 count is left out of every statistic because most California CoCs skipped the unsheltered count that year.</li>
         <li>When each region is compared only with its own history, years with larger fire losses have slightly higher counts. The only estimate that reaches significance (p = <span data-fill="fe_sig_p">0.023</span>) depends entirely on Butte County: without it, p = <span data-fill="fe_loo_p">0.94</span>.</li>
-        <li>Under the original prompt, Claude's average estimate was <span data-fill="claude_mean">0.28</span>, and it overstated the observed correlation by <span data-fill="bias">0.22</span> on average. Describing how the PIT count is collected reduced the overstatement to <span data-fill="pit_bias">0.14</span>. Gemini's estimates were smaller throughout. Neither model could tell which regions had a stronger relationship.</li>
-        <li>Both models' estimates rise with the number of structures a region's fires destroyed (&rho; = <span data-fill="rho_ai_struct">0.80</span> for Claude, <span data-fill="rho_gem_struct">0.78</span> for Gemini). The observed correlation does not (&rho; = <span data-fill="rho_obs_struct">&minus;0.13</span>), and it does not differ across regions by more than sampling noise.</li>
+        <li>Under the original prompt, Claude's average estimate was <span data-fill="claude_mean">0.28</span> in the first batch (<span data-fill="rerun_mean">0.20</span> when re-run alongside the neutral prompt), and it overstated the observed correlation by <span data-fill="bias">0.22</span> on average in the first batch. Describing how the PIT count is collected reduced the overstatement to <span data-fill="pit_bias">0.14</span>. Gemini's estimates were smaller throughout. Neither model could tell which regions had a stronger relationship.</li>
+        <li>Both models' estimates rise with the number of structures a region's fires destroyed (&rho; = <span data-fill="rho_ai_struct">0.80</span> for Claude, <span data-fill="rho_gem_struct">0.78</span> for Gemini). The observed correlation does not (&rho; = <span data-fill="rho_obs_struct">&minus;0.13</span>), and it does not differ across regions by more than sampling noise. I read this pattern as consistent with causal bias: a plausible story about destroyed homes shapes the numerical estimate, and neutral wording lowers its size without removing it.</li>
+        <li>The acreage histories the models were shown explain much of this pattern (<span data-fill="ic_r2_range">55&ndash;67%</span> of rank variation in the estimates), but not all of it: structures destroyed still adds explanatory power for the estimates. Its independent link to the gap between estimate and observed r is weaker and not conclusive (Table 8).</li>
         <li>The estimates were highly repeatable across runs, and the model's errors were largest when it described itself as highly confident. Repeatability is not accuracy.</li>
       </ul>
       <p>The PIT count misses many people displaced by fire, such as families staying with relatives or in hotels paid by insurance or FEMA. A weak result here does not show that wildfires have no effect on housing loss. A national study of all 50 states found that homes lost to climate disasters were associated with larger increases in homelessness (<a href="https://doi.org/10.1001/jamanetworkopen.2026.5187">Leifheit et al., 2026</a>). The AI's positive direction may be right. This page measures how well it estimates the size of the relationship that appears in HUD's CoC-level counts.</p>
@@ -580,6 +581,18 @@
         </table>
       </div>
       <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Spearman &rho; across CoCs, Claude with the original prompt. Bold values remain significant after a Benjamini-Hochberg correction for 21 measures (q &lt; 0.05). Census measures are ACS 2019&ndash;2023 five-year estimates by tract, summed to CoC boundaries. Insurer nonrenewals are homeowners and dwelling policies the insurer declined to renew, as a share of policies up for renewal, 2015&ndash;2021. <b style="color:var(--ink-2)">Source:</b> U.S. Census Bureau; California Department of Insurance; CAL FIRE. Author's calculations.</p>
+
+      <div class="prose">
+        <p>One more alternative explanation remains. The models were shown each CoC's list of acres burned, and CoCs with more destruction tend to have larger fires, so the link to structures destroyed could simply reflect what was in the list. Table 8 tests this with five features of the lists the models saw: total acres, largest single-year acres, number of fire years, standard deviation of annual acres, and total fire count. Those features explain <span data-fill="ic_r2_range">55&ndash;67%</span> of the rank variation in the estimates, so much of the pattern is already in the inputs. Structures destroyed still adds explanatory power (partial &rho; <span data-fill="ic_prho_range">0.50 to 0.64</span>). For the gap between estimate and observed r, the evidence is weaker: the adjusted association is borderline for neutral Claude (p = <span data-fill="ic_p_neutral">0.055</span>) and well short of significance for Gemini (p = <span data-fill="ic_p_gem">0.13 to 0.25</span>). The data support a persistent pattern in what the AI expects more clearly than an independent effect of destruction on its error.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data" id="inputControlTable">
+          <caption>Table 8. Does the acreage the models were shown explain the destruction pattern?</caption>
+          <thead><tr><th rowspan="2">Model, prompt</th><th colspan="2" style="text-align:center">Estimate</th><th colspan="2" style="text-align:center">Gap (estimate &minus; observed r)</th></tr><tr><th class="n">R&sup2;, inputs only</th><th class="n">Partial &rho;, structures</th><th class="n">Partial &rho;, structures</th><th class="n">p</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Rank regressions across <span data-fill="n_cond_cocs">40</span> CoCs. R&sup2; is the share of rank variation in the estimate explained by the five acreage features. Partial &rho; is the rank correlation between structures destroyed and the outcome after removing those features. p is a two-sided residual-permutation test (20,000 permutations), exploratory and not corrected for multiple comparisons. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
     </section>
 
     <section id="butte">
@@ -614,7 +627,7 @@
       <h3>Matching fires to regions</h3>
       <p>Each fire perimeter is intersected with every CoC boundary. When a fire crosses a boundary, its acres are divided in proportion to the area on each side. Each destroyed structure is assigned to the CoC that contains it. Census tracts and insurance ZIP codes are assigned to the CoC containing their center point; where the Los Angeles boundary overlaps Pasadena and Glendale, the smaller CoC is used.</p>
       <h3>Statistics</h3>
-      <p>The 2021 count is excluded from every statistic. HUD allowed CoCs to skip the unsheltered count that year because of COVID-19, and 36 of California's 44 CoCs reported no unsheltered people. Including it pairs the record 2020 fire season with an artificially low count. Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 17 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC, and are refit without the CoC that had the largest single fire year. Differences in the observed correlation across CoCs are tested with Cochran's Q on Fisher-transformed correlations. Relationships with census and insurance measures use Spearman correlations with a Benjamini-Hochberg correction, rank partial correlations that hold structures destroyed and population density fixed, and a precision-weighted meta-regression of the observed correlations. To test whether the AI's overstatement is concentrated where fires were most destructive, CoCs are grouped by structures destroyed in 2013&ndash;2024 (fewer than 100, 100&ndash;999, and 1,000 or more) and compared with exact permutation tests, which make no assumption about the shape of the distribution: a sign-flip test of whether the mean gap in the 1,000+ group is above zero, and a two-group test of whether it is larger than in the group with fewer than 100.</p>
+      <p>The 2021 count is excluded from every statistic. HUD allowed CoCs to skip the unsheltered count that year because of COVID-19, and 36 of California's 44 CoCs reported no unsheltered people. Including it pairs the record 2020 fire season with an artificially low count. Pooled results use Pearson and Spearman correlations across all CoC-years. The yearly results use a Bonferroni correction for 17 tests and a leave-one-out check that drops the CoC with the most acres burned that year. The fixed-effects models include a separate intercept for every CoC and every year, with standard errors clustered by CoC, and are refit without the CoC that had the largest single fire year. Differences in the observed correlation across CoCs are tested with Cochran's Q on Fisher-transformed correlations. Relationships with census and insurance measures use Spearman correlations with a Benjamini-Hochberg correction, rank partial correlations that hold structures destroyed and population density fixed, and a precision-weighted meta-regression of the observed correlations. To test whether the destruction pattern simply reflects the acreage lists the models saw, rank regressions of each estimate and each gap on five features of those lists (total acres, largest single year, number of fire years, standard deviation of annual acres, total fire count) are fit with and without structures destroyed, with partial rank correlations and 20,000-permutation residual tests (exploratory, not corrected for multiple comparisons). To test whether the AI's overstatement is concentrated where fires were most destructive, CoCs are grouped by structures destroyed in 2013&ndash;2024 (fewer than 100, 100&ndash;999, and 1,000 or more) and compared with exact permutation tests, which make no assumption about the shape of the distribution: a sign-flip test of whether the mean gap in the 1,000+ group is above zero, and a two-group test of whether it is larger than in the group with fewer than 100.</p>
       <h3>AI experiment</h3>
       <p>The model saw each CoC's name, number, and acres burned by year. It never saw homeless counts or any of the results on this page. It returned an estimated correlation, a direction, a confidence level, and a short explanation for each CoC. All 44 CoCs were sent together in each of 10 independent runs. The estimate shown for a CoC is the mean across runs. The follow-up runs used the same prompt with one added paragraph describing the PIT count, and were repeated on Gemini 3.5 Flash-Lite through the Gemini API. A neutral prompt removed the list of housing-loss mechanisms and the instruction not to "hedge toward zero" and changed nothing else. Because the Claude model answered the original prompt differently by September 30, the neutral Claude runs are compared with 10 runs of the original prompt made in the same batch. The exact prompts and every raw answer are in the data files below.</p>
       <h3>Limitations</h3>
@@ -628,6 +641,8 @@
         <li>The original prompt lists ways fires can cause housing loss and asks for an estimate that is "not a hedge toward zero." A neutral version without that wording lowered Claude's estimates by about <span data-fill="neutral_change">0.06</span> and removed <span data-fill="neutral_cut">44%</span> of its overstatement, so part of the original overstatement comes from the prompt.</li>
         <li>Model versions drift. Claude gave different answers to the same prompt in two batches, and Gemini may also have changed behind the same name, so each neutral condition is compared with its closest baseline. Gemini Flash-Lite is a smaller model, so the comparison between models is also a comparison between model sizes.</li>
         <li>The destruction groups were defined in an earlier analysis of the original-prompt results and reused for the neutral prompt, so those tests were not pre-registered. There is no human comparison group, so the results cannot show whether the pattern is specific to AI.</li>
+        <li>The input control uses five summary features of the acreage histories. It cannot rule out that the models draw on other information in the lists, or on what they know about particular fires, and it is exploratory.</li>
+        <li>The experiment observes the models' outputs, not their reasoning, so "causal bias" is an interpretation of the pattern rather than a demonstrated mechanism. It also does not test whether AI estimates change any funding or service decision.</li>
       </ul>
       <p>Claude Code was used to help write the data pipeline and this page.</p>
     </section>
@@ -649,6 +664,8 @@
         <li><a href="site/data/ai_estimates_gemini_pit_informed.json">AI estimates, Gemini with PIT description</a></li>
         <li><a href="site/data/ai_estimates_claude_neutral.json">AI estimates, Claude, neutral prompt</a></li>
         <li><a href="site/data/ai_estimates_claude_baseline_rerun.json">AI estimates, Claude, original prompt re-run in the same batch</a></li>
+        <li><a href="site/data/ai_estimates_gemini_neutral.json">AI estimates, Gemini, neutral prompt</a></li>
+        <li><a href="site/data/input_feature_control.json">Input-feature control for the destruction pattern</a></li>
         <li><a href="site/data/ai_condition_comparison.json">AI comparison across models and prompts</a></li>
         <li><a href="site/data/ai_fire_influence_estimates.json">AI estimates, all runs</a></li>
         <li><a href="site/data/ai_vs_ground_truth.json">AI vs. observed, by CoC</a></li>
@@ -1160,6 +1177,18 @@ function renderSummaryNumbers() {
     fill("nt_gem_gap_lo", fmtSigned(ntg.mean.lo));
     fill("nt_gem_p_hi", fmtP(ntg.pHi));
     fill("nt_gem_p_diff", fmtP(ntg.pDiff));
+  }
+  const ic = state.inputControl;
+  if (ic) {
+    const cs = Object.values(ic.conditions);
+    const [r2lo, r2hi] = d3.extent(cs, c => c.estimate.r2_inputs_only);
+    const [plo, phi] = d3.extent(cs, c => c.estimate.partial_rho_structures);
+    const gp = k => ic.conditions[k].error.perm_p_two_sided;
+    const gem = ["gemini_baseline", "gemini_pit_informed", "gemini_neutral"].map(gp);
+    fill("ic_r2_range", `${Math.round(r2lo * 100)}\u2013${Math.round(r2hi * 100)}%`);
+    fill("ic_prho_range", `${plo.toFixed(2)} to ${phi.toFixed(2)}`);
+    fill("ic_p_neutral", fmtP(gp("claude_neutral")));
+    fill("ic_p_gem", `${d3.min(gem).toFixed(2)} to ${d3.max(gem).toFixed(2)}`);
   }
   const eh = state.errorHetero;
   if (eh) {
@@ -1699,9 +1728,20 @@ function drawDumbbellSvg(el, items, panels, domain, width, labelW) {
     .on("click", (event, d) => selectCoc(d.id, { scroll: true }));
 }
 
+function renderInputControlTable() {
+  const tbody = document.querySelector("#inputControlTable tbody");
+  const ic = state.inputControl;
+  if (!ic) { tbody.innerHTML = `<tr><td colspan="5">Results not available.</td></tr>`; return; }
+  tbody.innerHTML = SALIENCE_CONDITIONS.filter(([key]) => ic.conditions[key]).map(([key, label]) => {
+    const { estimate: e, error: g } = ic.conditions[key];
+    return `<tr><td>${label}</td><td class="n">${fmtR(e.r2_inputs_only, 2)}</td><td class="n">${fmtR(e.partial_rho_structures, 2)}</td><td class="n">${fmtR(g.partial_rho_structures, 2)}</td><td class="n">${fmtP(g.perm_p_two_sided)}</td></tr>`;
+  }).join("");
+}
+
 function renderNeutral() {
   renderDumbbell();
   renderSalienceTable();
+  renderInputControlTable();
 }
 
 let rankingSort = { key: "abs_error", dir: -1 };
@@ -1944,7 +1984,7 @@ async function init() {
     loadJSON("site/data/ca_fire_perimeters.geojson"),
     loadJSON("site/data/ca_state_outline.geojson"),
   ]);
-  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates] = await Promise.all([
+  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates, inputControl] = await Promise.all([
     loadOptional("site/data/ai_vs_ground_truth.json"),
     loadOptional("site/data/ai_fire_influence_estimates.json"),
     loadOptional("site/data/ground_truth_fire_influence.json"),
@@ -1954,8 +1994,9 @@ async function init() {
     loadOptional("site/data/ai_condition_comparison.json"),
     loadOptional("site/data/error_heterogeneity.json"),
     loadOptional("site/data/ca_coc_covariates.json"),
+    loadOptional("site/data/input_feature_control.json"),
   ]);
-  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates });
+  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates, inputControl });
   state.pitByCoc = indexByCoc(pit);
   state.hicByCoc = indexByCoc(hic);
   state.firesByYear = fireYear;
