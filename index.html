@@ -287,7 +287,7 @@
   <article>
     <h1>Do wildfires show up in California's homeless counts?</h1>
     <p class="dek">Eighteen years of federal homeless counts for California's 44 Continuums of Care, compared with state wildfire records, and with estimates from two AI models that never saw the counts.</p>
-    <p class="byline">Daniel Guo &middot; Working draft, updated November 1, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
+    <p class="byline">Daniel Guo &middot; Working draft, updated November 6, 2026 &middot; <a href="https://github.com/thedanielguodev/coc">Code and data on GitHub</a></p>
 
     <section id="findings" class="prose">
       <h2>Summary</h2>
@@ -299,6 +299,7 @@
         <li>Under the original prompt, Claude's average estimate was <span data-fill="claude_mean">0.28</span> in the first batch (<span data-fill="rerun_mean">0.20</span> when re-run alongside the neutral prompt), and it overstated the observed correlation by <span data-fill="bias">0.22</span> on average in the first batch. Describing how the PIT count is collected reduced the overstatement to <span data-fill="pit_bias">0.14</span>. Gemini's estimates were smaller throughout. Neither model could tell which regions had a stronger relationship.</li>
         <li>Both models' estimates rise with the number of structures a region's fires destroyed (&rho; = <span data-fill="rho_ai_struct">0.80</span> for Claude, <span data-fill="rho_gem_struct">0.78</span> for Gemini). The observed correlation does not (&rho; = <span data-fill="rho_obs_struct">&minus;0.13</span>), and it does not differ across regions by more than sampling noise. I read this pattern as consistent with causal bias: a plausible story about destroyed homes shapes the numerical estimate, and neutral wording lowers its size without removing it.</li>
         <li>The acreage histories the models were shown explain much of this pattern (<span data-fill="ic_r2_range">55&ndash;67%</span> of rank variation in the estimates), but not all of it: structures destroyed still adds explanatory power for the estimates. Its independent link to the gap between estimate and observed r is weaker and not conclusive (Table 8).</li>
+        <li>Hiding the region names did not lower the estimates, and they still rose with destruction, for both Claude and Gemini. What disappeared was the part of the destruction link that the acreage numbers could not explain, and Butte County dropped from the top (Table 9). Most of the pattern comes from reading fire size as a sign of a stronger relationship; recognizing famous places adds the rest.</li>
         <li>The estimates were highly repeatable across runs, and the model's errors were largest when it described itself as highly confident. Repeatability is not accuracy.</li>
       </ul>
       <p>The PIT count misses many people displaced by fire, such as families staying with relatives or in hotels paid by insurance or FEMA. A weak result here does not show that wildfires have no effect on housing loss. A national study of all 50 states found that homes lost to climate disasters were associated with larger increases in homelessness (<a href="https://doi.org/10.1001/jamanetworkopen.2026.5187">Leifheit et al., 2026</a>). The AI's positive direction may be right. This page measures how well it estimates the size of the relationship that appears in HUD's CoC-level counts.</p>
@@ -593,6 +594,19 @@
         </table>
       </div>
       <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Rank regressions across <span data-fill="n_cond_cocs">40</span> CoCs. R&sup2; is the share of rank variation in the estimate explained by the five acreage features. Partial &rho; is the rank correlation between structures destroyed and the outcome after removing those features. p is a two-sided residual-permutation test (20,000 permutations), exploratory and not corrected for multiple comparisons. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
+
+      <div class="prose">
+        <p>The models also saw each CoC's name, so the control cannot tell whether the remaining link comes from the numbers or from recognizing places. A follow-up experiment on November 5 answered this directly. Each model got the neutral prompt in a same-day batch, once with the region names and once with every name and CoC number replaced by a shuffled code, ten trials each. The same Gemini batch also re-ran the original prompt, which gives Gemini a matched framing comparison: neutral wording lowered its average from <span data-fill="gm_base_mean">0.08</span> to <span data-fill="gm_neu_mean">0.05</span>, while its link to destruction stayed at &rho; = <span data-fill="gm_neu_rho">0.76</span>.</p>
+        <p>Table 9 shows the result. Hiding the names did not lower the estimates for either model, and they still rose with destruction. What disappeared was the part of the destruction link that the five acreage features could not explain, and Butte County fell from the top of both rankings. So most of the pattern comes from treating bigger fire histories as evidence of a stronger relationship, and recognizing places with famous fires adds the rest. The coded prompt still contained the years and sizes of each fire, so it removed the names, not every clue.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data" id="anonTable">
+          <caption>Table 9. Named and anonymous regions, neutral prompt, same-day batch for each model</caption>
+          <thead><tr><th rowspan="2">Measure</th><th colspan="2" style="text-align:center">Claude</th><th colspan="2" style="text-align:center">Gemini</th></tr><tr><th class="n">Names shown</th><th class="n">Names hidden</th><th class="n">Names shown</th><th class="n">Names hidden</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p style="font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:8px;max-width:760px;"><b style="color:var(--ink-2)">Note:</b> Ten trials per condition, November 5, 2026; statistics use the <span data-fill="n_cond_cocs">40</span> CoCs with a usable observed correlation. The anonymous prompt replaced each CoC name and number with a shuffled code and changed nothing else. Partial &rho; and the out-of-sample R&sup2; gain come from the same input control as Table 8; p-values are exploratory. A six-trial Gemini batch the same day gave the same results. <b style="color:var(--ink-2)">Source:</b> Author's calculations.</p>
     </section>
 
     <section id="butte">
@@ -666,6 +680,8 @@
         <li><a href="site/data/ai_estimates_claude_baseline_rerun.json">AI estimates, Claude, original prompt re-run in the same batch</a></li>
         <li><a href="site/data/ai_estimates_gemini_neutral.json">AI estimates, Gemini, neutral prompt</a></li>
         <li><a href="site/data/input_feature_control.json">Input-feature control for the destruction pattern</a></li>
+        <li><a href="site/data/anonymization_test.json">Named vs. anonymous regions, Claude</a></li>
+        <li><a href="site/data/gemini_matched_test.json">Same-day Gemini batch: original, neutral, anonymous</a></li>
         <li><a href="site/data/ai_condition_comparison.json">AI comparison across models and prompts</a></li>
         <li><a href="site/data/ai_fire_influence_estimates.json">AI estimates, all runs</a></li>
         <li><a href="site/data/ai_vs_ground_truth.json">AI vs. observed, by CoC</a></li>
@@ -1177,6 +1193,12 @@ function renderSummaryNumbers() {
     fill("nt_gem_gap_lo", fmtSigned(ntg.mean.lo));
     fill("nt_gem_p_hi", fmtP(ntg.pHi));
     fill("nt_gem_p_diff", fmtP(ntg.pDiff));
+  }
+  const gm = state.anonGemini?.main_nov6_10_trials?.conditions;
+  if (gm) {
+    fill("gm_base_mean", fmtR(gm.baseline.mean_estimate, 2));
+    fill("gm_neu_mean", fmtR(gm.neutral.mean_estimate, 2));
+    fill("gm_neu_rho", fmtR(gm.neutral.rho_structures, 2));
   }
   const ic = state.inputControl;
   if (ic) {
@@ -1738,10 +1760,32 @@ function renderInputControlTable() {
   }).join("");
 }
 
+function renderAnonTable() {
+  const tbody = document.querySelector("#anonTable tbody");
+  const c = state.anonClaude?.conditions, g = state.anonGemini?.main_nov6_10_trials?.conditions;
+  if (!c || !g) { tbody.innerHTML = `<tr><td colspan="5">Results not available.</td></tr>`; return; }
+  const cols = [c.named, c.anon, g.neutral, g.anon_neutral];
+  const ic = x => x.input_control_estimate || { partial_rho_structures: x.partial_rho_structures, perm_p_two_sided: x.partial_p, loo_delta_r2_structures: x.loo_r2_gain };
+  const rows = [
+    ["Mean estimate", x => fmtR(x.mean_estimate, 2)],
+    ["Mean signed gap", x => fmtSigned(x.bias)],
+    ["\u03c1 with structures destroyed", x => fmtR(x.rho_structures, 2)],
+    ["Gap, 1,000+ structures", x => fmtSigned(x.gap_by_group.hi)],
+    ["Partial \u03c1 after acreage features", x => `${fmtSigned(ic(x).partial_rho_structures)} (p ${ic(x).perm_p_two_sided < 0.0001 ? "< 0.0001" : "= " + fmtP(ic(x).perm_p_two_sided)})`],
+    ["Out-of-sample R\u00b2 gain from structures", x => fmtR(ic(x).loo_delta_r2_structures, 2)],
+    ["Split-half reliability", x => fmtR(x.split_half_reliability, 2)],
+  ];
+  let html = rows.map(([label, f]) => `<tr><td>${label}</td>${cols.map(x => `<td class="n">${f(x)}</td>`).join("")}</tr>`).join("");
+  const a = state.anonClaude.anon_minus_named;
+  html += `<tr><td>Butte County estimate (rank of 40)</td><td class="n">${fmtR(a.butte_named, 2)} (${a.butte_rank_named})</td><td class="n">${fmtR(a.butte_anon, 2)} (${a.butte_rank_anon})</td><td class="n">${fmtR(g.neutral.butte, 2)} (${g.neutral.butte_rank})</td><td class="n">${fmtR(g.anon_neutral.butte, 2)} (${g.anon_neutral.butte_rank})</td></tr>`;
+  tbody.innerHTML = html;
+}
+
 function renderNeutral() {
   renderDumbbell();
   renderSalienceTable();
   renderInputControlTable();
+  renderAnonTable();
 }
 
 let rankingSort = { key: "abs_error", dir: -1 };
@@ -1984,7 +2028,7 @@ async function init() {
     loadJSON("site/data/ca_fire_perimeters.geojson"),
     loadJSON("site/data/ca_state_outline.geojson"),
   ]);
-  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates, inputControl] = await Promise.all([
+  const [aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates, inputControl, anonClaude, anonGemini] = await Promise.all([
     loadOptional("site/data/ai_vs_ground_truth.json"),
     loadOptional("site/data/ai_fire_influence_estimates.json"),
     loadOptional("site/data/ground_truth_fire_influence.json"),
@@ -1995,8 +2039,10 @@ async function init() {
     loadOptional("site/data/error_heterogeneity.json"),
     loadOptional("site/data/ca_coc_covariates.json"),
     loadOptional("site/data/input_feature_control.json"),
+    loadOptional("site/data/anonymization_test.json"),
+    loadOptional("site/data/gemini_matched_test.json"),
   ]);
-  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates, inputControl });
+  Object.assign(state, { aiCompare, aiEstimates, groundTruth, structures, yearly, panelFe, conditions, errorHetero, covariates, inputControl, anonClaude, anonGemini });
   state.pitByCoc = indexByCoc(pit);
   state.hicByCoc = indexByCoc(hic);
   state.firesByYear = fireYear;

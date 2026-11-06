@@ -46,6 +46,8 @@ OPTIONAL_JSON_COPY = [
     "ai_condition_comparison.json",
     "error_heterogeneity.json",
     "input_feature_control.json",
+    "anonymization_test.json",
+    "gemini_matched_test.json",
 ]
 
 
