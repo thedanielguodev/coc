@@ -16,7 +16,7 @@ Comparing the two tells whether the model's overstatement shrinks once it knows
 how the outcome is measured (i.e. whether it's reasoning about the world or
 about this data).
 
-Requires GEMINI_API_KEY in the environment (never hardcode it).
+Uses GEMINI_API_KEY from the environment, or asks you to paste it (hidden input) if unset. Never hardcode it.
 Usage: python ai_estimate_gemini.py [--condition baseline|pit_informed|neutral|both|all] [--trials 10] [--model gemini-3.8-flash]
 Output: data/ai_estimates_gemini_<condition>.json (raw per-trial output + prompt)
 """
@@ -94,16 +94,30 @@ def load_regions():
     return names, history
 
 
+# Anonymous condition: CoC names and numbers replaced by shuffled codes (fixed
+# seed, same mapping as the Claude anonymous trials), so the model sees only the
+# acreage histories. Tests whether recognizing places drives the destruction pattern.
+ANON_SEED = 20261105
+
+
+def anon_codes(names):
+    import random
+    codes = [f"R{n:02d}" for n in range(1, len(names) + 1)]
+    random.Random(ANON_SEED).shuffle(codes)
+    return dict(zip(sorted(names), codes))
+
+
 def region_block(coc_num, coc_name, fire_rows):
     if fire_rows:
         lines = "\n".join(f"  {y}: {a:,.0f} acres burned" for y, a in fire_rows)
     else:
         lines = "  No major (>=1,000-acre) fires on record, 2000-2024."
-    return f"Region: {coc_name} ({coc_num})\nMajor wildfire history within this region's boundary, 2000-2024:\n{lines}"
+    header = f"Region {coc_name}" if coc_num is None else f"Region: {coc_name} ({coc_num})"
+    return f"{header}\nMajor wildfire history within this region's boundary, 2000-2024:\n{lines}"
 
 
 def build_prompt(condition, names, history):
-    parts = [NEUTRAL_PROMPT if condition == "neutral" else SYSTEM_PROMPT]
+    parts = [NEUTRAL_PROMPT if condition in ("neutral", "anon_neutral") else SYSTEM_PROMPT]
     if condition == "pit_informed":
         parts.append(PIT_CONTEXT)
     parts.append(
@@ -111,7 +125,12 @@ def build_prompt(condition, names, history):
         "coefficient (-1.0 to 1.0) between this region's annual acres burned and its same-year "
         "homeless count would show."
     )
-    parts.append("\n\n".join(region_block(c, names[c], history.get(c, [])) for c in sorted(names)))
+    if condition == "anon_neutral":
+        codes = anon_codes(names)
+        blocks = sorted((codes[c], region_block(None, codes[c], history.get(c, []))) for c in names)
+        parts.append("\n\n".join(b for _, b in blocks))
+    else:
+        parts.append("\n\n".join(region_block(c, names[c], history.get(c, [])) for c in sorted(names)))
     parts.append(OUTPUT_SPEC)
     return "\n\n".join(parts)
 
@@ -161,9 +180,12 @@ def call_gemini(model, prompt, key, retries=8):
     raise RuntimeError("Gemini call failed after retries")
 
 
-def validate(trial, names):
+def validate(trial, names, condition=None):
     if not all(isinstance(r, dict) and "coc_number" in r and "estimated_correlation" in r for r in trial):
         raise ValueError("malformed rows")
+    if condition == "anon_neutral":
+        back = {v: k for k, v in anon_codes(names).items()}
+        trial = [dict(r, coc_number=back.get(r["coc_number"], r["coc_number"]), region_code=r["coc_number"]) for r in trial]
     got = {r["coc_number"]: r for r in trial}
     missing = set(names) - set(got)
     if missing:
@@ -171,10 +193,10 @@ def validate(trial, names):
     return [got[c] for c in sorted(names)]
 
 
-def run(condition, n_trials, model, key):
+def run(condition, n_trials, model, key, suffix=""):
     names, history = load_regions()
     prompt = build_prompt(condition, names, history)
-    dest = DATA_DIR / f"ai_estimates_gemini_{condition}.json"
+    dest = DATA_DIR / f"ai_estimates_gemini_{condition}{suffix}.json"
     # Resume: keep trials already saved for this model/prompt (free-tier quotas are small).
     trials = []
     if dest.exists():
@@ -185,7 +207,7 @@ def run(condition, n_trials, model, key):
         i = len(trials) + 1
         for attempt in range(3):
             try:
-                trials.append(validate(call_gemini(model, prompt, key), names))
+                trials.append(validate(call_gemini(model, prompt, key), names, condition))
                 break
             except ValueError as err:
                 print(f"  trial {i}: invalid output ({err}), re-asking", file=sys.stderr)
@@ -207,16 +229,22 @@ def run(condition, n_trials, model, key):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--condition", choices=["baseline", "pit_informed", "neutral", "both", "all"], default="both")
+    ap.add_argument("--condition", choices=["baseline", "pit_informed", "neutral", "anon_neutral", "matched", "both", "all"], default="both")
     ap.add_argument("--trials", type=int, default=10)
     ap.add_argument("--model", default="gemini-3.8-flash")
+    ap.add_argument("--suffix", default="", help="output file suffix, e.g. _nov5, so a same-day batch does not resume older trials")
     args = ap.parse_args()
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
-        sys.exit("GEMINI_API_KEY is not set.")
-    conds = {"both": ["baseline", "pit_informed"], "all": ["baseline", "pit_informed", "neutral"]}.get(args.condition, [args.condition])
+        # Ask interactively; getpass hides the input and the key is never written to disk.
+        import getpass
+        key = getpass.getpass("Paste your Gemini API key (input hidden): ").strip()
+    if not key:
+        sys.exit("No Gemini API key given.")
+    conds = {"both": ["baseline", "pit_informed"], "all": ["baseline", "pit_informed", "neutral"],
+             "matched": ["baseline", "neutral", "anon_neutral"]}.get(args.condition, [args.condition])
     for cond in conds:
-        run(cond, args.trials, args.model, key)
+        run(cond, args.trials, args.model, key, args.suffix)
 
 
 if __name__ == "__main__":

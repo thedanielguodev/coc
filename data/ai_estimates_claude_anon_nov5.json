@@ -1,0 +1,3595 @@
+{
+ "model": "Claude Sonnet via the Claude Code Agent tool ('sonnet' alias, 2026-11-05), 10 independent sub-agents per condition, each in a clean git worktree, reading only a folder containing its prompt (transcripts: one Read + hand-back). Named and anonymous trials were launched together, alternating, so both share one model version.",
+ "condition": "anon_neutral",
+ "run_date": "2026-11-05",
+ "design": "batched: all 44 CoCs in one prompt per trial; neutral prompt. CoC names and numbers replaced by shuffled codes R01-R44 (seed 20261105, same mapping as ai_estimate_gemini.anon_codes); rows mapped back to coc_number after the run, original code kept in region_code.",
+ "prompt": "You are participating in a research study on how well AI causal/statistical intuition matches real data. You will be given a U.S. Continuum of Care (CoC) homelessness-services region's wildfire history and asked to estimate its statistical relationship to that region's homeless count. You are NOT given the actual homeless counts -- estimate from your own reasoning plus whatever general knowledge you have of this region, not from being told the answer. Give your honest best estimate.\n\nDo not use any tools, read any files, or search for anything. Answer only from the information in this message.\n\nBelow are 44 regions. For EACH region, estimate what a Pearson correlation coefficient (-1.0 to 1.0) between this region's annual acres burned and its same-year homeless count would show.\n\nRegion R01\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 14,120 acres burned\n  2008: 3,582 acres burned\n  2009: 856 acres burned\n  2015: 2,316 acres burned\n  2021: 1,703 acres burned\n\nRegion R02\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 10,798 acres burned\n  2001: 38,221 acres burned\n  2002: 1,875 acres burned\n  2003: 17,283 acres burned\n  2004: 32,938 acres burned\n  2005: 1,057 acres burned\n  2006: 8,027 acres burned\n  2007: 1,106 acres burned\n  2008: 42,755 acres burned\n  2009: 19,668 acres burned\n  2010: 1,711 acres burned\n  2011: 7,313 acres burned\n  2012: 4,504 acres burned\n  2013: 258,959 acres burned\n  2014: 11,006 acres burned\n  2015: 70,846 acres burned\n  2016: 996 acres burned\n  2017: 98,956 acres burned\n  2018: 127,266 acres burned\n  2019: 5,508 acres burned\n  2020: 14,829 acres burned\n  2021: 4,663 acres burned\n  2022: 36,423 acres burned\n  2023: 9,826 acres burned\n  2024: 9,104 acres burned\n  2025: 13,662 acres burned\n\nRegion R03\nMajor wildfire history within this region's boundary, 2000-2024:\n  2008: 1,355 acres burned\n  2009: 2,973 acres burned\n  2010: 1,289 acres burned\n  2017: 12,166 acres burned\n  2018: 1,238 acres burned\n  2020: 1,309 acres burned\n\nRegion R04\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 59,692 acres burned\n  2001: 60,255 acres burned\n  2002: 516,836 acres burned\n  2003: 27,528 acres burned\n  2004: 32,048 acres burned\n  2005: 8,306 acres burned\n  2006: 68,644 acres burned\n  2007: 114,278 acres burned\n  2008: 376,629 acres burned\n  2009: 36,097 acres burned\n  2010: 11,898 acres burned\n  2011: 6,477 acres burned\n  2012: 609,735 acres burned\n  2013: 50,627 acres burned\n  2014: 343,973 acres burned\n  2015: 50,509 acres burned\n  2016: 40,955 acres burned\n  2017: 429,676 acres burned\n  2018: 449,863 acres burned\n  2019: 83,205 acres burned\n  2020: 723,050 acres burned\n  2021: 1,431,954 acres burned\n  2022: 91,209 acres burned\n  2023: 165,490 acres burned\n  2024: 34,495 acres burned\n  2025: 59,424 acres burned\n\nRegion R05\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 11,740 acres burned\n  2002: 1,498 acres burned\n  2004: 1,145 acres burned\n  2005: 17,031 acres burned\n  2006: 13,004 acres burned\n  2007: 3,518 acres burned\n  2008: 15,416 acres burned\n  2010: 9,022 acres burned\n  2013: 22,938 acres burned\n  2014: 13,832 acres burned\n  2015: 156,162 acres burned\n  2016: 13,956 acres burned\n  2017: 63,006 acres burned\n  2018: 14,424 acres burned\n  2020: 409,505 acres burned\n  2021: 8,512 acres burned\n  2022: 3,159 acres burned\n  2023: 440 acres burned\n  2024: 55,868 acres burned\n  2025: 85,537 acres burned\n\nRegion R06\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 1,514 acres burned\n  2003: 1,048 acres burned\n  2004: 6,117 acres burned\n  2006: 13,969 acres burned\n  2012: 247 acres burned\n  2014: 6,599 acres burned\n  2015: 9,694 acres burned\n  2016: 5,542 acres burned\n  2017: 2,366 acres burned\n  2018: 57,254 acres burned\n  2019: 2,162 acres burned\n  2020: 75,982 acres burned\n\nRegion R07\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 1,024 acres burned\n  2002: 21,641 acres burned\n  2003: 153,930 acres burned\n  2005: 23,430 acres burned\n  2006: 162,592 acres burned\n  2007: 47,180 acres burned\n  2008: 1,885 acres burned\n  2009: 17,527 acres burned\n  2013: 26,407 acres burned\n  2015: 1,270 acres burned\n  2016: 2,300 acres burned\n  2017: 238,033 acres burned\n  2018: 36,932 acres burned\n  2019: 11,849 acres burned\n  2020: 1,939 acres burned\n  2023: 2,715 acres burned\n  2024: 24,910 acres burned\n  2025: 2,152 acres burned\n\nRegion R08\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 30 acres burned\n  2008: 3,925 acres burned\n  2009: 7,783 acres burned\n  2016: 13 acres burned\n  2020: 63,696 acres burned\n\nRegion R09\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 52 acres burned\n  2002: 3,403 acres burned\n  2003: 2,307 acres burned\n  2006: 1,660 acres burned\n  2010: 3,188 acres burned\n  2011: 2,582 acres burned\n  2015: 4,258 acres burned\n  2016: 47,648 acres burned\n  2017: 9,668 acres burned\n  2018: 975 acres burned\n  2019: 2,875 acres burned\n  2020: 6,538 acres burned\n  2024: 7,969 acres burned\n  2025: 166,194 acres burned\n\nRegion R10\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion R11\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 4,466 acres burned\n  2001: 2,032 acres burned\n  2002: 127 acres burned\n  2003: 20,949 acres burned\n  2004: 37,194 acres burned\n  2005: 15,222 acres burned\n  2006: 48,486 acres burned\n  2008: 388 acres burned\n  2009: 2,411 acres burned\n  2010: 1,028 acres burned\n  2011: 1,027 acres burned\n  2012: 4,815 acres burned\n  2013: 54,778 acres burned\n  2015: 1,049 acres burned\n  2016: 1,459 acres burned\n  2017: 12,140 acres burned\n  2018: 29,965 acres burned\n  2019: 2,833 acres burned\n  2020: 30,324 acres burned\n  2021: 57 acres burned\n  2022: 33,954 acres burned\n  2023: 14,198 acres burned\n  2024: 9,050 acres burned\n  2025: 5,123 acres burned\n\nRegion R12\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,591 acres burned\n  2001: 11,847 acres burned\n  2002: 71,950 acres burned\n  2003: 399,852 acres burned\n  2004: 8,762 acres burned\n  2005: 3,863 acres burned\n  2006: 16,678 acres burned\n  2007: 335,287 acres burned\n  2011: 16,127 acres burned\n  2012: 32,180 acres burned\n  2013: 13,365 acres burned\n  2014: 25,335 acres burned\n  2016: 8,850 acres burned\n  2017: 5,994 acres burned\n  2018: 1,238 acres burned\n  2020: 19,442 acres burned\n  2021: 6,736 acres burned\n  2022: 4,456 acres burned\n  2024: 1,629 acres burned\n  2025: 7,681 acres burned\n\nRegion R13\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 4,860 acres burned\n  2004: 32,646 acres burned\n  2008: 756 acres burned\n  2014: 3,921 acres burned\n  2015: 5,339 acres burned\n  2016: 188 acres burned\n  2017: 70,092 acres burned\n  2018: 35,065 acres burned\n  2020: 206,315 acres burned\n  2025: 6,822 acres burned\n\nRegion R14\nMajor wildfire history within this region's boundary, 2000-2024:\n  2003: 31,174 acres burned\n  2004: 1,459 acres burned\n  2006: 34,876 acres burned\n  2007: 24,114 acres burned\n  2011: 1,122 acres burned\n  2018: 5,976 acres burned\n  2019: 2,234 acres burned\n  2020: 172,280 acres burned\n  2025: 3,456 acres burned\n\nRegion R15\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 187 acres burned\n  2003: 3,764 acres burned\n  2005: 3,957 acres burned\n  2006: 2,445 acres burned\n  2015: 2,857 acres burned\n  2020: 23,981 acres burned\n\nRegion R16\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 1,762 acres burned\n  2004: 7,558 acres burned\n  2006: 2 acres burned\n  2007: 3,070 acres burned\n  2014: 72,170 acres burned\n  2016: 5,524 acres burned\n  2017: 197 acres burned\n  2019: 3,442 acres burned\n  2020: 1,668 acres burned\n  2021: 219,802 acres burned\n  2022: 13,394 acres burned\n  2024: 1,955 acres burned\n\nRegion R17\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 9,570 acres burned\n  2005: 1,383 acres burned\n  2006: 14,509 acres burned\n  2007: 59 acres burned\n  2008: 260,118 acres burned\n  2009: 8,693 acres burned\n  2012: 2,329 acres burned\n  2015: 1,076 acres burned\n  2016: 145,794 acres burned\n  2017: 4,690 acres burned\n  2018: 3,536 acres burned\n  2019: 2,521 acres burned\n  2020: 185,435 acres burned\n  2021: 3,996 acres burned\n  2024: 2,569 acres burned\n  2025: 21 acres burned\n\nRegion R18\nMajor wildfire history within this region's boundary, 2000-2024:\n  2004: 1,007 acres burned\n  2008: 3,346 acres burned\n  2015: 7,405 acres burned\n  2016: 0 acres burned\n  2017: 6,477 acres burned\n  2018: 2,158 acres burned\n  2020: 43,426 acres burned\n\nRegion R19\nMajor wildfire history within this region's boundary, 2000-2024:\n  2003: 22,763 acres burned\n  2004: 2,007 acres burned\n  2006: 6,574 acres burned\n  2008: 10,130 acres burned\n  2009: 4,635 acres burned\n  2013: 11,784 acres burned\n  2015: 36,018 acres burned\n  2018: 3,677 acres burned\n  2020: 53,363 acres burned\n  2021: 2,421 acres burned\n  2022: 31,156 acres burned\n  2023: 13,850 acres burned\n  2024: 18,187 acres burned\n  2025: 1 acres burned\n\nRegion R20\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion R21\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 3,588 acres burned\n  2005: 962 acres burned\n  2006: 10,505 acres burned\n  2007: 30,048 acres burned\n  2008: 15,653 acres burned\n  2017: 9,806 acres burned\n  2018: 7,551 acres burned\n  2020: 21,835 acres burned\n  2024: 21,375 acres burned\n\nRegion R22\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 2,131 acres burned\n  2001: 9,748 acres burned\n  2002: 2,142 acres burned\n  2004: 1,955 acres burned\n  2007: 1,057 acres burned\n  2008: 82,761 acres burned\n  2013: 2,462 acres burned\n  2015: 1,046 acres burned\n  2017: 22,435 acres burned\n  2018: 153,028 acres burned\n  2020: 152,190 acres burned\n  2021: 24,101 acres burned\n  2024: 58,222 acres burned\n\nRegion R23\nMajor wildfire history within this region's boundary, 2000-2024:\n  2013: 3,108 acres burned\n  2020: 2,995 acres burned\n\nRegion R24\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 1,707 acres burned\n  2001: 1,797 acres burned\n  2003: 2,628 acres burned\n  2005: 1,105 acres burned\n  2010: 1,600 acres burned\n  2015: 1,729 acres burned\n  2016: 1,246 acres burned\n  2017: 1,730 acres burned\n  2018: 3,933 acres burned\n  2020: 5,814 acres burned\n\nRegion R25\nMajor wildfire history within this region's boundary, 2000-2024:\n  2017: 1,070 acres burned\n  2020: 5,062 acres burned\n\nRegion R26\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 2,120 acres burned\n  2001: 21,252 acres burned\n  2003: 10,514 acres burned\n  2004: 2,046 acres burned\n  2006: 104,582 acres burned\n  2007: 1,438 acres burned\n  2008: 231,583 acres burned\n  2009: 5,635 acres burned\n  2011: 1,457 acres burned\n  2012: 61,753 acres burned\n  2013: 802 acres burned\n  2014: 6,257 acres burned\n  2015: 192,823 acres burned\n  2017: 39,786 acres burned\n  2018: 145,883 acres burned\n  2019: 1,600 acres burned\n  2020: 618,156 acres burned\n  2021: 341,529 acres burned\n  2022: 10,442 acres burned\n  2023: 4,198 acres burned\n  2024: 21,492 acres burned\n\nRegion R27\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 2,245 acres burned\n  2002: 15,964 acres burned\n  2003: 146,247 acres burned\n  2004: 1,194 acres burned\n  2005: 76,569 acres burned\n  2006: 84,596 acres burned\n  2007: 31,848 acres burned\n  2008: 12,148 acres burned\n  2009: 7,238 acres burned\n  2011: 2,868 acres burned\n  2013: 1,384 acres burned\n  2014: 2,142 acres burned\n  2015: 35,534 acres burned\n  2016: 44,378 acres burned\n  2017: 1,594 acres burned\n  2018: 1,343 acres burned\n  2019: 115 acres burned\n  2020: 90,981 acres burned\n  2021: 2,490 acres burned\n  2022: 1,079 acres burned\n  2023: 93,076 acres burned\n  2024: 51,470 acres burned\n  2025: 5,328 acres burned\n\nRegion R28\nMajor wildfire history within this region's boundary, 2000-2024:\n  2009: 677 acres burned\n  2025: 361 acres burned\n\nRegion R29\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 79,223 acres burned\n  2002: 150,635 acres burned\n  2003: 24,028 acres burned\n  2004: 4,708 acres burned\n  2005: 4,087 acres burned\n  2006: 11,606 acres burned\n  2007: 9,436 acres burned\n  2008: 14,934 acres burned\n  2009: 5,308 acres burned\n  2010: 13,012 acres burned\n  2011: 22,662 acres burned\n  2012: 1,909 acres burned\n  2013: 2,050 acres burned\n  2014: 1,423 acres burned\n  2015: 8,083 acres burned\n  2016: 27,473 acres burned\n  2017: 93,580 acres burned\n  2018: 7,702 acres burned\n  2019: 1,876 acres burned\n  2020: 181,350 acres burned\n  2021: 195,830 acres burned\n  2022: 1,394 acres burned\n  2023: 4,667 acres burned\n  2024: 47,130 acres burned\n  2025: 1,799 acres burned\n\nRegion R30\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 9,330 acres burned\n  2002: 7,503 acres burned\n  2004: 8,310 acres burned\n  2006: 19,244 acres burned\n  2007: 224,132 acres burned\n  2008: 11,491 acres burned\n  2009: 106,549 acres burned\n  2010: 1,220 acres burned\n  2013: 1,912 acres burned\n  2016: 52,760 acres burned\n  2017: 84,947 acres burned\n  2018: 38 acres burned\n  2019: 2,597 acres burned\n  2020: 1,293 acres burned\n  2021: 16,952 acres burned\n  2023: 5,762 acres burned\n  2024: 39,993 acres burned\n  2025: 47,862 acres burned\n\nRegion R31\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 842 acres burned\n  2003: 886 acres burned\n  2005: 2,483 acres burned\n  2006: 3,096 acres burned\n  2009: 14,231 acres burned\n  2015: 133 acres burned\n  2018: 159 acres burned\n  2020: 23,873 acres burned\n  2024: 14,167 acres burned\n\nRegion R32\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,284 acres burned\n  2005: 3,409 acres burned\n  2006: 1,247 acres burned\n  2008: 92,238 acres burned\n  2012: 18,210 acres burned\n  2013: 18,325 acres burned\n  2017: 101 acres burned\n  2018: 10,009 acres burned\n  2019: 16,690 acres burned\n  2020: 237,164 acres burned\n  2021: 114,432 acres burned\n  2024: 376,225 acres burned\n\nRegion R33\nMajor wildfire history within this region's boundary, 2000-2024:\n  2020: 4,902 acres burned\n\nRegion R34\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 23,120 acres burned\n  2006: 8,418 acres burned\n  2008: 21,400 acres burned\n  2012: 2,635 acres burned\n  2013: 27,430 acres burned\n  2014: 29,346 acres burned\n  2016: 121 acres burned\n  2018: 1,120 acres burned\n  2021: 916 acres burned\n  2022: 63,376 acres burned\n\nRegion R35\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 984 acres burned\n  2006: 14,114 acres burned\n  2008: 50,776 acres burned\n  2012: 41,839 acres burned\n  2014: 12,533 acres burned\n  2017: 36,523 acres burned\n  2018: 25,350 acres burned\n  2020: 192,813 acres burned\n\nRegion R36\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 8,190 acres burned\n  2002: 90,865 acres burned\n  2003: 35,301 acres burned\n  2004: 35,332 acres burned\n  2005: 5,849 acres burned\n  2006: 17,388 acres burned\n  2007: 86,396 acres burned\n  2008: 30,760 acres burned\n  2009: 163,070 acres burned\n  2010: 12,582 acres burned\n  2012: 4,192 acres burned\n  2013: 30,268 acres burned\n  2014: 1,952 acres burned\n  2015: 1,462 acres burned\n  2016: 46,775 acres burned\n  2017: 28,713 acres burned\n  2018: 61,616 acres burned\n  2019: 13,381 acres burned\n  2020: 152,892 acres burned\n  2021: 1,203 acres burned\n  2022: 5,228 acres burned\n  2023: 1,531 acres burned\n  2024: 68,474 acres burned\n  2025: 52,072 acres burned\n\nRegion R37\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 40 acres burned\n  2004: 11,641 acres burned\n  2013: 3,506 acres burned\n  2015: 3,740 acres burned\n  2016: 1,547 acres burned\n  2017: 86,531 acres burned\n  2019: 77,208 acres burned\n  2020: 84,203 acres burned\n  2024: 1,207 acres burned\n\nRegion R38\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion R39\nMajor wildfire history within this region's boundary, 2000-2024:\n  2009: 884 acres burned\n  2017: 407 acres burned\n\nRegion R40\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 2,978 acres burned\n  2003: 6,633 acres burned\n  2004: 1,225 acres burned\n  2006: 1,935 acres burned\n  2007: 23,634 acres burned\n  2008: 250 acres burned\n  2009: 1,689 acres burned\n  2016: 4,461 acres burned\n  2020: 175,536 acres burned\n\nRegion R41\nMajor wildfire history within this region's boundary, 2000-2024:\n  2020: 22,856 acres burned\n\nRegion R42\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 6,160 acres burned\n  2002: 3,418 acres burned\n  2003: 4,252 acres burned\n  2005: 4,675 acres burned\n  2006: 12,604 acres burned\n  2007: 15,211 acres burned\n  2008: 37,346 acres burned\n  2010: 17,223 acres burned\n  2011: 97,838 acres burned\n  2012: 14,895 acres burned\n  2013: 1,614 acres burned\n  2014: 8,108 acres burned\n  2016: 63,956 acres burned\n  2017: 5,894 acres burned\n  2018: 3,516 acres burned\n  2019: 3,284 acres burned\n  2020: 10,635 acres burned\n  2021: 31,850 acres burned\n  2022: 2,465 acres burned\n  2023: 8,593 acres burned\n  2024: 94,016 acres burned\n  2025: 11,392 acres burned\n\nRegion R43\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 6,435 acres burned\n  2001: 8,304 acres burned\n  2002: 35,666 acres burned\n  2003: 6,797 acres burned\n  2004: 12,067 acres burned\n  2005: 14,027 acres burned\n  2006: 22,502 acres burned\n  2007: 38,235 acres burned\n  2008: 5,930 acres burned\n  2009: 2,811 acres burned\n  2010: 1,204 acres burned\n  2011: 6,845 acres burned\n  2012: 13,711 acres burned\n  2013: 14,267 acres burned\n  2015: 28,133 acres burned\n  2016: 8,275 acres burned\n  2017: 12,552 acres burned\n  2018: 26,303 acres burned\n  2019: 16,882 acres burned\n  2020: 59,942 acres burned\n  2021: 71,951 acres burned\n  2022: 4,140 acres burned\n  2023: 85 acres burned\n  2024: 4,224 acres burned\n  2025: 3,580 acres burned\n\nRegion R44\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,635 acres burned\n  2001: 6,557 acres burned\n  2003: 5,548 acres burned\n  2004: 603 acres burned\n  2005: 1,720 acres burned\n  2008: 7,592 acres burned\n  2009: 1,552 acres burned\n  2012: 8,430 acres burned\n  2014: 379 acres burned\n  2015: 142,004 acres burned\n  2016: 3,928 acres burned\n  2017: 2,206 acres burned\n  2018: 336,378 acres burned\n  2019: 554 acres burned\n  2020: 63,450 acres burned\n  2024: 396 acres burned\n\nReturn ONLY a JSON array with one object per region, in the order given, with exactly these keys:\n\"coc_number\" (string), \"estimated_correlation\" (number, -1.0 to 1.0), \"direction\" (\"increases\" | \"decreases\" | \"no_relationship\"), \"confidence\" (\"low\" | \"medium\" | \"high\"), \"reasoning\" (one sentence).\nNo text before or after the JSON array.",
+ "trials": [
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One large 2020 fire; otherwise moderate activity.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse small fires and a single larger 2020 event.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two small fires with little signal.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017-2020 fires in a populated area, with rising counts.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, so little signal.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional huge fires with weak effects on counts.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single small fire year.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single large 2020 fire with otherwise minimal fire activity.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One dominant 2020 fire amid moderate others.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One dominant 2020 fire year; weak link.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with a couple of larger events.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single fire year.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many large fires with a modest displacement effect.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires coincide with rising counts over time.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Scattered moderate fires with a weak effect.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in a rural area with small populations; weak positive from housing loss and trend co-movement.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017-2020 fires coincide with increasing counts.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires and one larger 2020 event.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several very large recent fires with housing losses and rising counts.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires that grow slightly in size over time alongside rising counts.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2018 and 2020 fires fall in a period of rising counts.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recurring fires over a period of rising counts.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Heavy fire activity, with big recent fires possibly displacing residents.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One notable 2017 fire year, with little other variation.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2021 fire may modestly raise displacement, but counts are noisy.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recurring fires and displacement could modestly raise counts, but statewide trends dominate.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large recent fires coincide with strong growth in counts.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large 2015 and 2018 fires with housing loss may add to counts.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent moderate fires and a rising homeless trend.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Few, small fires; any link to homeless counts would be weak and coincidental.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires, with a plausible but weak displacement effect.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big early fires, not aligned with later homelessness increases.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires, modest effect.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires with housing destruction and recent increases in counts.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recurring fires with a mild positive link.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so no relationship is expected.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Tiny fires, essentially no exposure.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent mid-size fires with a weak displacement effect.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires with a weak positive link.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Episodic big fires with modest displacement effects.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Negligible fire exposure.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires, so no meaningful correlation can exist.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large late fires coincide with rising counts.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A very large 2020 fire against a modest baseline gives a weak positive estimate.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no correlation can be expected.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fire record with a larger 2020 event gives a weak positive link.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fire years give a negligible positive estimate.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017-2020 fires coincide with rising counts.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, so the signal is minimal.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2008, 2016 and 2020 may add to housing instability.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single small 2020 fire gives almost no signal.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One large 2020 fire in an otherwise quiet record gives a weak positive estimate.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A large 2020 fire and moderate earlier ones give a modest positive estimate.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single huge 2020 fire gives a weakly positive estimate.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Late large fires (2020, 2024) give a weak positive estimate.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One moderate 2020 fire, so the signal is minimal.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big fires in 2017, 2020 and 2021 line up with rising counts.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fire acreage grows over time alongside the homeless count, so a positive trend correlation is likely.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mid-sized fires with a large 2022 event suggest a weak positive link.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large recent fire years coincide with a rising homeless trend, and housing loss could add to it.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017-2020 fires coincide with higher recent counts.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A late large 2020 fire against a small baseline gives a weak positive estimate.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires (2018, 2020, 2024) overlap with higher counts, and 2018 was destructive.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires with slightly larger recent ones imply a weak positive link.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires cluster in 2018 and 2020, years with rising housing stress.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fire activity is larger in recent years when counts rose.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge recent fires (2020, 2021) coincide with a rising count, though other factors dominate.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse small fires with one larger 2017 event give a weak, uncertain positive link.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2021 outlier fire dominates and any effect is likely small.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires including 2013 and 2017-18 could displace housing, but the count is driven mainly by other factors.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fire acreage rises strongly in recent years, alongside rising homelessness.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large 2015, 2018 and 2020 fires could displace residents and raise counts.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Steady fire activity with peaks in 2020-2021 gives a weak positive link.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only five modest fire years, so any link to the homeless count is weak and mostly noise.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent large fires with no strong timing pattern imply a weak positive link.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Biggest fires came early (2003, 2007) when counts were lower and later years have small fires, so the link is near zero.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires spread across the period give a weak positive link.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2007, 2009 and 2017 add some housing loss, but other factors dominate.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent mid-to-large fires with larger recent ones suggest a modest positive link.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no correlation can be expected.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Just two tiny fires, so there is essentially no signal.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many mid-sized fires with no clear trend make for a weak relationship.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires throughout the period, including recent ones, suggest a modest positive link.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Episodic big fires with limited urban housing exposure imply a weak positive link.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires give essentially no signal.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no correlation can be expected.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Late large fires coincide with later higher counts, suggesting a modest positive correlation.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One huge 2020 fire amid small earlier ones; weak positive from the trend.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so there is no fire variation to correlate with.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fire history with a single larger 2020 event; weak link.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fires, the larger in 2020; weak evidence.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017, 2019 and 2020 line up with rising homelessness.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so any signal is minimal.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several large fires across the period, with weak alignment to count changes.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single small 2020 fire gives nearly no variation.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only one sizeable fire, in 2020, late in the series, so a weak trend-driven positive.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A very large 2020 fire plus 2017 and 2018 events fall in a rising-count period.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single huge 2020 fire is a modest signal against a general upward trend.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with the biggest in 2020 and 2024, giving a weak positive.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire gives little variation to correlate.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017, 2020 and 2021 overlap with rising counts.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger fires in recent years overlap with a rising homeless trend, though causation is unclear.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a large 2022 event; weak positive.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large recent fire years coincide with rising regional homelessness and housing stress.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big 2017, 2018 and 2020 fires fall in a period of rising homelessness.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Largest fire is in 2020, late in the series, so a weak trend-based positive.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017, 2018, 2020 and 2024 fires align with rising homelessness and housing stress.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires, larger in later years, track a general rise in counts only weakly.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big fires in 2018 and 2020 late in the series match the later growth in counts.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate recurring fires, with the larger ones in later years.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in 2020 and 2021 coincide with upward-trending homelessness.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One large 2017 fire coincides with a period of rising homelessness, but the signal is sparse.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A very large 2021 fire and a 2014 event give a weak positive signal.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fire history with major events (2013, 2017, 2018) may displace housing, but homelessness is driven by broader trends.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge fires in 2020, 2021 and 2024 align with rising counts and housing loss.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge 2015, 2018 and 2020 fires may displace residents and align with rising counts.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent moderate fires with peaks around 2020 and 2021; weak association.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few moderate fires; any link is weak and mostly reflects general upward homelessness trends.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires with no strong timing alignment to counts.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Largest fires came early (2003, 2007), so alignment with later rising counts is weak.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires, several in later years; weak positive expected.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires across the period; weak association with homelessness.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires with big events in 2011, 2016 and 2024 and a rising homeless trend.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so there is no fire variation to correlate with.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires, so there is essentially no signal.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent mid-size fires with no clear alignment to homeless count changes.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent large fire activity with big recent years; a weak positive link.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires scattered across the period with a 2017 peak; weak positive association expected.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two small fires provide essentially no signal.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so there is no fire variation to correlate with.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with one large 2016 event; limited direct housing impact expected.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A dominant 2020 fire amid smaller ones suggests only a weak positive link.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation can be expected.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with a 2020 event; little reason to expect a strong link.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fires provide almost no information.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large 2017 to 2020 fires near populated areas could contribute to displacement and higher counts.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so any correlation is essentially noise.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several very large fires in remote areas with modest expected effects on counts.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single small fire gives essentially no basis for a correlation.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One dominant 2020 fire is a single point that offers weak evidence of any relationship.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A large 2020 fire at the end of a rising series gives a modest positive tilt.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A dominant 2020 fire and otherwise moderate activity suggest only a weak association.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with a couple of larger events; weak expected link.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single moderate 2020 fire provides little evidence.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Frequent big fires, with several large recent ones, plausibly add to housing stress.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large recent fires (2015, 2017, 2020) coincide with rising homelessness in a housing-constrained area.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with one larger recent event, weak positive association.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge acreage is mostly remote wildland, so housing impact is diluted, but extreme years may add some pressure.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big 2017 to 2020 fires coincide with later higher counts, giving a modest positive tilt.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single large 2020 fire dominates, giving a weak positive expectation.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Very large fires in 2018, 2020 and 2024 late in the period align with rising counts and housing loss.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires that grow slightly in recent years give a weak positive tendency.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Big fires in 2018 and 2020 fall late in a period of rising counts, giving a modest positive correlation.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recurring fires in recent years overlap with rising homelessness trends.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Very large fires concentrated in recent years overlap with rising homelessness in a strained housing market.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse small fires with one larger 2017 event give only a weak, noisy association.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A huge 2021 fire and 2014 event may relate to housing strain, but the evidence is thin.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Frequent very large fires including 2013, 2017 and 2018 events plausibly displaced residents and tightened housing, though counts also follow statewide trends.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Very large recent fires (2020, 2021, 2024) coincide with rising counts and housing disruption.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Very large 2015 and 2018 fires plausibly displaced residents and strained housing, raising counts.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Steady fire activity with peaks in 2020 and 2021 may add some housing pressure.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few modest fires and no clear link to housing loss, so only a weak positive tendency.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent large fires across the period with recent ones aligned to rising counts.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Largest fires occurred early in the record, when counts were likely lower, so the link is weak.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with larger recent events could modestly raise housing pressure.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires spread across years with recent ones coinciding with higher counts.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Regular fires with larger recent ones modestly overlap with rising homelessness.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation can be expected.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny fires, so the relationship is essentially undetectable.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent fire activity with no clear spike aligned to housing disruption.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires throughout the period without a clear alignment to housing disruption.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional very large fires could stress housing but effects on counts are indirect.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny fires, so the relationship is essentially undetectable.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation can be expected.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with a few larger ones; any link to homeless counts is weak.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The dominant 2020 fire is the main signal.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "There are no major fires, so there is nothing to correlate.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A 2020 fire is the only substantial event.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fires leave very little signal.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017, 2019 and 2020 line up with rising counts.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so the estimate is mostly noise.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2016 and 2020 in a period of rising counts.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single small fire in 2020 gives almost no information.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The only large fire is in 2020, so the correlation rests on a single point.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The dominant 2020 fire and large 2017 and 2018 fires coincide with higher counts.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One dominant 2020 fire is the main signal.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires in 2009 and 2020 with a weak positive tie.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire gives almost no information.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017, 2020 and 2021 occur in a period of rising counts.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger fires in 2015, 2020 and 2024 fall in a period of rising counts, with displacement as a plausible small contributor.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with the largest in 2022, a weak positive tie.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large recent fire years overlap with a rising homeless trend, but the link is mostly shared timing.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017 and 2020 coincide with higher counts.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire dominates, with a weak positive tie.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2018, 2020 and 2024 coincide with higher counts, and housing loss could contribute.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires that grow slightly over time, with a weak positive tie.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big fires in 2018 and 2020 come late in a rising-count period, and destroyed housing could add to displacement.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recurring fires in a period of generally rising counts.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fire years such as 2020 and 2021 line up with higher counts, though the shared time trend likely drives this.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One moderate fire in 2017 and small others, so the signal is weak.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2014 and 2021 give weak positive covariation.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fire years such as 2013, 2017 and 2018 coincide with generally rising homelessness, though housing loss and rent pressure drive the count more.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The very large 2020, 2021 and 2024 fires fall in a period of higher counts.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The huge 2015 and 2018 fires coincide with higher counts, and housing loss could contribute.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent fire activity with slightly larger fires in 2020 and 2021 gives a weak positive tie.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Few modest fires with no clear link to homeless counts.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires across the whole period give only a weak association.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "The largest fires are early (2003, 2007), so the link to later rising counts is weak.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a slight positive tie to later higher counts.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2007, 2009 and 2017 give modest covariation at most.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires with larger ones in 2016 and 2024 give a modest positive tie.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "There are no major fires, so there is nothing to correlate.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only trivial fires on record.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are spread over the whole period with no dominant event, giving a weak positive tie.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires spread across the whole period give a weak positive tie.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Episodic large fires, including 2017, with a weak positive tie to counts.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny fires on record.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "There are no major fires, so there is nothing to correlate.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The biggest fire is late in the series, when counts tend to be higher.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire dominates with a weak possible effect.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so no relationship is expected.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires with one larger 2020 event; the effect is weak.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fires give minimal information.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017, 2019 and 2020 may modestly raise the count.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so there is little signal.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2008, 2016 and 2020 could modestly increase housing instability.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single small fire gives little information.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single large 2020 fire could coincide with a rising trend.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The large 2020 fire and rising trends suggest a weak positive link.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The dominant 2020 fire coincides with a rising count.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A few moderate fires, mostly driven by 2020 and 2024.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single moderate fire gives little signal.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.22,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2020 and 2021 may modestly raise the count.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2015, 2020 and 2024 may reduce housing stock, though other drivers dominate.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sporadic moderate fires with a weak effect.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fire years like 2020 and 2021 may modestly strain housing, but the signal is noisy.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big fires in 2017 and 2020 may add housing pressure.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire dominates, giving a weak positive link.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2018, 2020 and 2024 coincide with rising homelessness.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small, frequent fires have little plausible influence on the count.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big fires in 2018 and 2020 coincide with a generally rising homeless count.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.18,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires recur with a larger share in recent years.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Extreme fire years like 2020 and 2021 could strain housing, though other drivers dominate.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One notable 2017 fire amid small ones suggests only a weak possible effect.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2014 and 2021 may displace residents, but the signal is noisy.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires such as 2013, 2017 and 2018 could displace residents, but regional homelessness trends are driven mainly by housing costs.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge fires in 2020, 2021 and 2024 coincide with the rising count.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in 2015, 2018 and 2020 could modestly strain housing.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent fire activity with large years in 2020 and 2021 suggests a weak positive effect.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few, modest fires; any link would be weak and driven by one or two years.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires and rising homelessness suggest a weak positive link.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large early fires and a later trend of rising homelessness make any correlation weak.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a weak plausible effect.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires recur, with a plausible but weak displacement effect.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent fires with large recent years suggest a weak positive link.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so no relationship is expected.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two very small fires offer essentially no signal.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fire history with sporadic large years and a weak housing-loss pathway.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires and rising homelessness suggest a weak positive link.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional very large fires with a weak plausible housing-loss effect.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.03,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires have negligible influence.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so no relationship is expected.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires late in the period overlap with a rising count.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire dominates and may weakly raise the count.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so no correlation is expected.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with one larger 2020 event give a weak link.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fires give minimal information.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.18,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017, 2019 and 2020 coincide with higher counts.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so the signal is negligible.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.18,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2008, 2016 and 2020 may displace residents, but the link is weak.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single small fire year gives almost no signal.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single large 2020 fire could slightly raise the count, with little other signal.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A large 2020 fire and a rising trend suggest a weak positive link.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire dominates and may weakly raise the count.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires in 2020 and 2024 coincide with rising counts.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One moderate fire in 2020 gives minimal information.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Heavy fire exposure and recent large fires (2020, 2021) are consistent with a weak positive link.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires in 2020 and 2024 overlap with a rising trend in the count.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a large one in 2022 give a weak positive link.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.22,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fire years, rising over time, coincide with a generally rising homeless count.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017 and 2020 coincide with higher counts.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire is the main event, giving a small positive link.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.22,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2017-2020 and 2024 plausibly raise housing pressure, alongside a rising trend.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small, steady fires with a slight rise recently give a weak link.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The largest fires are recent (2018, 2020), when counts also rose.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recurrent moderate fires with larger recent ones suggest a weak positive link.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.22,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large recent fires (2020, 2021) coincide with a growing count.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse small fires with one larger 2017 event give only a weak positive link.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2021 fire is large, but the count is unreliable in that year, so the link is weak.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recurring fires such as 2013 and 2017-2018 may add displacement pressure, but the homeless count is driven mainly by housing costs.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires in 2020, 2021 and 2024 parallel a rising count.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.18,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in 2015, 2018 and 2020 could raise displacement, but the link is weak.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent moderate fires with 2020-2021 peaks suggest a weak positive link.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few modest fires, so any link to the homeless count is weak and mostly reflects shared time trends.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires and recent peaks coincide with a rising count.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.08,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Biggest fires came early (2003, 2007) while counts changed later, so the link is weak.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Modest fires spread over time give only a weak positive link.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.18,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several large fires and recent ones in 2024-2025 suggest a weak positive link.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent mid-sized fires with a 2024 peak suggest a weak positive link.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so there is nothing to correlate.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.03,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Tiny fires have no meaningful link to the count.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent mid-sized fires give a weak positive link through displacement.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.18,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated large fires, including recent ones, suggest a weak positive link.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires are scattered across the period, so any association is weak.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.03,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so there is no meaningful signal.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so no correlation can be expected.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with recent peaks parallel a rising count.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A large 2020 fire plus smaller earlier ones suggest a weak positive link.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation exists.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with a late 2020 spike give a weak positive link.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fires, mostly noise.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017, 2019 and 2020 fires coincide with rising counts.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so there is little signal.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several very large fires (2008, 2016, 2020) with a modest expected displacement effect.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One small fire in 2020 offers little signal.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only one large fire in 2020, so a weak positive link at most.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several large fires with a 2020 peak give a modest positive link.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A large 2020 fire and a few earlier ones suggest a modest positive link.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with recent larger ones give a weak positive link.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire gives little signal beyond the general trend.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many very large fires, including the 2020 and 2021 spikes, could weakly raise counts.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires (2020, 2024, 2025) coincide with a general upward trend in counts.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A mix of mid-sized fires and a recent large one suggest a weak positive link.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fire years, mostly rural, could add some displacement but homelessness is driven by other factors.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017, 2018 and 2020 fires coincide with rising counts.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A 2020 spike and small earlier fires imply a weak positive link.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires (2018, 2020, 2024) coincide with rising counts.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many small fires with a larger recent one give a weak positive link.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Late-period large fires coincide with rising counts in this region.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Regular moderate fires and recent growth in counts suggest a weak positive link.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires, especially 2020 and 2021, could affect a big region, but the link is weak.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse small fires with one 2017 spike give a weak positive expectation.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2014 and 2021 fires could displace some people, but the effect is weak.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large repeated fires (2013, 2017, 2018) could displace people, but the relationship is likely weak.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge recent fires (2020, 2021, 2024) coincide with rising counts.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large 2015, 2018 and 2020 fires give a modest displacement effect.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent annual fires throughout the period give a modest positive link.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few modest fires, so little signal and only a weak positive link is plausible.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires throughout the period give a weak positive link.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large early fires and smaller later ones, so any link is weak.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated mid-sized fires with a late increase, so a modest positive link.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several large fires, including 2007 and 2009, and a modest displacement effect.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent moderate-to-large fires with a recent large one give a weak positive link.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation exists.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only trivial fires on record, so no real signal.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent mid-sized fires over the whole period, with a weak positive effect expected.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires throughout the period, with a weak positive link expected.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Intermittent big fires have only a modest plausible effect on counts.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires, so no meaningful signal.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation exists.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a recent big one, plus a general upward trend in counts.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One huge 2020 fire dominates; weak positive.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires, so no meaningful correlation is defined.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires and a modest 2020 event; weak.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two small fires; near zero.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017-2020 fires may have displaced residents.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fires; essentially no signal.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2008, 2016 and 2020 in a region where displacement is plausible.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single small fire; no meaningful signal.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One large 2020 fire dominates; weak positive.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A dominant 2020 fire plus earlier moderate ones; weak.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One dominant 2020 fire; weak positive.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A few moderate fires; weak.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single moderate fire; weak.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many large fires with a rise in counts over time; modest positive.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2015 and 2020 may displace some residents, but the effect is likely small.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional large fires; weak positive.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large rural wildfire acreage, but sparse population means the link to homeless counts is weak.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017-2020 fires coincide with rising counts in the later years.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly modest fires with one 2020 spike; weak.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big 2018 and 2020 fires in a populated region plausibly raised counts after housing losses.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires every few years; weak.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big 2018 and 2020 fires could add displacement; weak overall.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Regular moderate fires and rising homelessness over time give a slight positive.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent very large fires, notably 2018-2021, could raise counts a bit.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse small fires with one 2017 spike; weak positive at most.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A huge 2021 fire may displace people, but data quality that year is poor.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recurring fires including 2017-2018 events could modestly raise counts via housing loss, but the effect is noisy.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Increasingly severe fires in 2020-2024 coincide with rising counts.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very destructive 2015 and 2018 fires likely caused housing loss and displacement.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent fires through the period with a growing homeless population; modest positive.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few small fires with one large 2001 fire; weak, near-zero link expected.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires nearly every year in a populous region; modest positive.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires early in the period, while homeless counts trend up later; weak link.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with some recent spikes; weak positive.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in a populated region; modest positive.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires and rising counts over time give a modest positive.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires, so no meaningful correlation is defined.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny fires; essentially no signal.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent moderate fires in a populated region; slight positive.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent large fires and rising homelessness over time give a modest positive.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional very large fires in a mixed urban-wildland region; slight positive expected.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires; no signal.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires, so no meaningful correlation is defined.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires; weak relationship.",
+    "region_code": "R09"
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One dominant 2020 fire gives a weak positive link.",
+    "region_code": "R40"
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so there is no variation to correlate.",
+    "region_code": "R38"
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with a 2020 peak suggest a weak association.",
+    "region_code": "R15"
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fires give little signal.",
+    "region_code": "R25"
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017, 2019 and 2020 fires coincide with later higher counts.",
+    "region_code": "R37"
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so the signal is minimal.",
+    "region_code": "R23"
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2008, 2016 and 2020 give only a weak positive link.",
+    "region_code": "R17"
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single small 2020 fire gives little information.",
+    "region_code": "R33"
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only one large fire year in 2020, so the signal is minimal.",
+    "region_code": "R08"
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A dominant 2020 fire and a rising count give a modest positive tilt.",
+    "region_code": "R35"
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One dominant 2020 fire year gives a weak positive tilt.",
+    "region_code": "R14"
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires in 2009, 2020 and 2024 offer a weak positive link.",
+    "region_code": "R31"
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire gives little information.",
+    "region_code": "R41"
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires including 2017, 2020 and 2021 may modestly track higher counts.",
+    "region_code": "R29"
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires such as 2015 and 2020 overlap with a generally rising homeless count.",
+    "region_code": "R05"
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Scattered moderate fires with a large 2022 event suggest a weak positive link.",
+    "region_code": "R34"
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fire years in 2020-21 coincide with a rising trend in homelessness, though causation is doubtful.",
+    "region_code": "R04"
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2017-2020 fires coincide with rising counts.",
+    "region_code": "R13"
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire dominates, and counts rose in later years.",
+    "region_code": "R18"
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2018, 2020 and 2024 coincide with higher counts, and the 2018 fire destroyed many homes.",
+    "region_code": "R22"
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires that grew slightly over time, alongside a rising count.",
+    "region_code": "R24"
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger fires in 2018 and 2020 coincide with later years of higher counts, giving a modest positive tilt.",
+    "region_code": "R06"
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in recent years overlap with a rising count.",
+    "region_code": "R19"
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in 2020-21 coincide with higher counts in a region with substantial homelessness.",
+    "region_code": "R26"
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse small fires with a single large 2017 event suggest only a weak positive link.",
+    "region_code": "R03"
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A huge 2021 fire and a 2014 fire may modestly link to counts.",
+    "region_code": "R16"
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires including 2013 and 2017-18 events may modestly coincide with housing loss and rising counts.",
+    "region_code": "R02"
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge 2020, 2021 and 2024 fires coincide with a rising count.",
+    "region_code": "R32"
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2015 and 2018 fires, including destructive events, may modestly relate to higher counts.",
+    "region_code": "R44"
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Regular moderate fires with a peak in 2020-21 coincide with rising counts.",
+    "region_code": "R43"
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few fires with one large 2001 event, so any link is weak and likely dominated by statewide trends.",
+    "region_code": "R01"
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent large fires in a large metro region may coincide with housing stress and higher counts.",
+    "region_code": "R36"
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The largest fires occurred early (2003, 2007), when counts differed, so any association is weak.",
+    "region_code": "R12"
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fire years spread across time with a weak link to counts.",
+    "region_code": "R21"
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2007, 2009 and 2017 plausibly displace some residents, but the link is weak.",
+    "region_code": "R30"
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires with large events in 2011, 2016 and 2024 give a modest positive link.",
+    "region_code": "R42"
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so no correlation can be estimated.",
+    "region_code": "R20"
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires give essentially no signal.",
+    "region_code": "R28"
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires across many years give a weak link to counts.",
+    "region_code": "R11"
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires spread over many years give a weak positive link.",
+    "region_code": "R27"
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2003, 2006 and 2017 could displace housing, but trend effects dominate.",
+    "region_code": "R07"
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two small fires provide essentially no signal.",
+    "region_code": "R39"
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "medium",
+    "reasoning": "No major fires on record, so there is no variation in acres burned to correlate.",
+    "region_code": "R10"
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big recent fires in 2016 and 2025 likely coincide with higher recent counts.",
+    "region_code": "R09"
+   }
+  ]
+ ],
+ "code_to_coc": {
+  "R40": "CA-500",
+  "R38": "CA-501",
+  "R15": "CA-502",
+  "R25": "CA-503",
+  "R37": "CA-504",
+  "R23": "CA-505",
+  "R17": "CA-506",
+  "R33": "CA-507",
+  "R08": "CA-508",
+  "R35": "CA-509",
+  "R14": "CA-510",
+  "R31": "CA-511",
+  "R41": "CA-512",
+  "R29": "CA-513",
+  "R05": "CA-514",
+  "R34": "CA-515",
+  "R04": "CA-516",
+  "R13": "CA-517",
+  "R18": "CA-518",
+  "R22": "CA-519",
+  "R24": "CA-520",
+  "R06": "CA-521",
+  "R19": "CA-522",
+  "R26": "CA-523",
+  "R03": "CA-524",
+  "R16": "CA-525",
+  "R02": "CA-526",
+  "R32": "CA-527",
+  "R44": "CA-529",
+  "R43": "CA-530",
+  "R01": "CA-531",
+  "R36": "CA-600",
+  "R12": "CA-601",
+  "R21": "CA-602",
+  "R30": "CA-603",
+  "R42": "CA-604",
+  "R20": "CA-606",
+  "R28": "CA-607",
+  "R11": "CA-608",
+  "R27": "CA-609",
+  "R07": "CA-611",
+  "R39": "CA-612",
+  "R10": "CA-613",
+  "R09": "CA-614"
+ }
+}

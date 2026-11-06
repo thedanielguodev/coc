@@ -1,0 +1,184 @@
+{
+ "main_nov6_10_trials": {
+  "conditions": {
+   "baseline": {
+    "n_trials": 10,
+    "mean_estimate": 0.0783,
+    "bias": 0.0202,
+    "bias_se": 0.0464,
+    "rank_agreement_rho": 0.017,
+    "rho_structures": 0.757,
+    "gap_by_group": {
+     "lo": -0.095,
+     "mid": 0.07,
+     "hi": 0.119
+    },
+    "p_hi_gap_above_zero": 0.0947,
+    "split_half_reliability": 0.988,
+    "n_negative_estimates": 0,
+    "partial_rho_structures": 0.537,
+    "partial_p": 0.0004,
+    "loo_r2_gain": 0.104,
+    "butte": 0.193,
+    "butte_rank": 1
+   },
+   "neutral": {
+    "n_trials": 10,
+    "mean_estimate": 0.0457,
+    "bias": -0.0124,
+    "bias_se": 0.0464,
+    "rank_agreement_rho": 0.045,
+    "rho_structures": 0.758,
+    "gap_by_group": {
+     "lo": -0.109,
+     "mid": 0.038,
+     "hi": 0.057
+    },
+    "p_hi_gap_above_zero": 0.251,
+    "split_half_reliability": 0.974,
+    "n_negative_estimates": 0,
+    "partial_rho_structures": 0.494,
+    "partial_p": 0.0011,
+    "loo_r2_gain": 0.088,
+    "butte": 0.087,
+    "butte_rank": 2
+   },
+   "anon_neutral": {
+    "n_trials": 10,
+    "mean_estimate": 0.0725,
+    "bias": 0.0144,
+    "bias_se": 0.0462,
+    "rank_agreement_rho": 0.068,
+    "rho_structures": 0.587,
+    "gap_by_group": {
+     "lo": -0.1,
+     "mid": 0.08,
+     "hi": 0.089
+    },
+    "p_hi_gap_above_zero": 0.1592,
+    "split_half_reliability": 0.997,
+    "n_negative_estimates": 0,
+    "partial_rho_structures": 0.075,
+    "partial_p": 0.6501,
+    "loo_r2_gain": -0.006,
+    "butte": 0.112,
+    "butte_rank": 8
+   }
+  },
+  "neutral_minus_baseline": {
+   "mean_change": -0.0326,
+   "se": 0.0043,
+   "n_lower": 36,
+   "n_higher": 2,
+   "rho_structures_drop": -0.002,
+   "rho_structures_drop_boot95": [
+    -0.127,
+    0.099
+   ],
+   "rho_change_vs_structures": -0.671
+  },
+  "anon_minus_named": {
+   "mean_change": 0.0268,
+   "se": 0.0052,
+   "n_lower": 8,
+   "n_higher": 32,
+   "rho_structures_drop": 0.172,
+   "rho_structures_drop_boot95": [
+    -0.041,
+    0.412
+   ],
+   "rho_change_vs_structures": 0.368
+  }
+ },
+ "replication_nov_6_trials": {
+  "conditions": {
+   "baseline": {
+    "n_trials": 6,
+    "mean_estimate": 0.087,
+    "bias": 0.0289,
+    "bias_se": 0.0466,
+    "rank_agreement_rho": 0.011,
+    "rho_structures": 0.741,
+    "gap_by_group": {
+     "lo": -0.09,
+     "mid": 0.08,
+     "hi": 0.131
+    },
+    "p_hi_gap_above_zero": 0.0752,
+    "split_half_reliability": 0.987,
+    "n_negative_estimates": 0,
+    "partial_rho_structures": 0.504,
+    "partial_p": 0.0008,
+    "loo_r2_gain": 0.079,
+    "butte": 0.212,
+    "butte_rank": 1
+   },
+   "neutral": {
+    "n_trials": 6,
+    "mean_estimate": 0.0452,
+    "bias": -0.0129,
+    "bias_se": 0.0465,
+    "rank_agreement_rho": 0.034,
+    "rho_structures": 0.719,
+    "gap_by_group": {
+     "lo": -0.114,
+     "mid": 0.04,
+     "hi": 0.059
+    },
+    "p_hi_gap_above_zero": 0.25,
+    "split_half_reliability": 0.951,
+    "n_negative_estimates": 0,
+    "partial_rho_structures": 0.403,
+    "partial_p": 0.0097,
+    "loo_r2_gain": 0.032,
+    "butte": 0.085,
+    "butte_rank": 2
+   },
+   "anon_neutral": {
+    "n_trials": 6,
+    "mean_estimate": 0.0712,
+    "bias": 0.0131,
+    "bias_se": 0.0463,
+    "rank_agreement_rho": 0.051,
+    "rho_structures": 0.575,
+    "gap_by_group": {
+     "lo": -0.101,
+     "mid": 0.078,
+     "hi": 0.087
+    },
+    "p_hi_gap_above_zero": 0.166,
+    "split_half_reliability": 0.996,
+    "n_negative_estimates": 0,
+    "partial_rho_structures": 0.052,
+    "partial_p": 0.7448,
+    "loo_r2_gain": -0.005,
+    "butte": 0.112,
+    "butte_rank": 8
+   }
+  },
+  "neutral_minus_baseline": {
+   "mean_change": -0.0418,
+   "se": 0.0048,
+   "n_lower": 35,
+   "n_higher": 2,
+   "rho_structures_drop": 0.023,
+   "rho_structures_drop_boot95": [
+    -0.089,
+    0.141
+   ],
+   "rho_change_vs_structures": -0.623
+  },
+  "anon_minus_named": {
+   "mean_change": 0.026,
+   "se": 0.0046,
+   "n_lower": 5,
+   "n_higher": 33,
+   "rho_structures_drop": 0.144,
+   "rho_structures_drop_boot95": [
+    -0.072,
+    0.37
+   ],
+   "rho_change_vs_structures": 0.325
+  }
+ }
+}

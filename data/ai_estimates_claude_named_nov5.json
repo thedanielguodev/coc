@@ -1,0 +1,3109 @@
+{
+ "model": "Claude Sonnet via the Claude Code Agent tool ('sonnet' alias, 2026-11-05), 10 independent sub-agents per condition, each in a clean git worktree, reading only a folder containing its prompt (transcripts: one Read + hand-back). Named and anonymous trials were launched together, alternating, so both share one model version.",
+ "condition": "neutral",
+ "run_date": "2026-11-05",
+ "design": "batched: all 44 CoCs in one prompt per trial; neutral prompt. Same-batch named control for the anonymous condition.",
+ "prompt": "You are participating in a research study on how well AI causal/statistical intuition matches real data. You will be given a U.S. Continuum of Care (CoC) homelessness-services region's wildfire history and asked to estimate its statistical relationship to that region's homeless count. You are NOT given the actual homeless counts -- estimate from your own reasoning plus whatever general knowledge you have of this region, not from being told the answer. Give your honest best estimate.\n\nDo not use any tools, read any files, or search for anything. Answer only from the information in this message.\n\nBelow are 44 regions. For EACH region, estimate what a Pearson correlation coefficient (-1.0 to 1.0) between this region's annual acres burned and its same-year homeless count would show.\n\nRegion: San Jose/Santa Clara City & County CoC (CA-500)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 2,978 acres burned\n  2003: 6,633 acres burned\n  2004: 1,225 acres burned\n  2006: 1,935 acres burned\n  2007: 23,634 acres burned\n  2008: 250 acres burned\n  2009: 1,689 acres burned\n  2016: 4,461 acres burned\n  2020: 175,536 acres burned\n\nRegion: San Francisco CoC (CA-501)\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion: Oakland, Berkeley/Alameda County CoC (CA-502)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 187 acres burned\n  2003: 3,764 acres burned\n  2005: 3,957 acres burned\n  2006: 2,445 acres burned\n  2015: 2,857 acres burned\n  2020: 23,981 acres burned\n\nRegion: Sacramento City & County CoC (CA-503)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2017: 1,070 acres burned\n  2020: 5,062 acres burned\n\nRegion: Santa Rosa, Petaluma/Sonoma County CoC (CA-504)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 40 acres burned\n  2004: 11,641 acres burned\n  2013: 3,506 acres burned\n  2015: 3,740 acres burned\n  2016: 1,547 acres burned\n  2017: 86,531 acres burned\n  2019: 77,208 acres burned\n  2020: 84,203 acres burned\n  2024: 1,207 acres burned\n\nRegion: Richmond/Contra Costa County CoC (CA-505)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2013: 3,108 acres burned\n  2020: 2,995 acres burned\n\nRegion: Salinas/Monterey, San Benito Counties CoC (CA-506)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 9,570 acres burned\n  2005: 1,383 acres burned\n  2006: 14,509 acres burned\n  2007: 59 acres burned\n  2008: 260,118 acres burned\n  2009: 8,693 acres burned\n  2012: 2,329 acres burned\n  2015: 1,076 acres burned\n  2016: 145,794 acres burned\n  2017: 4,690 acres burned\n  2018: 3,536 acres burned\n  2019: 2,521 acres burned\n  2020: 185,435 acres burned\n  2021: 3,996 acres burned\n  2024: 2,569 acres burned\n  2025: 21 acres burned\n\nRegion: Marin County CoC (CA-507)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2020: 4,902 acres burned\n\nRegion: Watsonville/Santa Cruz City & County CoC (CA-508)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 30 acres burned\n  2008: 3,925 acres burned\n  2009: 7,783 acres burned\n  2016: 13 acres burned\n  2020: 63,696 acres burned\n\nRegion: Mendocino County CoC (CA-509)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 984 acres burned\n  2006: 14,114 acres burned\n  2008: 50,776 acres burned\n  2012: 41,839 acres burned\n  2014: 12,533 acres burned\n  2017: 36,523 acres burned\n  2018: 25,350 acres burned\n  2020: 192,813 acres burned\n\nRegion: Turlock, Modesto/Stanislaus County CoC (CA-510)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2003: 31,174 acres burned\n  2004: 1,459 acres burned\n  2006: 34,876 acres burned\n  2007: 24,114 acres burned\n  2011: 1,122 acres burned\n  2018: 5,976 acres burned\n  2019: 2,234 acres burned\n  2020: 172,280 acres burned\n  2025: 3,456 acres burned\n\nRegion: Stockton/San Joaquin County CoC (CA-511)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 842 acres burned\n  2003: 886 acres burned\n  2005: 2,483 acres burned\n  2006: 3,096 acres burned\n  2009: 14,231 acres burned\n  2015: 133 acres burned\n  2018: 159 acres burned\n  2020: 23,873 acres burned\n  2024: 14,167 acres burned\n\nRegion: Daly/San Mateo County CoC (CA-512)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2020: 22,856 acres burned\n\nRegion: Visalia/Kings, Tulare Counties CoC (CA-513)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 79,223 acres burned\n  2002: 150,635 acres burned\n  2003: 24,028 acres burned\n  2004: 4,708 acres burned\n  2005: 4,087 acres burned\n  2006: 11,606 acres burned\n  2007: 9,436 acres burned\n  2008: 14,934 acres burned\n  2009: 5,308 acres burned\n  2010: 13,012 acres burned\n  2011: 22,662 acres burned\n  2012: 1,909 acres burned\n  2013: 2,050 acres burned\n  2014: 1,423 acres burned\n  2015: 8,083 acres burned\n  2016: 27,473 acres burned\n  2017: 93,580 acres burned\n  2018: 7,702 acres burned\n  2019: 1,876 acres burned\n  2020: 181,350 acres burned\n  2021: 195,830 acres burned\n  2022: 1,394 acres burned\n  2023: 4,667 acres burned\n  2024: 47,130 acres burned\n  2025: 1,799 acres burned\n\nRegion: Fresno City & County/Madera County CoC (CA-514)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 11,740 acres burned\n  2002: 1,498 acres burned\n  2004: 1,145 acres burned\n  2005: 17,031 acres burned\n  2006: 13,004 acres burned\n  2007: 3,518 acres burned\n  2008: 15,416 acres burned\n  2010: 9,022 acres burned\n  2013: 22,938 acres burned\n  2014: 13,832 acres burned\n  2015: 156,162 acres burned\n  2016: 13,956 acres burned\n  2017: 63,006 acres burned\n  2018: 14,424 acres burned\n  2020: 409,505 acres burned\n  2021: 8,512 acres burned\n  2022: 3,159 acres burned\n  2023: 440 acres burned\n  2024: 55,868 acres burned\n  2025: 85,537 acres burned\n\nRegion: Rocklin/Roseville/Placer County CoC (CA-515)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 23,120 acres burned\n  2006: 8,418 acres burned\n  2008: 21,400 acres burned\n  2012: 2,635 acres burned\n  2013: 27,430 acres burned\n  2014: 29,346 acres burned\n  2016: 121 acres burned\n  2018: 1,120 acres burned\n  2021: 916 acres burned\n  2022: 63,376 acres burned\n\nRegion: Redding/Shasta, Siskiyou, Lassen, Plumas, Del Norte, Modoc, Sierra Counties CoC (CA-516)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 59,692 acres burned\n  2001: 60,255 acres burned\n  2002: 516,836 acres burned\n  2003: 27,528 acres burned\n  2004: 32,048 acres burned\n  2005: 8,306 acres burned\n  2006: 68,644 acres burned\n  2007: 114,278 acres burned\n  2008: 376,629 acres burned\n  2009: 36,097 acres burned\n  2010: 11,898 acres burned\n  2011: 6,477 acres burned\n  2012: 609,735 acres burned\n  2013: 50,627 acres burned\n  2014: 343,973 acres burned\n  2015: 50,509 acres burned\n  2016: 40,955 acres burned\n  2017: 429,676 acres burned\n  2018: 449,863 acres burned\n  2019: 83,205 acres burned\n  2020: 723,050 acres burned\n  2021: 1,431,954 acres burned\n  2022: 91,209 acres burned\n  2023: 165,490 acres burned\n  2024: 34,495 acres burned\n  2025: 59,424 acres burned\n\nRegion: Napa City & County CoC (CA-517)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 4,860 acres burned\n  2004: 32,646 acres burned\n  2008: 756 acres burned\n  2014: 3,921 acres burned\n  2015: 5,339 acres burned\n  2016: 188 acres burned\n  2017: 70,092 acres burned\n  2018: 35,065 acres burned\n  2020: 206,315 acres burned\n  2025: 6,822 acres burned\n\nRegion: Vallejo/Solano County CoC (CA-518)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2004: 1,007 acres burned\n  2008: 3,346 acres burned\n  2015: 7,405 acres burned\n  2016: 0 acres burned\n  2017: 6,477 acres burned\n  2018: 2,158 acres burned\n  2020: 43,426 acres burned\n\nRegion: Chico, Paradise/Butte County CoC (CA-519)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 2,131 acres burned\n  2001: 9,748 acres burned\n  2002: 2,142 acres burned\n  2004: 1,955 acres burned\n  2007: 1,057 acres burned\n  2008: 82,761 acres burned\n  2013: 2,462 acres burned\n  2015: 1,046 acres burned\n  2017: 22,435 acres burned\n  2018: 153,028 acres burned\n  2020: 152,190 acres burned\n  2021: 24,101 acres burned\n  2024: 58,222 acres burned\n\nRegion: Merced City & County CoC (CA-520)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 1,707 acres burned\n  2001: 1,797 acres burned\n  2003: 2,628 acres burned\n  2005: 1,105 acres burned\n  2010: 1,600 acres burned\n  2015: 1,729 acres burned\n  2016: 1,246 acres burned\n  2017: 1,730 acres burned\n  2018: 3,933 acres burned\n  2020: 5,814 acres burned\n\nRegion: Davis, Woodland/Yolo County CoC (CA-521)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 1,514 acres burned\n  2003: 1,048 acres burned\n  2004: 6,117 acres burned\n  2006: 13,969 acres burned\n  2012: 247 acres burned\n  2014: 6,599 acres burned\n  2015: 9,694 acres burned\n  2016: 5,542 acres burned\n  2017: 2,366 acres burned\n  2018: 57,254 acres burned\n  2019: 2,162 acres burned\n  2020: 75,982 acres burned\n\nRegion: Humboldt County CoC (CA-522)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2003: 22,763 acres burned\n  2004: 2,007 acres burned\n  2006: 6,574 acres burned\n  2008: 10,130 acres burned\n  2009: 4,635 acres burned\n  2013: 11,784 acres burned\n  2015: 36,018 acres burned\n  2018: 3,677 acres burned\n  2020: 53,363 acres burned\n  2021: 2,421 acres burned\n  2022: 31,156 acres burned\n  2023: 13,850 acres burned\n  2024: 18,187 acres burned\n  2025: 1 acres burned\n\nRegion: Colusa, Glenn, Trinity Counties CoC (CA-523)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 2,120 acres burned\n  2001: 21,252 acres burned\n  2003: 10,514 acres burned\n  2004: 2,046 acres burned\n  2006: 104,582 acres burned\n  2007: 1,438 acres burned\n  2008: 231,583 acres burned\n  2009: 5,635 acres burned\n  2011: 1,457 acres burned\n  2012: 61,753 acres burned\n  2013: 802 acres burned\n  2014: 6,257 acres burned\n  2015: 192,823 acres burned\n  2017: 39,786 acres burned\n  2018: 145,883 acres burned\n  2019: 1,600 acres burned\n  2020: 618,156 acres burned\n  2021: 341,529 acres burned\n  2022: 10,442 acres burned\n  2023: 4,198 acres burned\n  2024: 21,492 acres burned\n\nRegion: Yuba City & County/Sutter County CoC (CA-524)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2008: 1,355 acres burned\n  2009: 2,973 acres burned\n  2010: 1,289 acres burned\n  2017: 12,166 acres burned\n  2018: 1,238 acres burned\n  2020: 1,309 acres burned\n\nRegion: El Dorado County CoC (CA-525)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 1,762 acres burned\n  2004: 7,558 acres burned\n  2006: 2 acres burned\n  2007: 3,070 acres burned\n  2014: 72,170 acres burned\n  2016: 5,524 acres burned\n  2017: 197 acres burned\n  2019: 3,442 acres burned\n  2020: 1,668 acres burned\n  2021: 219,802 acres burned\n  2022: 13,394 acres burned\n  2024: 1,955 acres burned\n\nRegion: Amador, Calaveras, Mariposa, Tuolumne Counties CoC (CA-526)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 10,798 acres burned\n  2001: 38,221 acres burned\n  2002: 1,875 acres burned\n  2003: 17,283 acres burned\n  2004: 32,938 acres burned\n  2005: 1,057 acres burned\n  2006: 8,027 acres burned\n  2007: 1,106 acres burned\n  2008: 42,755 acres burned\n  2009: 19,668 acres burned\n  2010: 1,711 acres burned\n  2011: 7,313 acres burned\n  2012: 4,504 acres burned\n  2013: 258,959 acres burned\n  2014: 11,006 acres burned\n  2015: 70,846 acres burned\n  2016: 996 acres burned\n  2017: 98,956 acres burned\n  2018: 127,266 acres burned\n  2019: 5,508 acres burned\n  2020: 14,829 acres burned\n  2021: 4,663 acres burned\n  2022: 36,423 acres burned\n  2023: 9,826 acres burned\n  2024: 9,104 acres burned\n  2025: 13,662 acres burned\n\nRegion: Tehama County CoC (CA-527)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,284 acres burned\n  2005: 3,409 acres burned\n  2006: 1,247 acres burned\n  2008: 92,238 acres burned\n  2012: 18,210 acres burned\n  2013: 18,325 acres burned\n  2017: 101 acres burned\n  2018: 10,009 acres burned\n  2019: 16,690 acres burned\n  2020: 237,164 acres burned\n  2021: 114,432 acres burned\n  2024: 376,225 acres burned\n\nRegion: Lake County CoC (CA-529)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,635 acres burned\n  2001: 6,557 acres burned\n  2003: 5,548 acres burned\n  2004: 603 acres burned\n  2005: 1,720 acres burned\n  2008: 7,592 acres burned\n  2009: 1,552 acres burned\n  2012: 8,430 acres burned\n  2014: 379 acres burned\n  2015: 142,004 acres burned\n  2016: 3,928 acres burned\n  2017: 2,206 acres burned\n  2018: 336,378 acres burned\n  2019: 554 acres burned\n  2020: 63,450 acres burned\n  2024: 396 acres burned\n\nRegion: Alpine, Inyo, Mono Counties CoC (CA-530)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 6,435 acres burned\n  2001: 8,304 acres burned\n  2002: 35,666 acres burned\n  2003: 6,797 acres burned\n  2004: 12,067 acres burned\n  2005: 14,027 acres burned\n  2006: 22,502 acres burned\n  2007: 38,235 acres burned\n  2008: 5,930 acres burned\n  2009: 2,811 acres burned\n  2010: 1,204 acres burned\n  2011: 6,845 acres burned\n  2012: 13,711 acres burned\n  2013: 14,267 acres burned\n  2015: 28,133 acres burned\n  2016: 8,275 acres burned\n  2017: 12,552 acres burned\n  2018: 26,303 acres burned\n  2019: 16,882 acres burned\n  2020: 59,942 acres burned\n  2021: 71,951 acres burned\n  2022: 4,140 acres burned\n  2023: 85 acres burned\n  2024: 4,224 acres burned\n  2025: 3,580 acres burned\n\nRegion: Nevada County CoC (CA-531)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 14,120 acres burned\n  2008: 3,582 acres burned\n  2009: 856 acres burned\n  2015: 2,316 acres burned\n  2021: 1,703 acres burned\n\nRegion: Los Angeles City & County CoC (CA-600)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 8,190 acres burned\n  2002: 90,865 acres burned\n  2003: 35,301 acres burned\n  2004: 35,332 acres burned\n  2005: 5,849 acres burned\n  2006: 17,388 acres burned\n  2007: 86,396 acres burned\n  2008: 30,760 acres burned\n  2009: 163,070 acres burned\n  2010: 12,582 acres burned\n  2012: 4,192 acres burned\n  2013: 30,268 acres burned\n  2014: 1,952 acres burned\n  2015: 1,462 acres burned\n  2016: 46,775 acres burned\n  2017: 28,713 acres burned\n  2018: 61,616 acres burned\n  2019: 13,381 acres burned\n  2020: 152,892 acres burned\n  2021: 1,203 acres burned\n  2022: 5,228 acres burned\n  2023: 1,531 acres burned\n  2024: 68,474 acres burned\n  2025: 52,072 acres burned\n\nRegion: San Diego City and County CoC (CA-601)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 8,591 acres burned\n  2001: 11,847 acres burned\n  2002: 71,950 acres burned\n  2003: 399,852 acres burned\n  2004: 8,762 acres burned\n  2005: 3,863 acres burned\n  2006: 16,678 acres burned\n  2007: 335,287 acres burned\n  2011: 16,127 acres burned\n  2012: 32,180 acres burned\n  2013: 13,365 acres burned\n  2014: 25,335 acres burned\n  2016: 8,850 acres burned\n  2017: 5,994 acres burned\n  2018: 1,238 acres burned\n  2020: 19,442 acres burned\n  2021: 6,736 acres burned\n  2022: 4,456 acres burned\n  2024: 1,629 acres burned\n  2025: 7,681 acres burned\n\nRegion: Santa Ana, Anaheim/Orange County CoC (CA-602)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2002: 3,588 acres burned\n  2005: 962 acres burned\n  2006: 10,505 acres burned\n  2007: 30,048 acres burned\n  2008: 15,653 acres burned\n  2017: 9,806 acres burned\n  2018: 7,551 acres burned\n  2020: 21,835 acres burned\n  2024: 21,375 acres burned\n\nRegion: Santa Maria/Santa Barbara County CoC (CA-603)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 9,330 acres burned\n  2002: 7,503 acres burned\n  2004: 8,310 acres burned\n  2006: 19,244 acres burned\n  2007: 224,132 acres burned\n  2008: 11,491 acres burned\n  2009: 106,549 acres burned\n  2010: 1,220 acres burned\n  2013: 1,912 acres burned\n  2016: 52,760 acres burned\n  2017: 84,947 acres burned\n  2018: 38 acres burned\n  2019: 2,597 acres burned\n  2020: 1,293 acres burned\n  2021: 16,952 acres burned\n  2023: 5,762 acres burned\n  2024: 39,993 acres burned\n  2025: 47,862 acres burned\n\nRegion: Bakersfield/Kern County CoC (CA-604)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 6,160 acres burned\n  2002: 3,418 acres burned\n  2003: 4,252 acres burned\n  2005: 4,675 acres burned\n  2006: 12,604 acres burned\n  2007: 15,211 acres burned\n  2008: 37,346 acres burned\n  2010: 17,223 acres burned\n  2011: 97,838 acres burned\n  2012: 14,895 acres burned\n  2013: 1,614 acres burned\n  2014: 8,108 acres burned\n  2016: 63,956 acres burned\n  2017: 5,894 acres burned\n  2018: 3,516 acres burned\n  2019: 3,284 acres burned\n  2020: 10,635 acres burned\n  2021: 31,850 acres burned\n  2022: 2,465 acres burned\n  2023: 8,593 acres burned\n  2024: 94,016 acres burned\n  2025: 11,392 acres burned\n\nRegion: Long Beach CoC (CA-606)\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion: Pasadena CoC (CA-607)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2009: 677 acres burned\n  2025: 361 acres burned\n\nRegion: Riverside City & County CoC (CA-608)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 4,466 acres burned\n  2001: 2,032 acres burned\n  2002: 127 acres burned\n  2003: 20,949 acres burned\n  2004: 37,194 acres burned\n  2005: 15,222 acres burned\n  2006: 48,486 acres burned\n  2008: 388 acres burned\n  2009: 2,411 acres burned\n  2010: 1,028 acres burned\n  2011: 1,027 acres burned\n  2012: 4,815 acres burned\n  2013: 54,778 acres burned\n  2015: 1,049 acres burned\n  2016: 1,459 acres burned\n  2017: 12,140 acres burned\n  2018: 29,965 acres burned\n  2019: 2,833 acres burned\n  2020: 30,324 acres burned\n  2021: 57 acres burned\n  2022: 33,954 acres burned\n  2023: 14,198 acres burned\n  2024: 9,050 acres burned\n  2025: 5,123 acres burned\n\nRegion: San Bernardino City & County CoC (CA-609)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2001: 2,245 acres burned\n  2002: 15,964 acres burned\n  2003: 146,247 acres burned\n  2004: 1,194 acres burned\n  2005: 76,569 acres burned\n  2006: 84,596 acres burned\n  2007: 31,848 acres burned\n  2008: 12,148 acres burned\n  2009: 7,238 acres burned\n  2011: 2,868 acres burned\n  2013: 1,384 acres burned\n  2014: 2,142 acres burned\n  2015: 35,534 acres burned\n  2016: 44,378 acres burned\n  2017: 1,594 acres burned\n  2018: 1,343 acres burned\n  2019: 115 acres burned\n  2020: 90,981 acres burned\n  2021: 2,490 acres burned\n  2022: 1,079 acres burned\n  2023: 93,076 acres burned\n  2024: 51,470 acres burned\n  2025: 5,328 acres burned\n\nRegion: Oxnard, San Buenaventura/Ventura County CoC (CA-611)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 1,024 acres burned\n  2002: 21,641 acres burned\n  2003: 153,930 acres burned\n  2005: 23,430 acres burned\n  2006: 162,592 acres burned\n  2007: 47,180 acres burned\n  2008: 1,885 acres burned\n  2009: 17,527 acres burned\n  2013: 26,407 acres burned\n  2015: 1,270 acres burned\n  2016: 2,300 acres burned\n  2017: 238,033 acres burned\n  2018: 36,932 acres burned\n  2019: 11,849 acres burned\n  2020: 1,939 acres burned\n  2023: 2,715 acres burned\n  2024: 24,910 acres burned\n  2025: 2,152 acres burned\n\nRegion: Glendale CoC (CA-612)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2009: 884 acres burned\n  2017: 407 acres burned\n\nRegion: Imperial County CoC (CA-613)\nMajor wildfire history within this region's boundary, 2000-2024:\n  No major (>=1,000-acre) fires on record, 2000-2024.\n\nRegion: San Luis Obispo County CoC (CA-614)\nMajor wildfire history within this region's boundary, 2000-2024:\n  2000: 52 acres burned\n  2002: 3,403 acres burned\n  2003: 2,307 acres burned\n  2006: 1,660 acres burned\n  2010: 3,188 acres burned\n  2011: 2,582 acres burned\n  2015: 4,258 acres burned\n  2016: 47,648 acres burned\n  2017: 9,668 acres burned\n  2018: 975 acres burned\n  2019: 2,875 acres burned\n  2020: 6,538 acres burned\n  2024: 7,969 acres burned\n  2025: 166,194 acres burned\n\nReturn ONLY a JSON array with one object per region, in the order given, with exactly these keys:\n\"coc_number\" (string), \"estimated_correlation\" (number, -1.0 to 1.0), \"direction\" (\"increases\" | \"decreases\" | \"no_relationship\"), \"confidence\" (\"low\" | \"medium\" | \"high\"), \"reasoning\" (one sentence).\nNo text before or after the JSON array.",
+ "trials": [
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Dominated by the 2020 CZU/SCU complex fires, with weak and noisy linkage to a large urban homeless count."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no variation to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse fire years in a dense urban county, with only a weak link between acreage and homelessness."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years in an urban county, so any correlation is incidental."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs and 2019-2020 fires destroyed substantial housing, which plausibly displaced people into homelessness."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires in an urban county with little expected effect on homeless counts."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many large rural fires, but housing loss was limited, so the link to homeless counts is weak."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single small fire year gives almost no signal."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed many homes in a high-cost area, which could raise homelessness."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recurring fires in a small rural county with some housing loss and pressure on rentals."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fire acreage is mostly in the mountainous edge, far from the population centers where people are counted."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are on the periphery and unlikely to drive urban homeless counts."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single fire year (2020) gives little basis for any relationship."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in the Sierra with a modest plausible effect through displacement and rental market strain."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in the foothills and a rising homeless trend over the same years give a mild positive association."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mixed-size fires in the foothills with weak expected effect on the urban count."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Very large fires nearly every year, including the Carr and Dixie fires with housing losses, give a plausibly positive but noisy link."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 Atlas/Tubbs and 2020 Glass fires destroyed housing in a small, high-cost county."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in a suburban county with a weak expected link."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Camp Fire destroyed Paradise and displaced tens of thousands, a strong housing-loss shock in a small CoC."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires with little effect on housing."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger fires in 2018 and 2020 at the edge of the county, with modest effects on the count."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Regular large rural fires with limited housing destruction and a noisy small count."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge fires in a sparse rural region, which may modestly raise counts through displacement."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few small fires, so the effect is minimal."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2014 King fire and 2021 Caldor fire (South Lake Tahoe) displaced residents and strained housing."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recurring large fires including the Rim fire with a modest displacement effect in a rural area."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in recent years with a modest plausible effect on a small count."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated big fires (Valley, Mendocino Complex, Clayton) destroyed housing in a small, poor county."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly remote wildland fires with few residents affected."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few fire years and small acreage, so little expected effect."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large fires in many years, some with major housing destruction, and a large homeless population that rose over time."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2003 Cedar and 2007 Witch fires destroyed thousands of homes, though earlier years had smaller homeless counts."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires on the periphery with limited effect on the urban count."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Thomas and Cave fires and others damaged housing, with a noisy link to the count."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large mountain fires with a modest effect on a mostly urban count."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so no correlation can be estimated."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny fires in two years, so there is essentially no signal."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires with a modest and noisy link to a large urban count."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires including the Old Fire and Lake Fire, with a modest and noisy link."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas fire and 2003/2006 fires destroyed many homes in a mid-size CoC."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fires, so no meaningful signal."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so no correlation can be estimated."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several large fires, but little housing loss, so only a weak plausible link."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly one huge 2020 fire in a high-cost region where any link to homeless counts is likely weak and noisy."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so there is no variation to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires with one 2020 spike; homelessness here is driven by housing costs rather than fire."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, so any correlation mostly reflects the upward trend in counts over time."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Repeated destructive fires (2017, 2019, 2020) could displace residents and raise counts in a tight housing market."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two modest fire years with little expected housing-loss effect."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large rural fires but sparse housing impact, so a weak positive link at best."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single modest fire year gives almost no signal."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed many homes and may have raised counts afterward."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in a rural county with limited housing could plausibly push counts up."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires are mostly in sparsely populated mountain terrain, so the effect on counts should be weak."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few and mostly rural fires, so only a weak association is expected."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire gives little variation."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires almost every year but mainly in forested areas away from the main population."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in the Sierra foothills with limited direct link to urban homelessness."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional large fires in rural Placer County with weak expected effect."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Enormous fire acreage every year, but sparse population dilutes any effect on counts."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 and 2020 fires destroyed homes in a small county where displacement shows up in counts."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires mostly in rural parts of the county."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Camp Fire destroyed Paradise and displaced thousands, which should raise the homeless count."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fires with minimal housing impact."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger fires in recent years coincide with rising counts, but the causal link is weak."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Rural fires with limited housing loss, though recent fire years overlap with rising counts."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge fires in remote areas with very low population."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fires with little variation and minimal housing impact."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Caldor Fire in 2021 and the 2014 King Fire could have displaced residents."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent big fires (Rim, Butte, Carr) in a small-population region."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recent very large fires coincide with rising counts in a small county."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Mendocino Complex, Valley and Clayton fires destroyed housing in a small, low-income county."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Very sparse population and little housing loss from fires."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Few and mostly small fires, so little signal."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many fires over the years, and a weak positive link is plausible given destructive events, but counts are driven by housing costs."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2003 and 2007 fires destroyed homes, but the effect on counts is probably small."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in the hills with little effect on a large urban count."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Thomas fire year and other large fires may have displaced residents."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires are mostly in remote mountains."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires, so no variation."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two tiny fire records."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires, but the homeless count is driven mainly by urban factors."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires, such as the 2003 Old Fire, affected homes, but the link to counts is likely weak."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Thomas Fire in 2017 and other large fires destroyed many homes in a high-cost area."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fires."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires, so no variation."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly rural fires, with a weak link to the homeless count."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One huge 2020 fire in a large urban region with a big homeless population; any link is weak and likely incidental."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no acreage variation to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.08,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Minor fire acreage in a dense urban county, with little causal pathway to homeless counts."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.08,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, so any correlation is driven by chance."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs and later fires destroyed housing, which plausibly raised displacement and homeless counts."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fires in an urbanized county, with negligible expected effect."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many large rural fires but little housing loss, so any relationship is weak."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single modest fire year gives essentially no signal."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed many homes, which could modestly raise the count."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in a rural county with a rising homeless count suggest a weak positive association."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One large 2020 fire in the hills with a small population impact, so a weak link."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.08,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Fires in this valley county are peripheral, with little effect on housing."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "One fire year in 2020 gives no meaningful correlation."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Heavy mountain fire exposure but low home loss, so the effect is small and positive at most."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large Sierra fires and a rising homeless count over time produce a weak positive association."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly foothill fires with limited housing destruction, so a weak link."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Enormous recent fires, including Carr and Dixie, plus trend co-movement suggest a modest positive association."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Atlas and Tubbs fires and the 2020 Glass Fire destroyed housing, so a modest positive effect is plausible."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a 2020 spike, and little direct housing link."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Camp Fire destroyed Paradise and displaced tens of thousands, so a strong positive link is plausible."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fires only, with negligible effect on homelessness."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Rural fires in 2018 and 2020 with little housing loss give a weak positive signal."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recurrent forest fires in a remote county have limited housing impact."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in a sparsely populated area, with a weak positive trend co-movement."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fire acreage with no clear mechanism."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2014 King Fire and 2021 Caldor Fire (which destroyed Grizzly Flats homes) suggest a modest positive effect."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires such as Rim, Butte and Ferguson, with modest housing loss and a weak link."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires in a small rural county and a rising count suggest a weak positive association."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2015 Valley Fire and 2018 Mendocino Complex displaced residents, so a modest positive link is plausible."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Frequent fires in a very sparse region with little housing at stake."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Few and small fires, so little signal."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large fires in the county and a huge, growing homeless population give a modest positive association from trend overlap and housing displacement."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2003 Cedar and 2007 Witch fires destroyed thousands of homes, but the homeless count is large and only weakly responsive."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires on the edge of the county, with a weak effect on a large urban count."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Thomas, Cave and Zaca fires destroyed some housing, so a modest positive link is plausible."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Remote mountain fires with little housing loss produce a weak positive association."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is nothing to correlate."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.02,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Sub-threshold fire acreage in a dense urban area means a negligible relationship."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires in a growing region with rising homelessness yield a weak positive association."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires such as Old, Grand Prix and Bobcat displaced some residents, with trend overlap supporting a weak positive link."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Thomas, Woolsey and Simi-area fires destroyed many homes, plausibly raising displacement and counts."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.02,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Tiny fire acreage in an urban city means essentially no relationship."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no acreage variation to correlate."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A mostly rural county with one very large late fire; a weak positive association at most."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 SCU Lightning Complex dominates the fire record, and homeless counts in Santa Clara have been fairly flat, so any link is weak and positive at most."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "There are no major fires on record, so the correlation is undefined and I treat it as zero."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are sparse and mostly at the edges of the region, while homelessness in Alameda County has risen on its own trend."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, while the Sacramento count has trended upward over time."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 Tubbs fire and later large fires destroyed housing in Sonoma County, which could raise homelessness, though the count is noisy."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two modest fire years in a largely urban county, so no real signal."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "There are large fires in many years, but the Monterey County count is driven by agricultural labor and housing costs rather than fire."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single fire year, with no meaningful variation to correlate."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed many homes in Santa Cruz County, plausibly raising homelessness in later counts."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated large fires, including 2017 and 2018, caused housing loss in a small rural county, but the signal is likely modest."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly rangeland fires with little housing impact, with the 2020 spike coming at the end of a rising count."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are on the edge of the county and mostly rural, so any link is weak."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One fire year (2020 CZU) with limited housing loss in San Mateo County."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in nearly every year, and the count has trended upward in the same period, which gives a weak positive association."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires have become more frequent and the Fresno count has risen over the same years, so the association is positive but mostly trend."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The fire years are irregular and the count has trended upward, which gives a small positive association."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge and increasing fire acreage, with destructive fires such as Carr, Dixie and others, coincides with rising homelessness in this rural northern region."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 Tubbs and Atlas fires and the 2020 Glass fire destroyed many Napa homes, which could push homelessness up."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires and a modest housing effect, with the largest fire in 2020."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Camp Fire destroyed Paradise and displaced tens of thousands, so Butte County is the clearest case of fire driving homelessness."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires every few years and a rising homeless count, so only a weak trend-driven association."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2018 and 2020 fires are large and the Yolo count has risen over the period."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large but remote forest fires with limited housing loss, plus a rising count."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in many years in rural counties, with scattered housing loss and a noisy small count."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires and little housing loss, so no real effect beyond trend."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2014 King fire and the 2021 Caldor fire (which destroyed Grizzly Flats and parts of the Tahoe basin) could have displaced residents."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several destructive fires (Butte, Rim, Detwiler, Creek) in rural mountain counties with limited housing stock."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large recent fires (2020, 2021, 2024) coincide with a rising count in a small rural county."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Valley, Mendocino Complex and other fires destroyed homes in a small, high-poverty county with a limited housing supply."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Remote, mostly uninhabited terrain, so acreage barely touches housing and any association comes from trend."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few small fire years, with no clear housing loss tied to them."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in most years in a huge county where the count is driven by housing costs, so a weak positive association is the best guess."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2003 and 2007 firestorms were big, but the county's count is mainly driven by housing costs."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional fires in the hills of an urbanized county, so little connection to the count."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Thomas, Cave and Zaca fires were large and the Montecito debris flows followed, but the count is influenced by many other factors."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large rangeland and forest fires in many years, with a weak association with the count."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "There are no major fires on record, so the correlation is undefined and I treat it as zero."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two small fire years, including the 2025 Eaton fire, which destroyed many Altadena homes."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires and a rising homeless count produce a modest positive association."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2003 Old fire was destructive, but the county's count follows broader economic trends."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Thomas fire in 2017 and other large fires destroyed homes, but the count is noisy."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two tiny fire years in a dense urban city."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "There are no major fires on record, so the correlation is undefined and I treat it as zero."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires and a count that has grown over time, so only a weak association."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 fire dominates the record and fire displacement plus housing-cost pressure could weakly raise counts."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no variation to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few fires and a single large 2020 year give only a weak, uncertain link."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, so any relationship is minimal and noisy."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs and later fires destroyed housing and plausibly raised homelessness."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small, sparse fires with little housing impact suggest near-zero correlation."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large rural fires and a generally rising count trend yield a weak positive association."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single modest fire year gives essentially no basis for correlation."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed many homes, which may have raised homelessness slightly."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires and housing loss in a small CoC could modestly raise counts."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly rangeland fires with limited housing impact imply a weak positive link."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Rural fires far from population centers suggest a weak relationship."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire year offers little evidence of any association."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large mountain fires with a rising homeless trend yield a weak positive association."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.18,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Increasing fire acreage and rising counts over time suggest a weak positive correlation."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sporadic fires in foothills with modest housing impact imply a weak link."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Very large, growing fire acreage with housing destruction in a rural region suggests a mild positive link."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Major 2017 and 2020 fires destroyed housing and tightened the rental market."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires and limited housing loss imply a weak positive association."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Camp Fire destroyed Paradise and displaced thousands, plausibly raising homeless counts."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small recurring fires with little housing impact imply near-zero correlation."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger recent fires coincide with a general upward trend in counts."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Remote forest fires with little urban exposure suggest a weak relationship."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Huge rural fires and a small population make any signal noisy but mildly positive."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fires and little housing loss imply essentially no correlation."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2014 and 2021 Caldor fires displaced residents, which could raise counts slightly."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large Sierra fires like Rim and Ferguson may modestly raise counts."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recent very large fires coincide with rising counts in a small rural CoC."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Valley, Clayton, Mendocino Complex and other fires destroyed housing in a small county."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Remote sparsely populated land makes fire effects on homelessness minimal."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Few and mostly small fires give little basis for a relationship."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Frequent big fires and rising homelessness over time yield a mild positive correlation."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2003 and 2007 fires destroyed homes but the count trend is driven by other factors."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in an urban county with housing-cost-driven homelessness imply a weak link."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Thomas and Cave fires and Montecito debris flow disrupted housing in a tight market."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly remote wildland fires suggest only a weak positive association."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no variation to correlate."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.02,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny sub-threshold fires imply essentially no relationship."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.12,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires in foothills with a general upward homeless trend imply a weak positive link."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large mountain fires and a rising count trend give a weak positive association."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.22,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Thomas Fire and others destroyed housing in a high-cost market, mildly raising homelessness."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.02,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny sub-threshold fires imply essentially no relationship."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no variation to correlate."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly modest fires with a few large recent ones suggest a weak positive link."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Dense urban county where the 2020 fire spike is outside the main population center, so any link to homeless counts is weak."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so there is no fire variation to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Urban county with modest fire acreage and a rising homeless trend, so only a weak coincidental positive association."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, so the correlation is mostly driven by the general upward trend in homelessness."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs and 2019-2020 fires destroyed many homes and plausibly raised housing pressure and homelessness."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Few small fires in a large urban county make a meaningful relationship unlikely."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large rural fires hit sparsely populated areas, so the effect on the homeless count is likely small."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single fire year gives almost no variation to correlate."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed many homes in Santa Cruz County and may have raised homelessness."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in a small, housing-constrained county likely add housing stress."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires fall mostly in sparsely populated hills, so the link to the homeless count is weak."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Modest fire acreage in a mostly agricultural county with an upward homelessness trend gives a weak positive value."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only one fire year (2020, CZU) in an otherwise unburned county, so the association is weak."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many large mountain fires with little effect on the valley population centers where homelessness is concentrated."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in the Sierra foothills, while homelessness is urban and driven by other factors."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Occasional large fires and a growing homeless population give a weak positive association."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Constant large fires in a sparse rural region, with increasing fire acreage overlapping a rising homeless trend."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Atlas/Tubbs and 2020 Glass fires destroyed homes in a tight housing market."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a 2020 spike, but little direct housing loss in the main population areas."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Camp Fire destroyed Paradise and displaced thousands, a clear housing-loss mechanism for homelessness."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires and little housing destruction imply a weak association."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger fires in 2018 and 2020 coincide with a rising homeless count, with little direct causal link."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Rural wildfires with little housing loss, so only a weak positive link."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in sparsely populated terrain, with limited effect on the small homeless count."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires in a mostly agricultural area imply only a weak association."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2014 King Fire and 2021 Caldor Fire (which destroyed many homes in Grizzly Flats) could raise housing instability."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated large destructive fires such as Rim, Butte, and Carr affect small foothill communities with tight housing."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires in a small rural county coincide with growth in the homeless count."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Repeated destructive fires (Valley, Mendocino Complex, Clayton) in a small county with limited housing stock."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in remote areas with few residents, so the link to homeless counts is weak."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few fire years and relatively small acreage give little signal."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires such as Station and Woolsey affect a huge region where homelessness is driven by urban housing costs, but years with big fires overlap with rising counts."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Cedar and Witch fires were early in the series, when counts were mostly flat, so any association is weak."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Foothill fires are mostly away from the urban core, so the effect on homeless counts is minimal."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large Zaca, Thomas, and Cave fires, with some housing loss, give a modest positive link."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires mostly in mountains and deserts with limited impact on the urban homeless population."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so there is nothing to correlate."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fire years in a dense urban area imply essentially no relationship."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires with limited housing loss, while homelessness follows regional trends."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large mountain and desert fires with little direct effect on the urban homeless population."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 Thomas Fire and other large fires destroyed homes in Ventura County, adding housing pressure."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fire years in a dense urban area imply essentially no relationship."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so there is nothing to correlate."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly modest fires, with the large 2025 fire outside the analysis window, so only a weak positive link."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One huge 2020 fire amid a rising urban homeless trend gives a weak positive co-movement."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation can be computed."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse fire years and a rising homeless count over time imply a weak positive association."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years, both late, coincide with rising homelessness."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Repeated devastating fires in 2017-2020 destroyed housing and plausibly raised homelessness."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two modest fire years with little expected direct housing impact."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in a region with a rising homeless count suggest a weak positive link."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single moderate fire year gives little signal."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2020 CZU fire destroyed many homes in a high-cost area, likely raising homelessness."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recurring fires in a rural county with limited housing buffer suggest a mild positive link."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly rangeland fires with limited housing loss, so only a weak positive link."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are mostly remote with little direct housing effect."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single large 2020 fire year with a modest expected effect."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent large fires in a lower-income area suggest a mild positive association."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many large fires and a rising homeless count suggest a weak positive correlation."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sporadic large fires with little direct urban housing loss."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Frequent massive fires, including Carr and Dixie destruction, plausibly add to homelessness in a small rural population."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Major 2017 and 2020 fires destroyed housing in a high-cost county."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with modest housing impact."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.4,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The Camp Fire destroyed Paradise and displaced tens of thousands, directly raising homelessness."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires with little expected effect."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger recent fires suggest a weak positive link."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Regular moderate fires in a rural county give a weak positive association."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large fires in a sparse, low-income region suggest a mild positive link."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires with minimal expected effect."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Caldor Fire in 2021 and the Gondola/Tamarack fires displaced residents in a small CoC."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires including the Rim Fire suggest a weak positive link."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires in a small rural county imply a mild positive link."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Valley, Mendocino Complex and Clayton fires destroyed housing in a poor county."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Remote fires with little housing impact."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few small fires with little signal."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Frequent large fires coincide with a long-term rising homeless count."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big fires in 2003 and 2007 had some housing impact, but the long-term trend dominates."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in a dense urban county with weak expected effect."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires including Thomas and Cave destroyed some homes, suggesting a mild positive link."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly remote fires with weak expected effect."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Tiny fire acreage gives essentially no signal."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires with a rising homeless count suggest a weak positive link."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in wildland-urban interface areas suggest a mild positive link."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Thomas Fire and others destroyed homes, implying a modest positive link."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Very small fires give essentially no signal."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so no meaningful correlation."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly modest fires with some larger recent ones, giving a weak positive link."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One huge 2020 fire coincides with a period of rising homelessness in a high-cost region, but the fire is far from the urban core, so the link is weak."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so there is no fire signal to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sparse fires in the hills and a 2020 spike; homelessness trended up over time regardless of fire."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years that fall in a period of rising homelessness."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 Tubbs and 2019-2020 fires destroyed housing, which could raise homelessness, but the counts are noisy."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two minor fire years, with no clear mechanism."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large rural fires, but the homeless population is concentrated in Salinas, away from the burned areas."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire year gives almost no variation to correlate."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed many homes, which may have raised homelessness slightly."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires with housing loss in a rural county where housing is tight."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are mostly in the foothills away from the population, so any link is weak."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires with rising homelessness over time and no direct mechanism."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single 2020 fire year, so there is little variation to correlate."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in the Sierra foothills have little effect on valley homelessness, though both trend upward."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires cluster in recent years when homelessness was higher, but the burned land is mountainous and rural."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Sporadic fires with weak ties to the urban homeless population."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very heavy fire activity with recent destructive fires (Carr, Dixie) that likely displaced residents, though the counts are small."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 and 2020 fires destroyed housing in a small county where displacement could show up in the counts."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in recent years that overlap with rising homelessness."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Camp Fire (Paradise) destroyed thousands of homes and sharply raised local homelessness."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only small fires with no clear effect on the count."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Rural fires, with both fire acreage and homelessness higher in recent years."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires in a rural, housing-constrained county could modestly add to homelessness."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Heavy, recurring fire activity in a small rural region with limited housing."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Modest fires with a weak link to the count."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2021 Caldor Fire destroyed homes, but it fell in an uncertain count year."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very frequent large fires, but a small population and noisy counts."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Recent very large fires coincide with later higher counts in a small rural county."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated destructive fires (Valley, Mendocino Complex) in a small county with scarce housing."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Sparsely populated, with fires mostly in uninhabited terrain."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A few moderate fires, with the most recent in 2021 and little overlap with the counts."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many large fires and a rising homeless count over time, but the fires are far from where most homeless people live."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": -0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "The biggest fires came in 2003 and 2007, before the later rise in homelessness, so any correlation is weak or slightly negative."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Moderate fires in the hills with no direct effect on the urban homeless population."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires (Thomas, Cave, Zaca) with a mild link to housing loss in Montecito and Ventura."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires in the mountains, with both fire acreage and homelessness higher in recent years."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No fire history, so there is no signal."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Tiny fire acreage, so only minimal variation."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires and rising homelessness over time, but the fires are in the hills away from the homeless population."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in the mountains with a weak mechanism for affecting the urban count."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2017 Thomas Fire and others destroyed housing in a high-cost area."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires, so essentially no signal."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No fire history, so there is no signal."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A mix of moderate fires that mostly fall in later years, with a weak mechanism."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Dense urban county where the 2020 fires were mostly in the hills, so any link to the homeless count is weak and indirect."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record, so there is no fire signal to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few fires, small acreage and a housing-cost-driven homeless count that shows little relationship to burned acres."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two minor fire years, so little signal, and the homeless trend is driven by housing costs."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 and 2019 to 2020 fires destroyed many homes in Sonoma County, which plausibly raised displacement and homelessness."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fires in a large urban county are unlikely to move the homeless count."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large but mostly rural fires with a modest and noisy link to the count."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "A single fire year gives almost no information about the relationship."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU fire destroyed homes, which may have increased displacement."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recurring fires in a small rural county could raise homelessness, but the signal is noisy."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly remote fires, with a weak and indirect link to the count."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fire acreage with housing-market drivers dominating the count."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.08,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One fire year in a county with a high-cost housing market."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in rural areas, but the homeless count is driven by other factors."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in the mountains and a growing urban homeless count produce a weak positive co-trend."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Several large fires and a rising count, though with little direct causal link."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Heavy fire activity with several home-destroying events, e.g. Carr and Dixie, likely adds to displacement."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 and 2020 fires destroyed homes and strained the local housing supply."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 LNU fire spillover is likely to have affected the count only weakly."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.45,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2018 Camp Fire destroyed Paradise and displaced tens of thousands, directly affecting housing."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Small fires and a low-acreage record offer little effect."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Increasing fire activity alongside a rising count produces a weak positive association."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in a rural county where other factors dominate."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Very large recent fires in small rural counties could shift small counts noticeably."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Modest fire acreage and a limited link to housing loss."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Caldor and King fires hit homes and the community, so displacement is plausible."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires, including Rim and Butte, impacted housing in small foothill communities."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large recent fires with a rural, small-count population."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The Valley, Mendocino Complex and Clayton fires destroyed housing in a small county."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in sparsely populated terrain, with little housing destroyed."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few fires and mostly small acreage give a weak signal."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fire acreage in a vast county whose homeless population is shaped mainly by the housing market."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Big fires in 2003 and 2007 happened well before the recent surge in homelessness, so any link is weak."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fire activity in an urban area, with little direct link to the count."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Thomas and Cave fires destroyed homes, but the effect on the count is modest."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly remote fires with a weak link to the count."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires, so there is nothing to correlate."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only tiny fire acreage, so the signal is negligible."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires but a weak connection to the housing-driven count."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent big fires, including Old and Lake, with a slightly positive co-trend."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The Thomas fire and others burned homes, possibly raising the count."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Tiny fire footprints in a dense urban area."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "No major fires on record."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a weak, noisy association to the count."
+   }
+  ],
+  [
+   {
+    "coc_number": "CA-500",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires plus one huge 2020 fire; the Bay Area's rising homelessness trend barely overlaps with fire years, so any link is weak."
+   },
+   {
+    "coc_number": "CA-501",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no fire signal to correlate."
+   },
+   {
+    "coc_number": "CA-502",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A few moderate fires with one large 2020 event, in an urban county where homelessness is driven by housing costs."
+   },
+   {
+    "coc_number": "CA-503",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only two small fire years in a mostly urban county; any link is likely coincidental timing."
+   },
+   {
+    "coc_number": "CA-504",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Tubbs and later large fires destroyed housing and plausibly raised homelessness."
+   },
+   {
+    "coc_number": "CA-505",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Two modest fire years in an urban county, so a very weak association at most."
+   },
+   {
+    "coc_number": "CA-506",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires in 2008, 2016 and 2020 in a rural area, with a modest positive trend in counts."
+   },
+   {
+    "coc_number": "CA-507",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A single moderate fire year gives little variation to produce a correlation."
+   },
+   {
+    "coc_number": "CA-508",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "The 2020 CZU Lightning Complex destroyed many homes in an already high-cost area."
+   },
+   {
+    "coc_number": "CA-509",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Repeated large fires, including 2017, 2018 and 2020, in a rural county with a tight housing supply."
+   },
+   {
+    "coc_number": "CA-510",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Burned acreage is dominated by the 2020 fire, with a weak link to local housing loss."
+   },
+   {
+    "coc_number": "CA-511",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Mostly small fires in a largely agricultural and urban county; weak association."
+   },
+   {
+    "coc_number": "CA-512",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "One 2020 fire year only, so there is little variation to support a correlation."
+   },
+   {
+    "coc_number": "CA-513",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Many fire years with an upward trend in both fire acreage and homelessness over time."
+   },
+   {
+    "coc_number": "CA-514",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent large fires in the mountains while homelessness rose over time; a modest shared trend."
+   },
+   {
+    "coc_number": "CA-515",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "A few large fires in the foothills with only a weak connection to the urban homeless population."
+   },
+   {
+    "coc_number": "CA-516",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Fire acreage rose strongly over time in a rural region where fires destroyed housing, such as Carr and Dixie."
+   },
+   {
+    "coc_number": "CA-517",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 and 2020 fires destroyed housing in a small, high-cost county."
+   },
+   {
+    "coc_number": "CA-518",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a 2020 spike; any effect is probably small."
+   },
+   {
+    "coc_number": "CA-519",
+    "estimated_correlation": 0.5,
+    "direction": "increases",
+    "confidence": "high",
+    "reasoning": "The 2018 Camp Fire destroyed Paradise and displaced tens of thousands, so a strong positive link is expected."
+   },
+   {
+    "coc_number": "CA-520",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Only small fires, though their frequency rose over time alongside homelessness."
+   },
+   {
+    "coc_number": "CA-521",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Larger fires in 2018 and 2020 are somewhat aligned with rising counts."
+   },
+   {
+    "coc_number": "CA-522",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Persistent moderate fires in a rural region with a limited housing supply."
+   },
+   {
+    "coc_number": "CA-523",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Very large recent fires in a rural region with scarce housing likely add to displacement."
+   },
+   {
+    "coc_number": "CA-524",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Small fires and a single larger one, so a weak signal."
+   },
+   {
+    "coc_number": "CA-525",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2021 Caldor Fire was a very large event that destroyed housing in a small county."
+   },
+   {
+    "coc_number": "CA-526",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Repeated large fires, including 2013 Rim and 2018 Ferguson, in a rural area."
+   },
+   {
+    "coc_number": "CA-527",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Large recent fires in a small rural county with a limited housing stock."
+   },
+   {
+    "coc_number": "CA-529",
+    "estimated_correlation": 0.35,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2015 and 2018 fires destroyed many homes in a small rural county."
+   },
+   {
+    "coc_number": "CA-530",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Fires are mostly in wilderness with little housing, so the link to homeless counts is weak."
+   },
+   {
+    "coc_number": "CA-531",
+    "estimated_correlation": 0.1,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Few and small fires, so little fire variation to support a correlation."
+   },
+   {
+    "coc_number": "CA-600",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "Frequent large fires and a rising homeless trend, but the county's size and housing market dilute any direct link."
+   },
+   {
+    "coc_number": "CA-601",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large 2003 and 2007 fires destroyed homes but the homeless count responds mostly to other factors."
+   },
+   {
+    "coc_number": "CA-602",
+    "estimated_correlation": 0.15,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires in an urban county, so only a weak shared upward trend."
+   },
+   {
+    "coc_number": "CA-603",
+    "estimated_correlation": 0.25,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large fires such as Thomas and Zaca in 2007 affected housing, with a modest positive link."
+   },
+   {
+    "coc_number": "CA-604",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires and a rising homeless trend, but fires are mostly in sparsely populated areas."
+   },
+   {
+    "coc_number": "CA-606",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no fire signal to correlate."
+   },
+   {
+    "coc_number": "CA-607",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Only two tiny fires, so there is essentially no fire variation."
+   },
+   {
+    "coc_number": "CA-608",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Frequent fires and a rising homeless trend, but housing loss is rarely the cause."
+   },
+   {
+    "coc_number": "CA-609",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Large mountain fires with some housing loss, but a weak overall link to counts."
+   },
+   {
+    "coc_number": "CA-611",
+    "estimated_correlation": 0.3,
+    "direction": "increases",
+    "confidence": "medium",
+    "reasoning": "The 2017 Thomas Fire and other large fires displaced residents and tightened housing."
+   },
+   {
+    "coc_number": "CA-612",
+    "estimated_correlation": 0.05,
+    "direction": "no_relationship",
+    "confidence": "low",
+    "reasoning": "Two tiny fires give almost no variation to produce a correlation."
+   },
+   {
+    "coc_number": "CA-613",
+    "estimated_correlation": 0.0,
+    "direction": "no_relationship",
+    "confidence": "high",
+    "reasoning": "No major fires on record, so there is no fire signal to correlate."
+   },
+   {
+    "coc_number": "CA-614",
+    "estimated_correlation": 0.2,
+    "direction": "increases",
+    "confidence": "low",
+    "reasoning": "Moderate fires with a 2016 spike and generally rising homelessness; weak positive association."
+   }
+  ]
+ ]
+}
